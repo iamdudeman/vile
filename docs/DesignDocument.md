@@ -6,7 +6,8 @@
 
 ### "Elevator pitch" / Game summary
 
-You are playing through the underground gauntlet of Vials to learn how to transmute lead to gold.
+You have entered the underground gauntlet of Vials to learn as much forbidden knowledge as you can and ultimately learn
+how to transmute lead to gold. A prize any true alchemist would be willing to risk their lives for.
 
 ### Inspiration
 
@@ -28,7 +29,8 @@ Puzzle rogue-lite
 
 #### Target audience
 
-todo
+* Puzzle game enthusiasts
+* Hobbyist game developers
 
 #### First minutes
 
@@ -45,13 +47,13 @@ wins!
 
 Each turn a random number on a normal distribution between 0 and 14 and the player puts it in one of the not-full files.
 
-Once all vials are full, the sum of the pH of the vials divided by the total number of vials is the score of each player.
+Once all vials are full, the sum of the pH of the vials divided by the total number of vials is the score of each
+player.
 The closer to 7 wins.
 
 Between battles the player will be given some options to choose from to gain various buffs.
 
 #### Mechanics / Systems overview
-
 
 * Forbidden knowledge
     * Neutralizing Concoction - reverses last played pH
@@ -64,21 +66,18 @@ Between battles the player will be given some options to choose from to gain var
     * Boss fight
     * Library (could have a rare variant)
 
-
-
-todo combat, puzzles, collectibles, progression, etc.
-
 ### Story overview
 
-todo
+The player character enters the underground Vials tournament to learn how to transmute lead into gold. Throughout the
+gauntlet they will encounter other characters who for various reasons are challenging the gauntlet. They will also
+learn other forbidden knowledge that will assist them in winning the tournament.
 
 #### Character(s)
 
-todo
-
-#### World / environment
-
-todo
+* todo name
+    * Play-style - only plays on own board unless it is full
+* todo name
+    * Play-style - only plays on opponent's board unless it is full
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -90,7 +89,8 @@ todo
 
 ### Camera
 
-todo
+There will not be a camera implemented in this game. The player will always be able to see the full Vials game being
+played or the full world map post game of Vials.
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -110,7 +110,9 @@ todo
 
 ### Controls
 
-todo
+* Arrow keys to move between UI elements
+* Space or enter key to interact
+* Mouse click to interact
 
 ### UI
 
@@ -134,9 +136,17 @@ todo
 
 ### Outline
 
-| Task            | Type    | Status | Details                                          |
-|-----------------|---------|--------|--------------------------------------------------|
-| Design Document | `Misc`  | `TODO` |                                                  |
-| Art example     | `Art`   | `WIP`  | An example work in progress art task             |
-| Audio example   | `Audio` | `DONE` | An example completed audio task                  |
-| Coding example  | `Code`  | `TODO` | An example coding task that has not been started |
+| Task            | Type    | Status | Details                                                |
+|-----------------|---------|--------|--------------------------------------------------------|
+| Design Document | `Misc`  | `WIP`  | This document!                                         |
+| Vials Gameplay  | `Code`  | `TODO` | An example work in progress art task                   |
+| Menu music      | `Audio` | `TODO` | Music that plays at the main menu                      |
+| Battle music    | `Audio` | `TODO` | Music that plays during a battle                       |
+| World map music | `Audio` | `TODO` | Menu that plays on the world map after a battle        |
+| World map       | `Code`  | `TODO` | Render a world map which has tiles that can be clicked |
+| Events          | `Code`  | `TODO` | Implement events where upgrades can be received        |
+| Numbers         | `Art`   | `TODO` | The sprites for the numbers (0-14)                     |
+| Vials           | `Art`   | `TODO` | The sprites for the vials that contain numbers         |
+| Icons           | `Art`   | `TODO` | The icons for the various buffs used during battles    |
+| Tiles           | `Art`   | `TODO` | The world map tiles                                    |
+| Sound effects   | `Audio` | `TODO` | Add in sound effects where they make sense!            |
