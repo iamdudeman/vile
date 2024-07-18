@@ -1,4 +1,4 @@
-rootProject.name = "sola-game-template"
+rootProject.name = "vile"
 
 include(
   "game", "javafx", "swing", "browser", "server"
