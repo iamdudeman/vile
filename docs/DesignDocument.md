@@ -1,4 +1,4 @@
-# TODO Design Document
+# Vile
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -6,23 +6,23 @@
 
 ### "Elevator pitch" / Game summary
 
-todo
+You are playing through the underground gauntlet of Vials to learn how to transmute lead to gold.
 
 ### Inspiration
 
-todo
+Knuckle Bones from Cult of the Lamb
 
 ### Platform
 
-- [ ] Browser
-- [ ] Windows
+- [x] Browser
+- [x] Windows
 - [ ] Mac
 - [ ] Linux
 - [ ] Android
 
 ### Genre
 
-todo
+Puzzle rogue-lite
 
 ### Player experience
 
@@ -40,9 +40,31 @@ todo
 
 ### Gameplay overview
 
-todo
+Each battle the goal will be to get the most vials to pH7 (neutral). The player with the most at neutral lives, I mean
+wins!
+
+Each turn a random number on a normal distribution between 0 and 14 and the player puts it in one of the not-full files.
+
+Once all vials are full, the sum of the pH of the vials divided by the total number of vials is the score of each player.
+The closer to 7 wins.
+
+Between battles the player will be given some options to choose from to gain various buffs.
 
 #### Mechanics / Systems overview
+
+
+* Forbidden knowledge
+    * Neutralizing Concoction - reverses last played pH
+    * Reroll - gives a new pH to play
+    * Vaccuum? - remove top pH
+    * Extra life - gives another retry
+
+* World map tiles
+    * Regular fight
+    * Boss fight
+    * Library (could have a rare variant)
+
+
 
 todo combat, puzzles, collectibles, progression, etc.
 
