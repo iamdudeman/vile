@@ -6,7 +6,8 @@ import technology.sola.engine.assets.input.ControlsConfig;
 import technology.sola.engine.core.SolaConfiguration;
 import technology.sola.engine.defaults.SolaWithDefaults;
 import technology.sola.engine.game.render.LoadingScreen;
-import technology.sola.engine.graphics.gui.style.theme.DefaultThemeBuilder;
+import technology.sola.engine.game.render.gui.VialsBoardGuiBuilder;
+import technology.sola.engine.game.state.VialsBoard;
 import technology.sola.engine.graphics.renderer.Renderer;
 import technology.sola.engine.graphics.screen.AspectMode;
 
@@ -15,12 +16,12 @@ public class GameSola extends SolaWithDefaults {
   private LoadingScreen loadingScreen = new LoadingScreen();
 
   public GameSola() {
-    super(SolaConfiguration.build("Game", 800, 600).withTargetUpdatesPerSecond(30));
+    super(SolaConfiguration.build("Vile", 800, 600).withTargetUpdatesPerSecond(30));
   }
 
   @Override
   protected void onInit(DefaultsConfigurator defaultsConfigurator) {
-    defaultsConfigurator.useGraphics().useGui(DefaultThemeBuilder.buildLightTheme());
+    defaultsConfigurator.useGraphics().useGui();
 
     platform.getViewport().setAspectMode(AspectMode.MAINTAIN);
   }
@@ -34,6 +35,10 @@ public class GameSola extends SolaWithDefaults {
         if (assets[0] instanceof ControlsConfig controlsConfig) {
           solaControls.addControls(controlsConfig);
         }
+
+        guiDocument.setRootElement(
+          new VialsBoardGuiBuilder(guiDocument).buildVialsBoardGui(new VialsBoard())
+        );
 
         // finish async load
         solaEcs.setWorld(buildWorld());

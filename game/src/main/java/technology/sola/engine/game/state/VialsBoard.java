@@ -10,6 +10,7 @@ public class VialsBoard {
   private final Random random = new Random();
   private final Vial[] playerVials;
   private final Vial[] opponentVials;
+  private boolean isPlayerTurn = true;
 
   public VialsBoard() {
     this.playerVials = new Vial[GameBalanceConfiguration.VIAL_COUNT];
@@ -25,6 +26,14 @@ public class VialsBoard {
 
   public int rollNextPh() {
     return random.nextInt(MAX_PH + 1);
+  }
+
+  public boolean isPlayerTurn() {
+    return isPlayerTurn;
+  }
+
+  public void endTurn() {
+    isPlayerTurn = !isPlayerTurn;
   }
 
   public Vial[] getPlayerVials() {
