@@ -14,10 +14,11 @@ import technology.sola.engine.graphics.gui.style.property.Direction;
 import technology.sola.engine.graphics.gui.style.theme.DefaultThemeBuilder;
 import technology.sola.engine.graphics.gui.style.theme.GuiTheme;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class VialsBoardGuiBuilder {
-  private GuiTheme guiTheme = DefaultThemeBuilder.buildDarkTheme();
+  private final GuiTheme guiTheme = DefaultThemeBuilder.buildDarkTheme();
   private final GuiDocument guiDocument;
 
   public VialsBoardGuiBuilder(GuiDocument guiDocument) {
@@ -49,7 +50,79 @@ public class VialsBoardGuiBuilder {
   }
 
   private GuiElement<?> buildVials(VialsBoard vialsBoard) {
-    return new SectionGuiElement();
+    var playerVials = new SectionGuiElement()
+      .appendChildren(
+        Arrays.stream(vialsBoard.getPlayerVials()).map(this::buildVial).toArray(GuiElement[]::new)
+      )
+      .setStyle(List.of(
+        ConditionalStyle.always(
+          BaseStyles
+            .create()
+            .setGap(10)
+            .setDirection(Direction.ROW)
+            .setHeight("100%")
+            .build()
+        )
+      ));
+
+    var opponentVials = new SectionGuiElement()
+      .appendChildren(
+        Arrays.stream(vialsBoard.getOpponentVials()).map(this::buildVial).toArray(GuiElement[]::new)
+      )
+      .setStyle(List.of(
+        ConditionalStyle.always(
+          BaseStyles
+            .create()
+            .setGap(10)
+            .setDirection(Direction.ROW)
+            .setHeight("100%")
+            .build()
+        )
+      ));
+
+    return new SectionGuiElement()
+      .appendChildren(
+        playerVials,
+        new SectionGuiElement()
+          .setStyle(List.of(
+            ConditionalStyle.always(
+              BaseStyles
+                .create()
+                .setWidth(2)
+                .setBackgroundColor(Color.WHITE)
+                .setHeight("100%")
+                .build()
+            )
+          )),
+        opponentVials
+      )
+      .setStyle(List.of(
+        ConditionalStyle.always(
+          BaseStyles
+            .create()
+            .setGap(10)
+            .setDirection(Direction.ROW)
+            .setHeight("100%")
+            .build()
+        )
+      ));
+  }
+
+  private GuiElement<?> buildVial(Vial vial) {
+    return new ButtonGuiElement()
+//      .appendChildren() // todo
+      .setStyle(List.of(
+        ConditionalStyle.always(
+          BaseStyles
+            .create()
+            .setGap(10)
+            .setPadding(4)
+            .setBorderColor(Color.WHITE)
+            .setWidth(30)
+            .setHeight("100%")
+            .build()
+        )
+      ));
   }
 
   private GuiElement<?> buildSidePanel(VialsBoard vialsBoard) {
