@@ -211,6 +211,7 @@ public class VialsBoardGuiBuilder {
       }
 
       vialsBoard.endTurn();
+      startAiTurn(vialsBoard);
 
       if (vial.isFull()) {
         pourButton.setDisabled(true);
@@ -410,5 +411,34 @@ public class VialsBoardGuiBuilder {
     if (vialsBoard.isBoardFull()) {
       // todo
     }
+  }
+
+  private void startAiTurn(VialsBoard vialsBoard) {
+    Ai ai = vialsBoard.ai;
+
+    ai.startTurn(vialsBoard);
+
+    new Thread(() -> {
+      while (!ai.isDone()) {
+        String actionText = ai.nextAction(vialsBoard);
+
+        guiDocument.findElementById("aiDialog", TextGuiElement.class)
+          .setText(actionText)
+          .styles()
+          .removeStyle(visibilityHiddenStyle);
+
+        try {
+          Thread.sleep(5000);
+        } catch (InterruptedException e) {
+          // nothing
+        }
+      }
+
+      guiDocument.findElementById("aiDialog", TextGuiElement.class)
+        .styles()
+        .addStyle(visibilityHiddenStyle);
+
+      vialsBoard.endTurn();
+    }).start();
   }
 }

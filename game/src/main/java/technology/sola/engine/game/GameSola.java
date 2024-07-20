@@ -18,7 +18,7 @@ public class GameSola extends SolaWithDefaults {
   private LoadingScreen loadingScreen = new LoadingScreen();
 
   public GameSola() {
-    super(SolaConfiguration.build("Vile", 800, 600).withTargetUpdatesPerSecond(30));
+    super(SolaConfiguration.build("Vile", 1000, 800).withTargetUpdatesPerSecond(30));
   }
 
   @Override

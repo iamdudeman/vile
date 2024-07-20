@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RandomAi extends Ai {
+  private boolean hasStartedTurn  =false;
+
   public RandomAi() {
     knowledge = new Knowledge();
   }
@@ -19,17 +21,23 @@ public class RandomAi extends Ai {
 
   @Override
   public String nextAction(VialsBoard vialsBoard) {
+    if (!hasStartedTurn) {
+      hasStartedTurn = true;
+
+      return "My turn to go.";
+    }
+
     if (currentRoll == null) {
       currentRoll = vialsBoard.rollNextPh();
 
-      return "I rolled a " + currentRoll;
+      return "I rolled a " + currentRoll + ".";
     }
 
     if (knowledge.getCurrentRerolls() > 0 && random.nextInt(10) < 1) {
       knowledge.reroll();
       currentRoll = vialsBoard.rollNextPh();
 
-      return "I rerolled a " + currentRoll;
+      return "I rerolled a " + currentRoll + ".";
     }
 
     List<Vial> validVials = new ArrayList<>();
@@ -51,6 +59,6 @@ public class RandomAi extends Ai {
     chosenVial.addLiquidToTop(currentRoll);
     isDone = true;
 
-    return "I poured " + currentRoll + " on a random vial";
+    return "I poured " + currentRoll + " on a random vial.";
   }
 }
