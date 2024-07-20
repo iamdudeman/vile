@@ -74,7 +74,7 @@ public class VialsBoardGuiBuilder {
             .setDirection(Direction.COLUMN)
             .setMainAxisChildren(MainAxisChildren.CENTER)
             .setCrossAxisChildren(CrossAxisChildren.CENTER)
-            .setGap(30)
+            .setGap(12)
             .setPadding(8)
             .setHeight("100%")
             .setWidth("100%")
@@ -255,7 +255,7 @@ public class VialsBoardGuiBuilder {
       .setStyle(List.of(
         ConditionalStyle.always(
           TextStyles.create()
-            .setHeight(100)
+            .setHeight(70)
             .setWidth(350)
             .build()
         ))
@@ -299,7 +299,7 @@ public class VialsBoardGuiBuilder {
         ConditionalStyle.always(
           BaseStyles
             .create()
-            .setGap(10)
+            .setGap(4)
             .build()
         )
       ));

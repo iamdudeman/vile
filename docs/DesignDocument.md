@@ -160,6 +160,6 @@ todo
 | Numbers           | `Art`   | `TODO` | The sprites for the numbers (0-14)                  |
 | Vials             | `Art`   | `TODO` | The sprites for the vials that contain numbers      |
 | Icons             | `Art`   | `TODO` | The icons for the various buffs used during battles |
-| Tiles             | `Art`   | `TODO` | The world map tiles                                 |
+| Event tiles       | `Art`   | `TODO` | The world map tiles                                 |
 | Sound effects     | `Audio` | `TODO` | Add in sound effects where they make sense!         |
 | Story progression | `Code`  | `TODO` | Implement story progress between rounds             |
