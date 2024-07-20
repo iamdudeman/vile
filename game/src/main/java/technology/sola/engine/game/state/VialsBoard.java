@@ -5,6 +5,8 @@ import technology.sola.engine.game.GameBalanceConfiguration;
 import java.util.Random;
 
 public class VialsBoard {
+  public final Knowledge playerKnowledge;
+  public final Knowledge opponentKnowledge;
   private static final int NEUTRAL_PH = 7;
   private static final int MAX_PH = 14;
   private final Random random = new Random();
@@ -12,7 +14,9 @@ public class VialsBoard {
   private final Vial[] opponentVials;
   private boolean isPlayerTurn = true;
 
-  public VialsBoard() {
+  public VialsBoard(Knowledge playerKnowledge, Knowledge opponentKnowledge) {
+    this.playerKnowledge = playerKnowledge;
+    this.opponentKnowledge = opponentKnowledge;
     this.playerVials = new Vial[GameBalanceConfiguration.VIAL_COUNT];
     this.opponentVials = new Vial[GameBalanceConfiguration.VIAL_COUNT];
 
@@ -25,7 +29,7 @@ public class VialsBoard {
   }
 
   public int rollNextPh() {
-    return random.nextInt(MAX_PH + 1);
+    return (int) Math.round(random.nextGaussian(7, Math.sqrt(7)));
   }
 
   public boolean isPlayerTurn() {

@@ -16,7 +16,7 @@ public class Vial {
   }
 
   public Float getScore() {
-    if (firstEmptyIndex != 0) {
+    if (firstEmptyIndex >= 0) {
       return null;
     }
 
@@ -43,6 +43,16 @@ public class Vial {
     if (this.firstEmptyIndex >= 0) {
       this.contents[this.firstEmptyIndex] = liquid;
       this.firstEmptyIndex--;
+    }
+  }
+
+  public void neutralizeTop() {
+    if (firstEmptyIndex == this.contents.length - 1) {
+      addLiquidToTop(7);
+    } else {
+      int value = this.contents[firstEmptyIndex + 1];
+
+      addLiquidToTop(14 - value);
     }
   }
 

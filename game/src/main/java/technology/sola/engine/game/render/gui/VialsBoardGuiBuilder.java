@@ -1,5 +1,6 @@
 package technology.sola.engine.game.render.gui;
 
+import technology.sola.engine.game.state.Knowledge;
 import technology.sola.engine.game.state.Vial;
 import technology.sola.engine.game.state.VialsBoard;
 import technology.sola.engine.graphics.Color;
@@ -11,6 +12,7 @@ import technology.sola.engine.graphics.gui.elements.TextStyles;
 import technology.sola.engine.graphics.gui.elements.input.ButtonGuiElement;
 import technology.sola.engine.graphics.gui.style.BaseStyles;
 import technology.sola.engine.graphics.gui.style.ConditionalStyle;
+import technology.sola.engine.graphics.gui.style.property.CrossAxisChildren;
 import technology.sola.engine.graphics.gui.style.property.Direction;
 import technology.sola.engine.graphics.gui.style.theme.DefaultThemeBuilder;
 import technology.sola.engine.graphics.gui.style.theme.GuiTheme;
@@ -20,9 +22,18 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class VialsBoardGuiBuilder {
-  private final GuiTheme guiTheme = DefaultThemeBuilder.buildDarkTheme();
+  private final GuiTheme guiTheme = DefaultThemeBuilder.buildDarkTheme()
+    .addStyle(ButtonGuiElement.class, List.of(ConditionalStyle.always(
+      BaseStyles.create()
+        .setPadding(4)
+        .build()
+    )));
   private final GuiDocument guiDocument;
   private Integer currentRolledPH = null;
+  private boolean isNeutralizing = false;
+  private final ConditionalStyle<BaseStyles> neutralizeActiveStyle = ConditionalStyle.always(
+    BaseStyles.create().setBackgroundColor(Color.YELLOW).build()
+  );
 
   public VialsBoardGuiBuilder(GuiDocument guiDocument) {
     this.guiDocument = guiDocument;
@@ -41,6 +52,7 @@ public class VialsBoardGuiBuilder {
           BaseStyles
             .create()
             .setDirection(Direction.ROW)
+            .setCrossAxisChildren(CrossAxisChildren.CENTER)
             .setGap(10)
             .setPadding(8)
             .setHeight("100%")
@@ -55,65 +67,33 @@ public class VialsBoardGuiBuilder {
   }
 
   private GuiElement<?> elementVials(VialsBoard vialsBoard) {
-    var playerVials = new SectionGuiElement()
-      .appendChildren(
-        Arrays.stream(vialsBoard.getPlayerVials()).map(this::elementVial).toArray(GuiElement[]::new)
-      )
-      .setStyle(List.of(
-        ConditionalStyle.always(
-          BaseStyles
-            .create()
-            .setGap(10)
-            .setDirection(Direction.ROW)
-            .setHeight("100%")
-            .build()
-        )
-      ));
+    var playerVials = vialsBoard.getPlayerVials();
+    var opponentVials = vialsBoard.getOpponentVials();
+    GuiElement<?>[] vialElements = new GuiElement<?>[playerVials.length + opponentVials.length];
 
-    var opponentVials = new SectionGuiElement()
-      .appendChildren(
-        Arrays.stream(vialsBoard.getOpponentVials()).map(this::elementVial).toArray(GuiElement[]::new)
-      )
-      .setStyle(List.of(
-        ConditionalStyle.always(
-          BaseStyles
-            .create()
-            .setGap(10)
-            .setDirection(Direction.ROW)
-            .setHeight("100%")
-            .build()
-        )
-      ));
+    for (int i = 0; i < playerVials.length; i++) {
+      vialElements[i] = elementVial(playerVials[i], vialsBoard, true, false);
+    }
+
+    for (int i = 0; i < opponentVials.length; i++) {
+      vialElements[i + playerVials.length] = elementVial(opponentVials[i], vialsBoard, false, i == 0);
+    }
 
     return new SectionGuiElement()
-      .appendChildren(
-        playerVials,
-        new SectionGuiElement()
-          .setStyle(List.of(
-            ConditionalStyle.always(
-              BaseStyles
-                .create()
-                .setWidth(2)
-                .setBackgroundColor(Color.WHITE)
-                .setHeight("100%")
-                .build()
-            )
-          )),
-        opponentVials
-      )
+      .setId("vialsContainer")
+      .appendChildren(vialElements)
       .setStyle(List.of(
         ConditionalStyle.always(
           BaseStyles
             .create()
             .setGap(10)
             .setDirection(Direction.ROW)
-            .setHeight("100%")
             .build()
-        )
-      ));
+        ))
+      );
   }
 
-  private GuiElement<?> elementVial(Vial vial) {
+  private GuiElement<?> elementVial(Vial vial, VialsBoard vialsBoard, boolean isPlayerVial, boolean hasExtraPadding) {
     Supplier<GuiElement<?>[]> buildVialContents = () -> {
       var contentsLength = vial.getContents().length;
       var contentGuiItems = new GuiElement[contentsLength];
@@ -125,7 +105,9 @@ public class VialsBoardGuiBuilder {
           .setText(value == null ? "--" : String.valueOf(value))
           .setStyle(List.of(ConditionalStyle.always(
             TextStyles.create()
+              .setTextAlignment(TextStyles.TextAlignment.CENTER)
               .setPadding(4)
+              .setWidth(50)
               .build()
           )));
       }
@@ -141,44 +123,89 @@ public class VialsBoardGuiBuilder {
             .create()
             .setGap(10)
             .setPadding(4)
-            .setBorderColor(Color.WHITE)
-            .setWidth(30)
+            .setCrossAxisChildren(CrossAxisChildren.CENTER)
+            .setBorderColor(isPlayerVial ? new Color(255, 194, 10) : new Color(12, 123, 220))
             .build()
         )
       ));
 
+    var pourText = new TextGuiElement()
+      .setText("Pour");
+    var pourButton = new ButtonGuiElement();
+
+    pourButton.appendChildren(
+      pourText
+    );
+
+    pourButton.setOnAction(() -> {
+      if (currentRolledPH == null && !isNeutralizing) {
+        return;
+      }
+
+      if (isNeutralizing) {
+        vial.neutralizeTop();
+        Knowledge knowledge = isPlayerVial ? vialsBoard.playerKnowledge : vialsBoard.opponentKnowledge;
+
+        knowledge.neutralize();
+
+        var neutralizeButton = guiDocument.findElementById("neutralizeButton", ButtonGuiElement.class);
+
+        if (knowledge.getCurrentNeutralizeAgents() == 0) {
+          neutralizeButton.setDisabled(true);
+        }
+
+        isNeutralizing = false;
+        neutralizeButton.styles().removeStyle(neutralizeActiveStyle);
+        guiDocument.findElementById("neutralizeText", TextGuiElement.class)
+          .setText("Neutralize " + knowledge.getCurrentNeutralizeAgents() + "/" + knowledge.getNeutralizeAgents());
+      } else {
+        vial.addLiquidToTop(currentRolledPH);
+      }
+
+      setRolledPh(null);
+      guiDocument.findElementById("rollButton", ButtonGuiElement.class).requestFocus();
+
+      var contents = vial.getContents();
+      var guiChildren = contentGuiItemsContainer.getChildren();
+
+      for (int i = 0; i < contents.length; i++) {
+        Integer value = contents[i];
+        TextGuiElement guiElement =  (TextGuiElement) guiChildren.get(i);
+
+        guiElement.setText(value == null ? "--" : String.valueOf(value));
+      }
+
+      if (vial.isFull()) {
+        pourButton.setDisabled(true);
+        pourText.setText("" + vial.getScore());
+
+        checkAndHandleGameDone(vialsBoard);
+      }
+    });
+
     return new SectionGuiElement()
       .appendChildren(
-        new ButtonGuiElement()
-          .setOnAction(() -> {
-
-
-
-            // todo add liquid and update UI
-
-          })
-          .appendChildren(
-            new TextGuiElement()
-              .setText("Pour")
-          ),
+        pourButton,
         contentGuiItemsContainer
       )
       .setStyle(List.of(
         ConditionalStyle.always(
           BaseStyles
             .create()
+            .setCrossAxisChildren(CrossAxisChildren.CENTER)
+            .setPaddingLeft(hasExtraPadding ? 20 : 0)
             .setGap(10)
             .build()
         )
       ))
-    ;
+      ;
   }
 
   private GuiElement<?> elementSidePanel(VialsBoard vialsBoard) {
     return new SectionGuiElement()
       .appendChildren(
         elementRollButton(vialsBoard),
-        elementKnowledgeSection()
+        elementKnowledgeSection(vialsBoard.playerKnowledge, vialsBoard)
       )
       .setStyle(List.of(
         ConditionalStyle.always(
@@ -212,11 +239,71 @@ public class VialsBoardGuiBuilder {
       );
   }
 
-  private GuiElement<?> elementKnowledgeSection() {
-    return new SectionGuiElement()
-      .appendChildren(
-        new TextGuiElement().setText("Knowledge")
-      );
+  private GuiElement<?> elementKnowledgeSection(Knowledge knowledge, VialsBoard vialsBoard) {
+    SectionGuiElement knowledgeSectionGuiElement = new SectionGuiElement();
+
+    knowledgeSectionGuiElement.setStyle(List.of(ConditionalStyle.always(
+      BaseStyles.create()
+        .setGap(4)
+        .build()
+    )));
+
+    if (knowledge.getNeutralizeAgents() > 0 || knowledge.getRerolls() > 0) {
+      knowledgeSectionGuiElement
+        .appendChildren(new TextGuiElement().setText("Knowledge"));
+
+      if (knowledge.getRerolls() > 0) {
+        ButtonGuiElement rerollButton = new ButtonGuiElement();
+        TextGuiElement rerollText = new TextGuiElement()
+          .setText("Reroll " + knowledge.getCurrentRerolls() + "/" + knowledge.getRerolls());
+
+        rerollButton.appendChildren(rerollText);
+
+        rerollButton.setOnAction(() -> {
+          if (currentRolledPH != null) {
+            knowledge.reroll();
+          }
+
+          int nextPh = vialsBoard.rollNextPh();
+
+          setRolledPh(nextPh);
+          rerollText.setText("Reroll " + knowledge.getCurrentRerolls() + "/" + knowledge.getRerolls());
+
+          if (knowledge.getCurrentRerolls() == 0) {
+            rerollButton.setDisabled(true);
+          }
+        });
+
+        knowledgeSectionGuiElement.appendChildren(rerollButton);
+      }
+
+      if (knowledge.getNeutralizeAgents() > 0) {
+        ButtonGuiElement neutralizeButton = new ButtonGuiElement();
+        TextGuiElement neutralizeText = new TextGuiElement()
+          .setText("Neutralize " + knowledge.getCurrentNeutralizeAgents() + "/" + knowledge.getNeutralizeAgents());
+
+        neutralizeButton.setId("neutralizeButton");
+        neutralizeText.setId("neutralizeText");
+        neutralizeButton.appendChildren(neutralizeText);
+
+        neutralizeButton.setOnAction(() -> {
+          isNeutralizing = !isNeutralizing;
+
+          if (isNeutralizing) {
+            neutralizeButton.styles().addStyle(neutralizeActiveStyle);
+          } else {
+            neutralizeButton.styles().removeStyle(neutralizeActiveStyle);
+          }
+
+          guiDocument.findElementById("vialsContainer", SectionGuiElement.class).requestFocus();
+        });
+
+        knowledgeSectionGuiElement.appendChildren(neutralizeButton);
+      }
+    }
+
+
+    return knowledgeSectionGuiElement;
   }
 
   private void setRolledPh(Integer newPh) {
@@ -229,7 +316,15 @@ public class VialsBoardGuiBuilder {
     } else {
       rollText.setText(String.valueOf(newPh));
       rollButton.setDisabled(true);
+
+      guiDocument.findElementById("vialsContainer", SectionGuiElement.class).requestFocus();
     }
     currentRolledPH = newPh;
+  }
+
+  private void checkAndHandleGameDone(VialsBoard vialsBoard) {
+    if (vialsBoard.isBoardFull()) {
+      // todo
+    }
   }
 }
