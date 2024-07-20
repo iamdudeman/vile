@@ -513,7 +513,21 @@ public class VialsBoardGuiBuilder {
       String text = "You live another round!";
 
       if (isPlayerWin) {
-        // todo move on logic
+        vialsBoard.playerKnowledge.incrementBattlesWon();
+
+        Timer timer = new Timer();
+
+        timer.schedule(new TimerTask() {
+          @Override
+          public void run() {
+            guiDocument.setRootElement(
+              new EventBoardGuiBuilder(guiDocument)
+                .build(vialsBoard.playerKnowledge)
+            );
+            cancel();
+            timer.cancel();
+          }
+        }, 3000);
       } else {
         vialsBoard.reduceLives();
 
@@ -551,7 +565,9 @@ public class VialsBoardGuiBuilder {
   }
 
   private void handleAiTurn(VialsBoard vialsBoard, Random random) {
-    new Timer().schedule(new TimerTask() {
+    Timer timer = new Timer();
+
+    timer.schedule(new TimerTask() {
       @Override
       public void run() {
         if (vialsBoard.ai.isDone()) {
@@ -562,6 +578,8 @@ public class VialsBoardGuiBuilder {
           vialsBoard.endTurn();
 
           checkAndHandleGameDone(vialsBoard);
+          cancel();
+          timer.cancel();
         } else {
           String actionText = vialsBoard.ai.nextAction(vialsBoard);
 
@@ -572,6 +590,8 @@ public class VialsBoardGuiBuilder {
 
           updateGameStateUi(vialsBoard);
 
+          cancel();
+          timer.cancel();
           handleAiTurn(vialsBoard, random);
         }
       }

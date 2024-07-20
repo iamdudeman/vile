@@ -5,6 +5,8 @@ public class Knowledge {
   private int maxHealth;
   private int rerolls;
   private int neutralizeAgents;
+  private int battlesWon = 0;
+  // in battle stats
   private float currentHealth;
   private int currentRerolls;
   private int currentNeutralizeAgents;
@@ -78,5 +80,13 @@ public class Knowledge {
 
   public int getCurrentNeutralizeAgents() {
     return currentNeutralizeAgents;
+  }
+
+  public int getBattlesWon() {
+    return battlesWon;
+  }
+
+  public void incrementBattlesWon() {
+    battlesWon++;
   }
 }

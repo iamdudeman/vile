@@ -155,13 +155,13 @@ todo
 | Design Document   | `Misc`  | `WIP`  | This document!                                      |
 | Vials Gameplay    | `Code`  | `DONE` | Basic gameplay loop                                 |
 | AI                | `Code`  | `DONE` | Create some AI to play against                      |
-| Menu music        | `Audio` | `TODO` | Music that plays at the main menu                   |
+| Events            | `Code`  | `TODO` | Implement events where upgrades can be received     |
+| Story progression | `Code`  | `TODO` | Implement story progress between rounds             |
 | Battle music      | `Audio` | `TODO` | Music that plays during a battle                    |
 | Event board music | `Audio` | `TODO` | Menu that plays on the world map after a battle     |
-| Events            | `Code`  | `TODO` | Implement events where upgrades can be received     |
+| Sound effects     | `Audio` | `TODO` | Add in sound effects where they make sense!         |
+| Menu music        | `Audio` | `TODO` | Music that plays at the main menu                   |
+| Event tiles       | `Art`   | `TODO` | The world map tiles                                 |
+| Icons             | `Art`   | `TODO` | The icons for the various buffs used during battles |
 | Numbers           | `Art`   | `TODO` | The sprites for the numbers (0-14)                  |
 | Vials             | `Art`   | `TODO` | The sprites for the vials that contain numbers      |
-| Icons             | `Art`   | `TODO` | The icons for the various buffs used during battles |
-| Event tiles       | `Art`   | `TODO` | The world map tiles                                 |
-| Sound effects     | `Audio` | `TODO` | Add in sound effects where they make sense!         |
-| Story progression | `Code`  | `TODO` | Implement story progress between rounds             |
