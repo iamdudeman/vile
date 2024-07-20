@@ -79,7 +79,9 @@ learn other forbidden knowledge that will assist them in winning the tournament.
 
 #### Character(s)
 
-* todo rando
+##### NPC opponents
+
+* Ran Dumb
     * Play-style - completely random
     * Knowledge - none
 * todo name
