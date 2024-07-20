@@ -21,6 +21,7 @@ import technology.sola.engine.graphics.gui.style.theme.DefaultThemeBuilder;
 import technology.sola.engine.graphics.gui.style.theme.GuiTheme;
 
 import java.util.List;
+import java.util.Random;
 import java.util.function.Supplier;
 
 public class VialsBoardGuiBuilder {
@@ -58,24 +59,10 @@ public class VialsBoardGuiBuilder {
           .build()
       )));
 
-    var aiDialog = new TextGuiElement()
-      .setId("aiDialog")
-      .setStyle(List.of(
-        ConditionalStyle.always(
-          TextStyles.create()
-            .setPadding(8)
-            .setBorderColor(Color.WHITE)
-            .setHeight(100)
-            .setWidth("100%")
-            .build()
-        ), visibilityHiddenStyle)
-      );
-
     var vialsBoardSection = new SectionGuiElement()
       .appendChildren(
         topSection,
-        elementVials(vialsBoard),
-        aiDialog
+        elementVials(vialsBoard)
       )
       .setStyle(List.of(
         ConditionalStyle.always(
@@ -211,7 +198,10 @@ public class VialsBoardGuiBuilder {
       }
 
       vialsBoard.endTurn();
-      startAiTurn(vialsBoard);
+
+      if (!vialsBoard.isBoardFull()) {
+        startAiTurn(vialsBoard);
+      }
 
       if (vial.isFull()) {
         pourButton.setDisabled(true);
@@ -374,10 +364,24 @@ public class VialsBoardGuiBuilder {
       );
     }
 
-    return new SectionGuiElement()
+    var aiDialog = new TextGuiElement()
+      .setId("aiDialog")
+      .setStyle(List.of(
+        ConditionalStyle.always(
+          TextStyles.create()
+            .setPadding(8)
+            .setBorderColor(Color.WHITE)
+            .setHeight(100)
+            .setWidth(200)
+            .build()
+        ), visibilityHiddenStyle)
+      );
+
+    var infoSection = new SectionGuiElement()
       .appendChildren(
         new TextGuiElement().setText(ai.getName()),
-        knowledgeSection
+        knowledgeSection,
+        aiDialog
       )
       .setStyle(List.of(
         ConditionalStyle.always(
@@ -386,6 +390,20 @@ public class VialsBoardGuiBuilder {
             .setGap(10)
             .setPadding(8)
             .setBorderColor(Color.WHITE)
+            .build()
+        )
+      ));
+
+    return new SectionGuiElement()
+      .appendChildren(
+        infoSection,
+        aiDialog
+      )
+      .setStyle(List.of(
+        ConditionalStyle.always(
+          BaseStyles
+            .create()
+            .setGap(10)
             .build()
         )
       ));
@@ -415,6 +433,7 @@ public class VialsBoardGuiBuilder {
 
   private void startAiTurn(VialsBoard vialsBoard) {
     Ai ai = vialsBoard.ai;
+    Random random = new Random();
 
     ai.startTurn(vialsBoard);
 
@@ -430,7 +449,7 @@ public class VialsBoardGuiBuilder {
         updateGameStateUi(vialsBoard);
 
         try {
-          Thread.sleep(4000);
+          Thread.sleep(random.nextLong(2500, 4500));
         } catch (InterruptedException e) {
           // nothing
         }
@@ -462,17 +481,24 @@ public class VialsBoardGuiBuilder {
     for (int i = 0; i < vials.length; i++) {
       var vial = vials[i];
       var vialChild = vialsSection.getChildren().get(i);
+      ButtonGuiElement pourButton = (ButtonGuiElement) vialChild.getChildren().get(0);
+      TextGuiElement pourButtonText = (TextGuiElement) pourButton.getChildren().get(0);
       var contentsChildren = vialChild.getChildren().get(1);
 
       for (int j = 0; j < vial.getContents().length; j++) {
         Integer value = vial.getContents()[j];
         TextGuiElement contentsChild = (TextGuiElement) contentsChildren.getChildren().get(j);
 
-        // todo update pour buttons + text
-
         contentsChild.setText(
           value == null ? "--" : String.valueOf(value)
         );
+
+        if (vial.isFull()) {
+          pourButton.setDisabled(true);
+          pourButtonText.setText("" + vial.getScore());
+
+          checkAndHandleGameDone(vialsBoard);
+        }
       }
     }
 
