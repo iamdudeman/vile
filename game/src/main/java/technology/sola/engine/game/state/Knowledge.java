@@ -2,12 +2,15 @@ package technology.sola.engine.game.state;
 
 public class Knowledge {
   private int extraLives;
+  private int maxHealth;
   private int rerolls;
   private int neutralizeAgents;
+  private float currentHealth;
   private int currentRerolls;
   private int currentNeutralizeAgents;
 
   public Knowledge() {
+    maxHealth = 4;
     extraLives = 0;
     rerolls = 10; // todo set to 1
     neutralizeAgents = 10; // todo set to 0
@@ -16,8 +19,21 @@ public class Knowledge {
   }
 
   public void reset() {
+    currentHealth = maxHealth;
     currentRerolls = rerolls;
     currentNeutralizeAgents = neutralizeAgents;
+  }
+
+  public void addMaxHealth() {
+    maxHealth++;
+  }
+
+  public float getCurrentHealth() {
+    return currentHealth;
+  }
+
+  public String getFormattedCurrentHealth() {
+    return String.format("%.2f", currentHealth);
   }
 
   public void addExtraLife() {
@@ -34,6 +50,10 @@ public class Knowledge {
 
   public void neutralize() {
     currentNeutralizeAgents--;
+  }
+
+  public void takeDamage(float damage) {
+    currentHealth -= damage;
   }
 
   public void addNeutralize() {

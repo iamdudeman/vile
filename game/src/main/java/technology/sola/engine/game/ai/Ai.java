@@ -13,15 +13,19 @@ public abstract class Ai {
 
   public abstract String getName();
 
+  public abstract String getStartTurnText(VialsBoard vialsBoard);
+
   public abstract String nextAction(VialsBoard vialsBoard);
 
   public Knowledge getKnowledge() {
     return knowledge;
   }
 
-  public void startTurn(VialsBoard vialsBoard) {
+  public String startTurn(VialsBoard vialsBoard) {
     isDone = false;
     currentRoll = null;
+
+    return getStartTurnText(vialsBoard);
   }
 
   public boolean isDone() {

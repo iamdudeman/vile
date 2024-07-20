@@ -42,20 +42,22 @@ todo
 
 ### Gameplay overview
 
-Each battle the goal will be to get the most vials to pH7 (neutral). The player with the most at neutral lives, I mean
-wins!
+In Vials, each player will be forced to drink a full vial. You'll want to keep your vials as close to pH 7 (neutral) as
+possible, or you won't last very long. The player who dies first loses!
 
 Each turn a random number on a normal distribution between 0 and 14 and the player puts it in one of the not-full files.
+Once a vile is full the player will take damage based on the difference between the sum of the contents of the vial and
+7\. For example, a sum of 11 would equal 4 damage and a sum of 3 would also equal 4 damage.
 
-Once all vials are full, the sum of the pH of the vials divided by the total number of vials is the score of each
-player.
-The closer to 7 wins.
+Once a player's health reached zero the round is over!
 
-Between battles the player will be given some options to choose from to gain various buffs.
+Between battles the player will be given some options to choose from to gain various buffs to help them through
+progressively more difficult challenges.
 
 #### Mechanics / Systems overview
 
 * Forbidden knowledge
+    * Chemical tolerance - more "health"
     * Neutralizing Concoction - reverses last played pH
         * Can only be played if you haven't rolled yet
     * Reroll - gives a new pH to play

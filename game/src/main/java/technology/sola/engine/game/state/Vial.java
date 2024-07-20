@@ -10,20 +10,17 @@ public class Vial {
 
   public Vial() {
     this.contents = new Integer[GameBalanceConfiguration.VIAL_DEPTH];
+
+    reset();
+  }
+
+  public void reset() {
     this.firstEmptyIndex = this.contents.length - 1;
 
     Arrays.fill(this.contents, null);
   }
 
-  public String getFormattedScore() {
-    return String.format("%.2f", getScore());
-  }
-
-  public Float getScore() {
-    if (firstEmptyIndex >= 0) {
-      return null;
-    }
-
+  public float getDamage() {
     float score = 0;
 
     for (Integer content : contents) {
@@ -32,7 +29,7 @@ public class Vial {
 
     score /= contents.length;
 
-    return score;
+    return Math.abs(score - 7);
   }
 
   public boolean isFull() {
@@ -57,16 +54,6 @@ public class Vial {
       int value = this.contents[firstEmptyIndex + 1];
 
       addLiquidToTop(14 - value);
-    }
-  }
-
-  public void removeTopLiquid() {
-    for (int i = 0; i < this.contents.length; i++) {
-      if (this.contents[i] != null) {
-        this.firstEmptyIndex = i;
-        this.contents[i] = null;
-        break;
-      }
     }
   }
 }

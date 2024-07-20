@@ -8,7 +8,6 @@ import java.util.Random;
 public class VialsBoard {
   public final Knowledge playerKnowledge;
   public final Ai ai;
-  private static final int NEUTRAL_PH = 7;
   private static final int MAX_PH = 14;
   private final Random random = new Random();
   private final Vial[] playerVials;
@@ -72,14 +71,6 @@ public class VialsBoard {
     return opponentVials;
   }
 
-  public float getPlayerScore() {
-    return calculateScore(this.playerVials);
-  }
-
-  public float getOpponentScore() {
-    return calculateScore(this.opponentVials);
-  }
-
   public int getLives() {
     return lives;
   }
@@ -88,38 +79,11 @@ public class VialsBoard {
     lives--;
   }
 
+  public boolean isGameDone() {
+    return playerKnowledge.getCurrentHealth() <= 0 || ai.getKnowledge().getCurrentHealth() <= 0;
+  }
+
   public boolean isPlayerWin() {
-    float playerNeutralDiff = Math.abs(NEUTRAL_PH - getPlayerScore());
-    float opponentNeutralDiff = Math.abs(NEUTRAL_PH - getOpponentScore());
-
-    return playerNeutralDiff <= opponentNeutralDiff;
-  }
-
-  public boolean isBoardFull() {
-    for (var vial : getPlayerVials()) {
-      if (!vial.isFull()) {
-        return false;
-      }
-    }
-
-    for (var vial : getOpponentVials()) {
-      if (!vial.isFull()) {
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  private float calculateScore(Vial[] vials) {
-    float score = 0;
-
-    for (var vial : vials) {
-      score += vial.getScore();
-    }
-
-    score /= vials.length;
-
-    return score;
+    return ai.getKnowledge().getCurrentHealth() <= 0;
   }
 }

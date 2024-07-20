@@ -1,5 +1,6 @@
 package technology.sola.engine.game.render.gui;
 
+import technology.sola.engine.game.GameBalanceConfiguration;
 import technology.sola.engine.game.ai.Ai;
 import technology.sola.engine.game.state.Knowledge;
 import technology.sola.engine.game.state.Vial;
@@ -22,6 +23,8 @@ import technology.sola.engine.graphics.gui.style.theme.GuiTheme;
 
 import java.util.List;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.function.Supplier;
 
 public class VialsBoardGuiBuilder {
@@ -202,15 +205,20 @@ public class VialsBoardGuiBuilder {
 
       vialsBoard.endTurn();
 
-      if (!vialsBoard.isBoardFull()) {
-        startAiTurn(vialsBoard);
+      if (vial.isFull()) {
+        if (isPlayerVial) {
+          vialsBoard.playerKnowledge.takeDamage(vial.getDamage());
+        } else {
+          vialsBoard.ai.getKnowledge().takeDamage(vial.getDamage());
+        }
+
+        vial.reset();
+        updateGameStateUi(vialsBoard);
+        checkAndHandleGameDone(vialsBoard);
       }
 
-      if (vial.isFull()) {
-        pourButton.setDisabled(true);
-        pourText.setText(vial.getFormattedScore());
-
-        checkAndHandleGameDone(vialsBoard);
+      if (!vialsBoard.isGameDone()) {
+        startAiTurn(vialsBoard);
       }
     });
 
@@ -236,6 +244,9 @@ public class VialsBoardGuiBuilder {
     var playerSection = new SectionGuiElement()
       .appendChildren(
         elementRollButton(vialsBoard),
+        new TextGuiElement()
+          .setText("Health: " + vialsBoard.playerKnowledge.getFormattedCurrentHealth())
+          .setId("playerHealth"),
         elementKnowledgeSection(vialsBoard.playerKnowledge, vialsBoard)
       )
       .setStyle(List.of(
@@ -409,6 +420,9 @@ public class VialsBoardGuiBuilder {
     )));
 
     knowledgeSection.appendChildren(
+      new TextGuiElement()
+        .setText("Health: " + ai.getKnowledge().getFormattedCurrentHealth())
+        .setId("aiHealth"),
       new TextGuiElement().setText("Knowledge")
     );
 
@@ -493,7 +507,7 @@ public class VialsBoardGuiBuilder {
   }
 
   private void checkAndHandleGameDone(VialsBoard vialsBoard) {
-    if (vialsBoard.isBoardFull()) {
+    if (vialsBoard.isGameDone()) {
       boolean isPlayerWin = vialsBoard.isPlayerWin();
 
       String text = "You live another round!";
@@ -526,34 +540,42 @@ public class VialsBoardGuiBuilder {
     Ai ai = vialsBoard.ai;
     Random random = new Random();
 
-    ai.startTurn(vialsBoard);
+    var aiDialog  = guiDocument.findElementById("aiDialog", TextGuiElement.class);
+    String startTurnText = ai.startTurn(vialsBoard);
 
-    new Thread(() -> {
-      while (!ai.isDone()) {
-        String actionText = ai.nextAction(vialsBoard);
+    aiDialog.setText(startTurnText)
+      .styles()
+      .removeStyle(visibilityHiddenTextStyle);
 
-        guiDocument.findElementById("aiDialog", TextGuiElement.class)
-          .setText(actionText)
-          .styles()
-          .removeStyle(visibilityHiddenTextStyle);
+    handleAiTurn(vialsBoard, random);
+  }
 
-        updateGameStateUi(vialsBoard);
+  private void handleAiTurn(VialsBoard vialsBoard, Random random) {
+    new Timer().schedule(new TimerTask() {
+      @Override
+      public void run() {
+        if (vialsBoard.ai.isDone()) {
+          guiDocument.findElementById("aiDialog", TextGuiElement.class)
+            .styles()
+            .addStyle(visibilityHiddenTextStyle);
 
-        try {
-          Thread.sleep(random.nextLong(2000, 3500));
-        } catch (InterruptedException e) {
-          // nothing
+          vialsBoard.endTurn();
+
+          checkAndHandleGameDone(vialsBoard);
+        } else {
+          String actionText = vialsBoard.ai.nextAction(vialsBoard);
+
+          guiDocument.findElementById("aiDialog", TextGuiElement.class)
+            .setText(actionText)
+            .styles()
+            .removeStyle(visibilityHiddenTextStyle);
+
+          updateGameStateUi(vialsBoard);
+
+          handleAiTurn(vialsBoard, random);
         }
       }
-
-      guiDocument.findElementById("aiDialog", TextGuiElement.class)
-        .styles()
-        .addStyle(visibilityHiddenTextStyle);
-
-      vialsBoard.endTurn();
-
-      checkAndHandleGameDone(vialsBoard);
-    }).start();
+    }, random.nextLong(2000, 3000));
   }
 
   private void updateGameStateUi(VialsBoard vialsBoard) {
@@ -564,18 +586,28 @@ public class VialsBoardGuiBuilder {
     Vial[] vials = new Vial[playerVials.length + opponentVials.length];
 
     for (int i = 0; i < playerVials.length; i++) {
-      vials[i] = playerVials[i];
+      var vial = playerVials[i];
+      vials[i] = vial;
+
+      if (vial.isFull()) {
+        vialsBoard.playerKnowledge.takeDamage(vial.getDamage());
+        vial.reset();
+      }
     }
 
     for (int i = 0; i < opponentVials.length; i++) {
+      var vial = opponentVials[i];
       vials[i + playerVials.length] = opponentVials[i];
+
+      if (vial.isFull()) {
+        vialsBoard.playerKnowledge.takeDamage(vial.getDamage());
+        vial.reset();
+      }
     }
 
     for (int i = 0; i < vials.length; i++) {
       var vial = vials[i];
       var vialChild = vialsSection.getChildren().get(i);
-      ButtonGuiElement pourButton = (ButtonGuiElement) vialChild.getChildren().get(0);
-      TextGuiElement pourButtonText = (TextGuiElement) pourButton.getChildren().get(0);
       var contentsChildren = vialChild.getChildren().get(1);
 
       for (int j = 0; j < vial.getContents().length; j++) {
@@ -585,11 +617,6 @@ public class VialsBoardGuiBuilder {
         contentsChild.setText(
           value == null ? "--" : String.valueOf(value)
         );
-
-        if (vial.isFull()) {
-          pourButton.setDisabled(true);
-          pourButtonText.setText(vial.getFormattedScore());
-        }
       }
     }
 
@@ -599,5 +626,10 @@ public class VialsBoardGuiBuilder {
       .setText("Rerolls " + ai.getKnowledge().getCurrentRerolls() + "/" + ai.getKnowledge().getRerolls());
     guiDocument.findElementById("aiNeutralizeAgents", TextGuiElement.class)
       .setText("Neutralize " + ai.getKnowledge().getCurrentNeutralizeAgents() + "/" + ai.getKnowledge().getNeutralizeAgents());
+
+    guiDocument.findElementById("playerHealth", TextGuiElement.class)
+      .setText("Health: " + vialsBoard.playerKnowledge.getFormattedCurrentHealth());
+    guiDocument.findElementById("aiHealth", TextGuiElement.class)
+      .setText("Health: " + vialsBoard.ai.getKnowledge().getFormattedCurrentHealth());
   }
 }
