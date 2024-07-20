@@ -57,14 +57,19 @@ Between battles the player will be given some options to choose from to gain var
 
 * Forbidden knowledge
     * Neutralizing Concoction - reverses last played pH
+        * Can only be played if you haven't rolled yet
     * Reroll - gives a new pH to play
+    * Extra life - gives another retry attempt
     * Vaccuum? - remove top pH
-    * Extra life - gives another retry
+        * might be too strong so might not implement
 
-* World map tiles
+* Event tiles
     * Regular fight
     * Boss fight
     * Library (could have a rare variant)
+        * Chance to gain additional knowledge
+    * Modification
+        * Give you or your opponent a head start in the next round
 
 ### Story overview
 
