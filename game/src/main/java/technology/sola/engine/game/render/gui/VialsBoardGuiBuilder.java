@@ -16,6 +16,7 @@ import technology.sola.engine.graphics.gui.style.ConditionalStyle;
 import technology.sola.engine.graphics.gui.style.property.CrossAxisChildren;
 import technology.sola.engine.graphics.gui.style.property.Direction;
 import technology.sola.engine.graphics.gui.style.property.MainAxisChildren;
+import technology.sola.engine.graphics.gui.style.property.Visibility;
 import technology.sola.engine.graphics.gui.style.theme.DefaultThemeBuilder;
 import technology.sola.engine.graphics.gui.style.theme.GuiTheme;
 
@@ -34,6 +35,9 @@ public class VialsBoardGuiBuilder {
   private boolean isNeutralizing = false;
   private final ConditionalStyle<BaseStyles> neutralizeActiveStyle = ConditionalStyle.always(
     BaseStyles.create().setBackgroundColor(Color.YELLOW).build()
+  );
+  private final ConditionalStyle<TextStyles> visibilityHiddenStyle = ConditionalStyle.always(
+    TextStyles.create().setVisibility(Visibility.HIDDEN).build()
   );
 
   public VialsBoardGuiBuilder(GuiDocument guiDocument) {
@@ -54,10 +58,24 @@ public class VialsBoardGuiBuilder {
           .build()
       )));
 
-    var section = new SectionGuiElement()
+    var aiDialog = new TextGuiElement()
+      .setId("aiDialog")
+      .setStyle(List.of(
+        ConditionalStyle.always(
+          TextStyles.create()
+            .setPadding(8)
+            .setBorderColor(Color.WHITE)
+            .setHeight(100)
+            .setWidth("100%")
+            .build()
+        ), visibilityHiddenStyle)
+      );
+
+    var vialsBoardSection = new SectionGuiElement()
       .appendChildren(
         topSection,
-        elementVials(vialsBoard)
+        elementVials(vialsBoard),
+        aiDialog
       )
       .setStyle(List.of(
         ConditionalStyle.always(
@@ -74,9 +92,9 @@ public class VialsBoardGuiBuilder {
         )
       ));
 
-    guiTheme.applyToTree(section);
+    guiTheme.applyToTree(vialsBoardSection);
 
-    return section;
+    return vialsBoardSection;
   }
 
   private GuiElement<?> elementVials(VialsBoard vialsBoard) {
@@ -151,6 +169,10 @@ public class VialsBoardGuiBuilder {
     );
 
     pourButton.setOnAction(() -> {
+      if (!vialsBoard.isPlayerTurn()) {
+        return;
+      }
+
       if (currentRolledPH == null && !isNeutralizing) {
         return;
       }
@@ -187,6 +209,8 @@ public class VialsBoardGuiBuilder {
 
         guiElement.setText(value == null ? "--" : String.valueOf(value));
       }
+
+      vialsBoard.endTurn();
 
       if (vial.isFull()) {
         pourButton.setDisabled(true);
@@ -237,6 +261,10 @@ public class VialsBoardGuiBuilder {
       .appendChildren(
         new ButtonGuiElement()
           .setOnAction(() -> {
+            if (!vialsBoard.isPlayerTurn()) {
+              return;
+            }
+
             int nextPh = vialsBoard.rollNextPh();
 
             setRolledPh(nextPh);
@@ -271,6 +299,10 @@ public class VialsBoardGuiBuilder {
     rerollButton.appendChildren(rerollText);
 
     rerollButton.setOnAction(() -> {
+      if (!vialsBoard.isPlayerTurn()) {
+        return;
+      }
+
       if (currentRolledPH != null) {
         knowledge.reroll();
       }
@@ -297,6 +329,10 @@ public class VialsBoardGuiBuilder {
       neutralizeButton.appendChildren(neutralizeText);
 
       neutralizeButton.setOnAction(() -> {
+        if (!vialsBoard.isPlayerTurn()) {
+          return;
+        }
+
         isNeutralizing = !isNeutralizing;
 
         if (isNeutralizing) {
