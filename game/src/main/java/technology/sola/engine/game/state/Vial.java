@@ -15,6 +15,10 @@ public class Vial {
     Arrays.fill(this.contents, null);
   }
 
+  public String getFormattedScore() {
+    return String.format("%.2f", getScore());
+  }
+
   public Float getScore() {
     if (firstEmptyIndex >= 0) {
       return null;

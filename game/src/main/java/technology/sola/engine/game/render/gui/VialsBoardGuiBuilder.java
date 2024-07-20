@@ -37,7 +37,10 @@ public class VialsBoardGuiBuilder {
   private final ConditionalStyle<BaseStyles> neutralizeActiveStyle = ConditionalStyle.always(
     BaseStyles.create().setBackgroundColor(Color.YELLOW).build()
   );
-  private final ConditionalStyle<TextStyles> visibilityHiddenStyle = ConditionalStyle.always(
+  private final ConditionalStyle<BaseStyles> visibilityHiddenStyle = ConditionalStyle.always(
+    BaseStyles.create().setVisibility(Visibility.HIDDEN).build()
+  );
+  private final ConditionalStyle<TextStyles> visibilityHiddenTextStyle = ConditionalStyle.always(
     TextStyles.create().setVisibility(Visibility.HIDDEN).build()
   );
 
@@ -50,7 +53,7 @@ public class VialsBoardGuiBuilder {
 
     var topSection = new SectionGuiElement()
       .appendChildren(
-        elementSidePanel(vialsBoard),
+        elementPlayerSection(vialsBoard),
         elementsAiSection(vialsBoard.ai)
       ).setStyle(List.of(ConditionalStyle.always(
         BaseStyles.create()
@@ -205,7 +208,7 @@ public class VialsBoardGuiBuilder {
 
       if (vial.isFull()) {
         pourButton.setDisabled(true);
-        pourText.setText("" + vial.getScore());
+        pourText.setText(vial.getFormattedScore());
 
         checkAndHandleGameDone(vialsBoard);
       }
@@ -229,8 +232,8 @@ public class VialsBoardGuiBuilder {
       ;
   }
 
-  private GuiElement<?> elementSidePanel(VialsBoard vialsBoard) {
-    return new SectionGuiElement()
+  private GuiElement<?> elementPlayerSection(VialsBoard vialsBoard) {
+    var playerSection = new SectionGuiElement()
       .appendChildren(
         elementRollButton(vialsBoard),
         elementKnowledgeSection(vialsBoard.playerKnowledge, vialsBoard)
@@ -242,6 +245,48 @@ public class VialsBoardGuiBuilder {
             .setGap(10)
             .setPadding(8)
             .setBorderColor(Color.WHITE)
+            .build()
+        )
+      ));
+
+    var winLoseText = new TextGuiElement()
+      .setText("")
+      .setId("winLoseText")
+      .setStyle(List.of(
+        ConditionalStyle.always(
+          TextStyles.create()
+            .setHeight(100)
+            .setWidth(200)
+            .build()
+        ))
+      );
+    var resultsSection = new SectionGuiElement()
+      .setId("resultsSection")
+      .appendChildren(
+        winLoseText
+        // todo retry button if lives remaining
+      )
+      .setStyle(List.of(
+        ConditionalStyle.always(
+          BaseStyles.create()
+            .setPadding(8)
+            .setBorderColor(Color.WHITE)
+            .setHeight(100)
+            .setWidth(200)
+            .build()
+        ), visibilityHiddenStyle)
+      );
+
+    return new SectionGuiElement()
+      .appendChildren(
+        playerSection,
+        resultsSection
+      )
+      .setStyle(List.of(
+        ConditionalStyle.always(
+          BaseStyles
+            .create()
+            .setGap(10)
             .build()
         )
       ));
@@ -378,7 +423,7 @@ public class VialsBoardGuiBuilder {
             .setHeight(100)
             .setWidth(200)
             .build()
-        ), visibilityHiddenStyle)
+        ), visibilityHiddenTextStyle)
       );
 
     var infoSection = new SectionGuiElement()
@@ -431,7 +476,11 @@ public class VialsBoardGuiBuilder {
 
   private void checkAndHandleGameDone(VialsBoard vialsBoard) {
     if (vialsBoard.isBoardFull()) {
-      // todo
+      guiDocument.findElementById("winLoseText", TextGuiElement.class)
+        .setText(vialsBoard.isPlayerWin() ? "You lived!" : "You dead!");
+      guiDocument.findElementById("resultsSection", SectionGuiElement.class)
+        .styles()
+        .removeStyle(visibilityHiddenStyle);
     }
   }
 
@@ -448,12 +497,12 @@ public class VialsBoardGuiBuilder {
         guiDocument.findElementById("aiDialog", TextGuiElement.class)
           .setText(actionText)
           .styles()
-          .removeStyle(visibilityHiddenStyle);
+          .removeStyle(visibilityHiddenTextStyle);
 
         updateGameStateUi(vialsBoard);
 
         try {
-          Thread.sleep(random.nextLong(2500, 4500));
+          Thread.sleep(random.nextLong(2500, 4000));
         } catch (InterruptedException e) {
           // nothing
         }
@@ -461,9 +510,11 @@ public class VialsBoardGuiBuilder {
 
       guiDocument.findElementById("aiDialog", TextGuiElement.class)
         .styles()
-        .addStyle(visibilityHiddenStyle);
+        .addStyle(visibilityHiddenTextStyle);
 
       vialsBoard.endTurn();
+
+      checkAndHandleGameDone(vialsBoard);
     }).start();
   }
 
@@ -499,7 +550,7 @@ public class VialsBoardGuiBuilder {
 
         if (vial.isFull()) {
           pourButton.setDisabled(true);
-          pourButtonText.setText("" + vial.getScore());
+          pourButtonText.setText(vial.getFormattedScore());
 
           checkAndHandleGameDone(vialsBoard);
         }

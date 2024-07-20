@@ -16,7 +16,7 @@ public class RandomAi extends Ai {
 
   @Override
   public String getName() {
-    return "Random";
+    return "Ran Dumb";
   }
 
   @Override
