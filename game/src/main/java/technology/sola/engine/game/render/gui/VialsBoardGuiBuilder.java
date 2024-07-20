@@ -600,7 +600,7 @@ public class VialsBoardGuiBuilder {
       vials[i + playerVials.length] = opponentVials[i];
 
       if (vial.isFull()) {
-        vialsBoard.playerKnowledge.takeDamage(vial.getDamage());
+        vialsBoard.ai.getKnowledge().takeDamage(vial.getDamage());
         vial.reset();
       }
     }
