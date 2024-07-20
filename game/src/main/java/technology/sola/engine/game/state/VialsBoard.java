@@ -14,6 +14,7 @@ public class VialsBoard {
   private final Vial[] playerVials;
   private final Vial[] opponentVials;
   private boolean isPlayerTurn = true;
+  private int lives;
 
   public VialsBoard(Knowledge playerKnowledge, Ai ai) {
     this.playerKnowledge = playerKnowledge;
@@ -21,12 +22,26 @@ public class VialsBoard {
     this.playerVials = new Vial[GameBalanceConfiguration.VIAL_COUNT];
     this.opponentVials = new Vial[GameBalanceConfiguration.VIAL_COUNT];
 
+    lives = GameBalanceConfiguration.INITIAL_LIVES + playerKnowledge.getExtraLives();
+
     for (int i = 0; i < playerVials.length; i++) {
       playerVials[i] = new Vial();
     }
     for (int i = 0; i < opponentVials.length; i++) {
       opponentVials[i] = new Vial();
     }
+  }
+
+  public void reset() {
+    for (int i = 0; i < playerVials.length; i++) {
+      playerVials[i] = new Vial();
+    }
+    for (int i = 0; i < opponentVials.length; i++) {
+      opponentVials[i] = new Vial();
+    }
+
+    playerKnowledge.reset();
+    ai.getKnowledge().reset();
   }
 
   public int rollNextPh() {
@@ -63,6 +78,14 @@ public class VialsBoard {
 
   public float getOpponentScore() {
     return calculateScore(this.opponentVials);
+  }
+
+  public int getLives() {
+    return lives;
+  }
+
+  public void reduceLives() {
+    lives--;
   }
 
   public boolean isPlayerWin() {

@@ -256,23 +256,36 @@ public class VialsBoardGuiBuilder {
         ConditionalStyle.always(
           TextStyles.create()
             .setHeight(100)
-            .setWidth(200)
+            .setWidth(350)
             .build()
         ))
       );
+    var tryAgainButton = new ButtonGuiElement()
+      .setOnAction(() -> {
+        vialsBoard.reset();
+
+        guiDocument.setRootElement(
+          new VialsBoardGuiBuilder(guiDocument)
+            .build(vialsBoard)
+        );
+      })
+      .setId("tryAgainButton")
+      .appendChildren(
+        new TextGuiElement()
+          .setText("Retry")
+      )
+      .setStyle(List.of(visibilityHiddenStyle));
     var resultsSection = new SectionGuiElement()
       .setId("resultsSection")
       .appendChildren(
-        winLoseText
-        // todo retry button if lives remaining
+        winLoseText,
+        tryAgainButton
       )
       .setStyle(List.of(
         ConditionalStyle.always(
           BaseStyles.create()
             .setPadding(8)
             .setBorderColor(Color.WHITE)
-            .setHeight(100)
-            .setWidth(200)
             .build()
         ), visibilityHiddenStyle)
       );
@@ -481,8 +494,28 @@ public class VialsBoardGuiBuilder {
 
   private void checkAndHandleGameDone(VialsBoard vialsBoard) {
     if (vialsBoard.isBoardFull()) {
+      boolean isPlayerWin = vialsBoard.isPlayerWin();
+
+      String text = "You live another round!";
+
+      if (isPlayerWin) {
+        // todo move on logic
+      } else {
+        vialsBoard.reduceLives();
+
+        if (vialsBoard.getLives() > 0) {
+          guiDocument.findElementById("tryAgainButton", ButtonGuiElement.class).styles().removeStyle(visibilityHiddenStyle);
+        }
+
+        text = switch (vialsBoard.getLives()) {
+          case 0 -> "Your life has come to an end along with your greed for knowledge. Game over!";
+          case 1 -> "You have one chance remaining. Make the most of it!";
+          default -> "You lost, but you still have " + vialsBoard.getLives() + " chances remaining";
+        };
+      }
+
       guiDocument.findElementById("winLoseText", TextGuiElement.class)
-        .setText(vialsBoard.isPlayerWin() ? "You lived!" : "You dead!");
+        .setText(text);
       guiDocument.findElementById("resultsSection", SectionGuiElement.class)
         .styles()
         .removeStyle(visibilityHiddenStyle);
@@ -556,8 +589,6 @@ public class VialsBoardGuiBuilder {
         if (vial.isFull()) {
           pourButton.setDisabled(true);
           pourButtonText.setText(vial.getFormattedScore());
-
-          checkAndHandleGameDone(vialsBoard);
         }
       }
     }
