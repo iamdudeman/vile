@@ -1,12 +1,13 @@
 package technology.sola.engine.game.state;
 
 import technology.sola.engine.game.GameBalanceConfiguration;
+import technology.sola.engine.game.ai.Ai;
 
 import java.util.Random;
 
 public class VialsBoard {
   public final Knowledge playerKnowledge;
-  public final Knowledge opponentKnowledge;
+  public final Ai ai;
   private static final int NEUTRAL_PH = 7;
   private static final int MAX_PH = 14;
   private final Random random = new Random();
@@ -14,9 +15,9 @@ public class VialsBoard {
   private final Vial[] opponentVials;
   private boolean isPlayerTurn = true;
 
-  public VialsBoard(Knowledge playerKnowledge, Knowledge opponentKnowledge) {
+  public VialsBoard(Knowledge playerKnowledge, Ai ai) {
     this.playerKnowledge = playerKnowledge;
-    this.opponentKnowledge = opponentKnowledge;
+    this.ai = ai;
     this.playerVials = new Vial[GameBalanceConfiguration.VIAL_COUNT];
     this.opponentVials = new Vial[GameBalanceConfiguration.VIAL_COUNT];
 
