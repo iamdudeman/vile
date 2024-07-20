@@ -35,7 +35,7 @@ public class VialsBoardGuiBuilder {
   private Integer currentRolledPH = null;
   private boolean isNeutralizing = false;
   private final ConditionalStyle<BaseStyles> neutralizeActiveStyle = ConditionalStyle.always(
-    BaseStyles.create().setBackgroundColor(Color.YELLOW).build()
+    BaseStyles.create().setBackgroundColor(new Color(195, 177, 104)).build()
   );
   private final ConditionalStyle<BaseStyles> visibilityHiddenStyle = ConditionalStyle.always(
     BaseStyles.create().setVisibility(Visibility.HIDDEN).build()
@@ -461,13 +461,18 @@ public class VialsBoardGuiBuilder {
   private void setRolledPh(Integer newPh) {
     var rollButton = guiDocument.findElementById("rollButton", ButtonGuiElement.class);
     var rollText = guiDocument.findElementById("rollText", TextGuiElement.class);
+    var neutralizeButton = guiDocument.findElementById("neutralizeButton", ButtonGuiElement.class);
 
     if (newPh == null) {
       rollText.setText("--");
       rollButton.setDisabled(false);
+      neutralizeButton.setDisabled(false);
     } else {
       rollText.setText(String.valueOf(newPh));
       rollButton.setDisabled(true);
+      neutralizeButton.setDisabled(true);
+      neutralizeButton.styles().removeStyle(neutralizeActiveStyle);
+      isNeutralizing = false;
 
       guiDocument.findElementById("vialsContainer", SectionGuiElement.class).requestFocus();
     }
