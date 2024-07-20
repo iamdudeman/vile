@@ -7,6 +7,7 @@ import technology.sola.engine.core.SolaConfiguration;
 import technology.sola.engine.defaults.SolaWithDefaults;
 import technology.sola.engine.game.ai.RandomAi;
 import technology.sola.engine.game.render.LoadingScreen;
+import technology.sola.engine.game.render.gui.EventBoardGuiBuilder;
 import technology.sola.engine.game.render.gui.VialsBoardGuiBuilder;
 import technology.sola.engine.game.state.Knowledge;
 import technology.sola.engine.game.state.VialsBoard;
@@ -53,7 +54,7 @@ public class GameSola extends SolaWithDefaults {
     loadingScreen = null;
 
     guiDocument.setRootElement(
-      new VialsBoardGuiBuilder(guiDocument).build(new VialsBoard(new Knowledge(), new RandomAi()))
+      new EventBoardGuiBuilder(guiDocument).build(new Knowledge(), 1)
     );
 
     completeAsyncInit.run();

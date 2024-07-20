@@ -28,6 +28,7 @@ public class Knowledge {
 
   public void addMaxHealth() {
     maxHealth++;
+    currentHealth = maxHealth;
   }
 
   public float getCurrentHealth() {
@@ -44,6 +45,7 @@ public class Knowledge {
 
   public void addReroll() {
     rerolls++;
+    currentRerolls = rerolls;
   }
 
   public void reroll() {
@@ -60,6 +62,7 @@ public class Knowledge {
 
   public void addNeutralize() {
     neutralizeAgents++;
+    currentNeutralizeAgents = neutralizeAgents;
   }
 
   public int getExtraLives() {

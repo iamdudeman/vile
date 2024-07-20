@@ -1,6 +1,5 @@
 package technology.sola.engine.game.render.gui;
 
-import technology.sola.engine.game.GameBalanceConfiguration;
 import technology.sola.engine.game.ai.Ai;
 import technology.sola.engine.game.state.Knowledge;
 import technology.sola.engine.game.state.Vial;
@@ -522,7 +521,7 @@ public class VialsBoardGuiBuilder {
           public void run() {
             guiDocument.setRootElement(
               new EventBoardGuiBuilder(guiDocument)
-                .build(vialsBoard.playerKnowledge)
+                .build(vialsBoard.playerKnowledge, 1)
             );
             cancel();
             timer.cancel();
