@@ -507,7 +507,7 @@ public class VialsBoardGuiBuilder {
         updateGameStateUi(vialsBoard);
 
         try {
-          Thread.sleep(random.nextLong(2500, 4000));
+          Thread.sleep(random.nextLong(2000, 3500));
         } catch (InterruptedException e) {
           // nothing
         }

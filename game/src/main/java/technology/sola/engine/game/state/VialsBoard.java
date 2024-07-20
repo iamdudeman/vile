@@ -30,7 +30,15 @@ public class VialsBoard {
   }
 
   public int rollNextPh() {
-    return (int) Math.round(random.nextGaussian(7, Math.sqrt(7)));
+    int value = (int) Math.round(random.nextGaussian(7, 2));
+
+    if (value > MAX_PH) {
+      return MAX_PH;
+    } else if (value < 0) {
+      return 0;
+    }
+
+    return value;
   }
 
   public boolean isPlayerTurn() {
