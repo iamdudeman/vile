@@ -7,6 +7,7 @@ import technology.sola.engine.graphics.gui.GuiDocument;
 import technology.sola.engine.graphics.gui.GuiElement;
 import technology.sola.engine.graphics.gui.elements.SectionGuiElement;
 import technology.sola.engine.graphics.gui.elements.TextGuiElement;
+import technology.sola.engine.graphics.gui.elements.TextStyles;
 import technology.sola.engine.graphics.gui.elements.input.ButtonGuiElement;
 import technology.sola.engine.graphics.gui.style.BaseStyles;
 import technology.sola.engine.graphics.gui.style.ConditionalStyle;
@@ -16,20 +17,24 @@ import technology.sola.engine.graphics.gui.style.theme.GuiTheme;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class VialsBoardGuiBuilder {
   private final GuiTheme guiTheme = DefaultThemeBuilder.buildDarkTheme();
   private final GuiDocument guiDocument;
+  private Integer currentRolledPH = null;
 
   public VialsBoardGuiBuilder(GuiDocument guiDocument) {
     this.guiDocument = guiDocument;
   }
 
-  public GuiElement<?> buildVialsBoardGui(VialsBoard vialsBoard) {
+  public GuiElement<?> build(VialsBoard vialsBoard) {
+    currentRolledPH = null;
+
     var section = new SectionGuiElement()
       .appendChildren(
-        buildSidePanel(vialsBoard),
-        buildVials(vialsBoard)
+        elementSidePanel(vialsBoard),
+        elementVials(vialsBoard)
       )
       .setStyle(List.of(
         ConditionalStyle.always(
@@ -49,10 +54,10 @@ public class VialsBoardGuiBuilder {
     return section;
   }
 
-  private GuiElement<?> buildVials(VialsBoard vialsBoard) {
+  private GuiElement<?> elementVials(VialsBoard vialsBoard) {
     var playerVials = new SectionGuiElement()
       .appendChildren(
-        Arrays.stream(vialsBoard.getPlayerVials()).map(this::buildVial).toArray(GuiElement[]::new)
+        Arrays.stream(vialsBoard.getPlayerVials()).map(this::elementVial).toArray(GuiElement[]::new)
       )
       .setStyle(List.of(
         ConditionalStyle.always(
@@ -67,7 +72,7 @@ public class VialsBoardGuiBuilder {
 
     var opponentVials = new SectionGuiElement()
       .appendChildren(
-        Arrays.stream(vialsBoard.getOpponentVials()).map(this::buildVial).toArray(GuiElement[]::new)
+        Arrays.stream(vialsBoard.getOpponentVials()).map(this::elementVial).toArray(GuiElement[]::new)
       )
       .setStyle(List.of(
         ConditionalStyle.always(
@@ -108,9 +113,28 @@ public class VialsBoardGuiBuilder {
       ));
   }
 
-  private GuiElement<?> buildVial(Vial vial) {
-    return new ButtonGuiElement()
-//      .appendChildren() // todo
+  private GuiElement<?> elementVial(Vial vial) {
+    Supplier<GuiElement<?>[]> buildVialContents = () -> {
+      var contentsLength = vial.getContents().length;
+      var contentGuiItems = new GuiElement[contentsLength];
+
+      for (int i = 0; i < contentsLength; i++) {
+        Integer value = vial.getContents()[i];
+
+        contentGuiItems[i] = new TextGuiElement()
+          .setText(value == null ? "--" : String.valueOf(value))
+          .setStyle(List.of(ConditionalStyle.always(
+            TextStyles.create()
+              .setPadding(4)
+              .build()
+          )));
+      }
+
+      return contentGuiItems;
+    };
+
+    var contentGuiItemsContainer = new SectionGuiElement()
+      .appendChildren(buildVialContents.get())
       .setStyle(List.of(
         ConditionalStyle.always(
           BaseStyles
@@ -119,17 +143,42 @@ public class VialsBoardGuiBuilder {
             .setPadding(4)
             .setBorderColor(Color.WHITE)
             .setWidth(30)
-            .setHeight("100%")
             .build()
         )
       ));
-  }
 
-  private GuiElement<?> buildSidePanel(VialsBoard vialsBoard) {
     return new SectionGuiElement()
       .appendChildren(
-        buildRollButton(vialsBoard),
-        buildKnowledgeSection()
+        new ButtonGuiElement()
+          .setOnAction(() -> {
+
+
+
+            // todo add liquid and update UI
+
+          })
+          .appendChildren(
+            new TextGuiElement()
+              .setText("Pour")
+          ),
+        contentGuiItemsContainer
+      )
+      .setStyle(List.of(
+        ConditionalStyle.always(
+          BaseStyles
+            .create()
+            .setGap(10)
+            .build()
+        )
+      ))
+    ;
+  }
+
+  private GuiElement<?> elementSidePanel(VialsBoard vialsBoard) {
+    return new SectionGuiElement()
+      .appendChildren(
+        elementRollButton(vialsBoard),
+        elementKnowledgeSection()
       )
       .setStyle(List.of(
         ConditionalStyle.always(
@@ -143,30 +192,44 @@ public class VialsBoardGuiBuilder {
       ));
   }
 
-  private GuiElement<?> buildRollButton(VialsBoard vialsBoard) {
+  private GuiElement<?> elementRollButton(VialsBoard vialsBoard) {
     return new SectionGuiElement()
       .appendChildren(
         new ButtonGuiElement()
           .setOnAction(() -> {
-            var rollText = guiDocument.findElementById("roll", TextGuiElement.class);
             int nextPh = vialsBoard.rollNextPh();
 
-            rollText.setText(String.valueOf(nextPh));
+            setRolledPh(nextPh);
           })
+          .setId("rollButton")
           .appendChildren(
             new TextGuiElement()
               .setText("Roll")
           ),
         new TextGuiElement()
           .setText("--")
-          .setId("roll")
+          .setId("rollText")
       );
   }
 
-  private GuiElement<?> buildKnowledgeSection() {
+  private GuiElement<?> elementKnowledgeSection() {
     return new SectionGuiElement()
       .appendChildren(
         new TextGuiElement().setText("Knowledge")
       );
+  }
+
+  private void setRolledPh(Integer newPh) {
+    var rollButton = guiDocument.findElementById("rollButton", ButtonGuiElement.class);
+    var rollText = guiDocument.findElementById("rollText", TextGuiElement.class);
+
+    if (newPh == null) {
+      rollText.setText("--");
+      rollButton.setDisabled(false);
+    } else {
+      rollText.setText(String.valueOf(newPh));
+      rollButton.setDisabled(true);
+    }
+    currentRolledPH = newPh;
   }
 }

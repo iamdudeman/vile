@@ -37,7 +37,7 @@ public class GameSola extends SolaWithDefaults {
         }
 
         guiDocument.setRootElement(
-          new VialsBoardGuiBuilder(guiDocument).buildVialsBoardGui(new VialsBoard())
+          new VialsBoardGuiBuilder(guiDocument).build(new VialsBoard())
         );
 
         // finish async load
