@@ -427,8 +427,10 @@ public class VialsBoardGuiBuilder {
           .styles()
           .removeStyle(visibilityHiddenStyle);
 
+        updateGameStateUi(vialsBoard);
+
         try {
-          Thread.sleep(5000);
+          Thread.sleep(4000);
         } catch (InterruptedException e) {
           // nothing
         }
@@ -440,5 +442,40 @@ public class VialsBoardGuiBuilder {
 
       vialsBoard.endTurn();
     }).start();
+  }
+
+  private void updateGameStateUi(VialsBoard vialsBoard) {
+    SectionGuiElement vialsSection = guiDocument.findElementById("vialsContainer", SectionGuiElement.class);
+
+    var playerVials = vialsBoard.getPlayerVials();
+    var opponentVials = vialsBoard.getOpponentVials();
+    Vial[] vials = new Vial[playerVials.length + opponentVials.length];
+
+    for (int i = 0; i < playerVials.length; i++) {
+      vials[i] = playerVials[i];
+    }
+
+    for (int i = 0; i < opponentVials.length; i++) {
+      vials[i + playerVials.length] = opponentVials[i];
+    }
+
+    for (int i = 0; i < vials.length; i++) {
+      var vial = vials[i];
+      var vialChild = vialsSection.getChildren().get(i);
+      var contentsChildren = vialChild.getChildren().get(1);
+
+      for (int j = 0; j < vial.getContents().length; j++) {
+        Integer value = vial.getContents()[j];
+        TextGuiElement contentsChild = (TextGuiElement) contentsChildren.getChildren().get(j);
+
+        // todo update pour buttons + text
+
+        contentsChild.setText(
+          value == null ? "--" : String.valueOf(value)
+        );
+      }
+    }
+
+    // todo update rerolls and neutralize counts for AI
   }
 }
