@@ -74,10 +74,15 @@ learn other forbidden knowledge that will assist them in winning the tournament.
 
 #### Character(s)
 
+* todo rando
+    * Play-style - completely random
+    * Knowledge - none
 * todo name
     * Play-style - only plays on own board unless it is full
+    * Knowledge - todo
 * todo name
     * Play-style - only plays on opponent's board unless it is full
+    * Knowledge - todo
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -136,17 +141,17 @@ todo
 
 ### Outline
 
-| Task            | Type    | Status | Details                                                |
-|-----------------|---------|--------|--------------------------------------------------------|
-| Design Document | `Misc`  | `WIP`  | This document!                                         |
-| Vials Gameplay  | `Code`  | `TODO` | An example work in progress art task                   |
-| Menu music      | `Audio` | `TODO` | Music that plays at the main menu                      |
-| Battle music    | `Audio` | `TODO` | Music that plays during a battle                       |
-| World map music | `Audio` | `TODO` | Menu that plays on the world map after a battle        |
-| World map       | `Code`  | `TODO` | Render a world map which has tiles that can be clicked |
-| Events          | `Code`  | `TODO` | Implement events where upgrades can be received        |
-| Numbers         | `Art`   | `TODO` | The sprites for the numbers (0-14)                     |
-| Vials           | `Art`   | `TODO` | The sprites for the vials that contain numbers         |
-| Icons           | `Art`   | `TODO` | The icons for the various buffs used during battles    |
-| Tiles           | `Art`   | `TODO` | The world map tiles                                    |
-| Sound effects   | `Audio` | `TODO` | Add in sound effects where they make sense!            |
+| Task              | Type    | Status | Details                                             |
+|-------------------|---------|--------|-----------------------------------------------------|
+| Design Document   | `Misc`  | `WIP`  | This document!                                      |
+| Vials Gameplay    | `Code`  | `DONE` | An example work in progress art task                |
+| AI                | `Code`  | `TODO` | An example work in progress art task                |
+| Menu music        | `Audio` | `TODO` | Music that plays at the main menu                   |
+| Battle music      | `Audio` | `TODO` | Music that plays during a battle                    |
+| Event board music | `Audio` | `TODO` | Menu that plays on the world map after a battle     |
+| Events            | `Code`  | `TODO` | Implement events where upgrades can be received     |
+| Numbers           | `Art`   | `TODO` | The sprites for the numbers (0-14)                  |
+| Vials             | `Art`   | `TODO` | The sprites for the vials that contain numbers      |
+| Icons             | `Art`   | `TODO` | The icons for the various buffs used during battles |
+| Tiles             | `Art`   | `TODO` | The world map tiles                                 |
+| Sound effects     | `Audio` | `TODO` | Add in sound effects where they make sense!         |
