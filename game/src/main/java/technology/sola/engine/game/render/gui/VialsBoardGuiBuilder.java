@@ -355,12 +355,16 @@ public class VialsBoardGuiBuilder {
     );
 
     knowledgeSection.appendChildren(
-      new TextGuiElement().setText("Rerolls " + ai.getKnowledge().getCurrentRerolls() + "/" + ai.getKnowledge().getRerolls())
+      new TextGuiElement()
+        .setText("Rerolls " + ai.getKnowledge().getCurrentRerolls() + "/" + ai.getKnowledge().getRerolls())
+        .setId("aiRerolls")
     );
 
     if (ai.getKnowledge().getNeutralizeAgents() > 0) {
       knowledgeSection.appendChildren(
-        new TextGuiElement().setText("Neutralize " + ai.getKnowledge().getCurrentNeutralizeAgents() + "/" + ai.getKnowledge().getNeutralizeAgents())
+        new TextGuiElement()
+          .setText("Neutralize " + ai.getKnowledge().getCurrentNeutralizeAgents() + "/" + ai.getKnowledge().getNeutralizeAgents())
+          .setId("aiNeutralizeAgents")
       );
     }
 
@@ -502,6 +506,11 @@ public class VialsBoardGuiBuilder {
       }
     }
 
-    // todo update rerolls and neutralize counts for AI
+    Ai ai = vialsBoard.ai;
+
+    guiDocument.findElementById("aiRerolls", TextGuiElement.class)
+      .setText("Rerolls " + ai.getKnowledge().getCurrentRerolls() + "/" + ai.getKnowledge().getRerolls());
+    guiDocument.findElementById("aiNeutralizeAgents", TextGuiElement.class)
+      .setText("Neutralize " + ai.getKnowledge().getCurrentNeutralizeAgents() + "/" + ai.getKnowledge().getNeutralizeAgents());
   }
 }
