@@ -30,24 +30,34 @@ public class GameSola extends SolaWithDefaults {
 
   @Override
   protected void onAsyncInit(Runnable completeAsyncInit) {
-    new BulkAssetLoader(assetLoaderProvider)
-      .addAsset(ControlsConfig.class, AssetIds.Controls.PLAYER, "assets/input/player.controls.json")
-      .loadAll()
-      .onComplete(assets -> {
-        if (assets[0] instanceof ControlsConfig controlsConfig) {
-          solaControls.addControls(controlsConfig);
-        }
+//    new BulkAssetLoader(assetLoaderProvider)
+////      .addAsset(ControlsConfig.class, AssetIds.Controls.PLAYER, "assets/input/player.controls.json")
+//      .loadAll()
+//      .onComplete(assets -> {
+////        if (assets[0] instanceof ControlsConfig controlsConfig) {
+////          solaControls.addControls(controlsConfig);
+////        }
+//
+//        guiDocument.setRootElement(
+//          new VialsBoardGuiBuilder(guiDocument).build(new VialsBoard(new Knowledge(), new RandomAi()))
+//        );
+//
+//        // finish async load
+////        solaEcs.setWorld(buildWorld());
+//        isLoading = false;
+//        loadingScreen = null;
+//        completeAsyncInit.run();
+//      });
 
-        guiDocument.setRootElement(
-          new VialsBoardGuiBuilder(guiDocument).build(new VialsBoard(new Knowledge(), new RandomAi()))
-        );
+    isLoading = false;
+    loadingScreen = null;
 
-        // finish async load
-        solaEcs.setWorld(buildWorld());
-        isLoading = false;
-        loadingScreen = null;
-        completeAsyncInit.run();
-      });
+    guiDocument.setRootElement(
+      new VialsBoardGuiBuilder(guiDocument).build(new VialsBoard(new Knowledge(), new RandomAi()))
+    );
+
+    completeAsyncInit.run();
+
   }
 
   @Override
