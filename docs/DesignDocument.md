@@ -144,8 +144,8 @@ todo
 | Task              | Type    | Status | Details                                             |
 |-------------------|---------|--------|-----------------------------------------------------|
 | Design Document   | `Misc`  | `WIP`  | This document!                                      |
-| Vials Gameplay    | `Code`  | `DONE` | An example work in progress art task                |
-| AI                | `Code`  | `TODO` | An example work in progress art task                |
+| Vials Gameplay    | `Code`  | `DONE` | Basic gameplay loop                                 |
+| AI                | `Code`  | `DONE` | Create some AI to play against                      |
 | Menu music        | `Audio` | `TODO` | Music that plays at the main menu                   |
 | Battle music      | `Audio` | `TODO` | Music that plays during a battle                    |
 | Event board music | `Audio` | `TODO` | Menu that plays on the world map after a battle     |
@@ -155,3 +155,4 @@ todo
 | Icons             | `Art`   | `TODO` | The icons for the various buffs used during battles |
 | Tiles             | `Art`   | `TODO` | The world map tiles                                 |
 | Sound effects     | `Audio` | `TODO` | Add in sound effects where they make sense!         |
+| Story progression | `Code`  | `TODO` | Implement story progress between rounds             |
