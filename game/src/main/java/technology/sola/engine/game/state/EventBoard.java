@@ -6,7 +6,6 @@ import technology.sola.engine.game.ai.RandomAi;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class EventBoard {
@@ -28,10 +27,10 @@ public class EventBoard {
   }
 
   public Event[] getNextEvents() {
-    int maxRound = GameBalanceConfiguration.INITIAL_EVENT_ROUNDS;
-    int events = GameBalanceConfiguration.INITIAL_EVENTS;
+    int maxRounds = GameBalanceConfiguration.INITIAL_EVENT_ROUNDS;
+    int eventsCount = GameBalanceConfiguration.INITIAL_EVENTS_COUNT;
 
-    if (round >= maxRound) {
+    if (round >= maxRounds) {
       // todo return only battles
     }
 
@@ -59,6 +58,11 @@ public class EventBoard {
       }),
       new Event(EventType.KNOWLEDGE, "You get a small test buff", () -> {
         playerKnowledge.addReroll();
+
+        return null;
+      }),
+      new Event(EventType.KNOWLEDGE, "You get a small test buff", () -> {
+        playerKnowledge.addNeutralize();
 
         return null;
       })

@@ -14,8 +14,8 @@ public class Knowledge {
   public Knowledge() {
     maxHealth = 4;
     extraLives = 0;
-    rerolls = 10; // todo set to 1
-    neutralizeAgents = 10; // todo set to 0
+    rerolls = 1;
+    neutralizeAgents = 0;
 
     reset();
   }
@@ -25,6 +25,7 @@ public class Knowledge {
     currentRerolls = rerolls;
     currentNeutralizeAgents = neutralizeAgents;
   }
+
 
   public void addMaxHealth() {
     maxHealth++;
@@ -39,9 +40,19 @@ public class Knowledge {
     return String.format("%.2f", currentHealth);
   }
 
+  public void takeDamage(float damage) {
+    currentHealth -= damage;
+  }
+
+
   public void addExtraLife() {
     extraLives++;
   }
+
+  public int getExtraLives() {
+    return extraLives;
+  }
+
 
   public void addReroll() {
     rerolls++;
@@ -52,29 +63,22 @@ public class Knowledge {
     currentRerolls--;
   }
 
-  public void neutralize() {
-    currentNeutralizeAgents--;
-  }
-
-  public void takeDamage(float damage) {
-    currentHealth -= damage;
-  }
-
-  public void addNeutralize() {
-    neutralizeAgents++;
-    currentNeutralizeAgents = neutralizeAgents;
-  }
-
-  public int getExtraLives() {
-    return extraLives;
-  }
-
   public int getRerolls() {
     return rerolls;
   }
 
   public int getCurrentRerolls() {
     return currentRerolls;
+  }
+
+
+  public void neutralize() {
+    currentNeutralizeAgents--;
+  }
+
+  public void addNeutralize() {
+    neutralizeAgents++;
+    currentNeutralizeAgents = neutralizeAgents;
   }
 
   public int getNeutralizeAgents() {
@@ -84,6 +88,7 @@ public class Knowledge {
   public int getCurrentNeutralizeAgents() {
     return currentNeutralizeAgents;
   }
+
 
   public int getBattlesWon() {
     return battlesWon;

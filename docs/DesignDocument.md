@@ -69,9 +69,11 @@ progressively more difficult challenges.
     * Regular fight
     * Boss fight
     * Library (could have a rare variant)
-        * Chance to gain additional knowledge
+        * Chance to gain additional knowledge usages
+        * Chance to see more events each event round
     * Modification
         * Give you or your opponent a head start in the next round
+        * Possible upgrades to starting player health
 
 ### Story overview
 
@@ -155,7 +157,7 @@ todo
 | Design Document   | `Misc`  | `WIP`  | This document!                                      |
 | Vials Gameplay    | `Code`  | `DONE` | Basic gameplay loop                                 |
 | AI                | `Code`  | `DONE` | Create some AI to play against                      |
-| Events            | `Code`  | `TODO` | Implement events where upgrades can be received     |
+| Events            | `Code`  | `WIP`  | Implement events where upgrades can be received     |
 | Story progression | `Code`  | `TODO` | Implement story progress between rounds             |
 | Battle music      | `Audio` | `TODO` | Music that plays during a battle                    |
 | Event board music | `Audio` | `TODO` | Menu that plays on the world map after a battle     |
