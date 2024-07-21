@@ -492,13 +492,19 @@ public class VialsBoardGuiBuilder {
     if (newPh == null) {
       rollText.setText("--");
       rollButton.setDisabled(false);
-      neutralizeButton.setDisabled(false);
+
+      if (neutralizeButton != null) {
+        neutralizeButton.setDisabled(false);
+      }
     } else {
       rollText.setText(String.valueOf(newPh));
       rollButton.setDisabled(true);
-      neutralizeButton.setDisabled(true);
-      neutralizeButton.styles().removeStyle(neutralizeActiveStyle);
-      isNeutralizing = false;
+
+      if (neutralizeButton != null) {
+        neutralizeButton.setDisabled(true);
+        neutralizeButton.styles().removeStyle(neutralizeActiveStyle);
+        isNeutralizing = false;
+      }
 
       guiDocument.findElementById("vialsContainer", SectionGuiElement.class).requestFocus();
     }
@@ -643,8 +649,11 @@ public class VialsBoardGuiBuilder {
 
     guiDocument.findElementById("aiRerolls", TextGuiElement.class)
       .setText("Rerolls " + ai.getKnowledge().getCurrentRerolls() + "/" + ai.getKnowledge().getRerolls());
-    guiDocument.findElementById("aiNeutralizeAgents", TextGuiElement.class)
-      .setText("Neutralize " + ai.getKnowledge().getCurrentNeutralizeAgents() + "/" + ai.getKnowledge().getNeutralizeAgents());
+    var aiNeutralizeText = guiDocument.findElementById("aiNeutralizeAgents", TextGuiElement.class);
+
+    if (aiNeutralizeText != null) {
+      aiNeutralizeText.setText("Neutralize " + ai.getKnowledge().getCurrentNeutralizeAgents() + "/" + ai.getKnowledge().getNeutralizeAgents());
+    }
 
     guiDocument.findElementById("playerHealth", TextGuiElement.class)
       .setText("Health: " + vialsBoard.playerKnowledge.getFormattedCurrentHealth());
