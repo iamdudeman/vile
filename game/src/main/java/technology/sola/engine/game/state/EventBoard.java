@@ -44,24 +44,17 @@ public class EventBoard {
 
         return vialsBoard;
       }),
-      new Event(EventType.BATTLE, "", () -> {
-        VialsBoard vialsBoard = new VialsBoard(playerKnowledge, new RandomAi());
-
-        modifyBoard(vialsBoard);
-
-        return vialsBoard;
-      }),
-      new Event(EventType.MODIFICATION, "Modified the next battle", () -> {
+      new Event(EventType.MODIFICATION, "Modified the next battle so you have a starting pH of 7", () -> {
         playerModifications.add(7);
 
         return null;
       }),
-      new Event(EventType.KNOWLEDGE, "You get a small test buff", () -> {
+      new Event(EventType.KNOWLEDGE, "You get a small test buff giving you a reroll", () -> {
         playerKnowledge.addReroll();
 
         return null;
       }),
-      new Event(EventType.KNOWLEDGE, "You get a small test buff", () -> {
+      new Event(EventType.KNOWLEDGE, "You get a small test buff giving you a neutralizing agent.", () -> {
         playerKnowledge.addNeutralize();
 
         return null;
