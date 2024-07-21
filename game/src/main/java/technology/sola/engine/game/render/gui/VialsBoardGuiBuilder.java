@@ -521,7 +521,7 @@ public class VialsBoardGuiBuilder {
           public void run() {
             guiDocument.setRootElement(
               new EventBoardGuiBuilder(guiDocument)
-                .build(vialsBoard.playerKnowledge, 1)
+                .build(vialsBoard.playerKnowledge)
             );
             cancel();
             timer.cancel();

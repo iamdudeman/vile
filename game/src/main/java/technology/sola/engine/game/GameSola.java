@@ -54,7 +54,7 @@ public class GameSola extends SolaWithDefaults {
     loadingScreen = null;
 
     guiDocument.setRootElement(
-      new EventBoardGuiBuilder(guiDocument).build(new Knowledge(), 1)
+      new EventBoardGuiBuilder(guiDocument).build(new Knowledge())
     );
 
     completeAsyncInit.run();

@@ -42,10 +42,14 @@ public class EventBoardGuiBuilder {
     this.guiDocument = guiDocument;
   }
 
-  public GuiElement<?> build(Knowledge playerKnowledge, int round) {
-    var rootSection = new SectionGuiElement();
+  public GuiElement<?> build(Knowledge playerKnowledge) {
+    EventBoard eventBoard = new EventBoard(playerKnowledge);
 
-    EventBoard eventBoard = new EventBoard(playerKnowledge, round);
+    return build(eventBoard);
+  }
+
+  public GuiElement<?> build(EventBoard eventBoard) {
+    var rootSection = new SectionGuiElement();
 
     rootSection.setId("rootSection");
 
@@ -130,12 +134,9 @@ public class EventBoardGuiBuilder {
           @Override
           public void run() {
             if (vialsBoard == null) {
-
-              // todo figure out how to get new events to show up
-
               guiDocument.setRootElement(
                 new EventBoardGuiBuilder(guiDocument)
-                  .build(eventBoard.getPlayerKnowledge(), eventBoard.getRound() + 1)
+                  .build(eventBoard)
               );
 
               eventText.styles().addStyle(visibilityHiddenTextStyle);
