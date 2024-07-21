@@ -32,10 +32,10 @@ public class EventBoardGuiBuilder {
         .build()
     )));
   private final ConditionalStyle<TextStyles> visibilityHiddenTextStyle = ConditionalStyle.always(
-    TextStyles.create().setVisibility(Visibility.HIDDEN).build()
+    TextStyles.create().setVisibility(Visibility.NONE).build()
   );
   private final ConditionalStyle<BaseStyles> visibilityHiddenStyle = ConditionalStyle.always(
-    BaseStyles.create().setVisibility(Visibility.HIDDEN).build()
+    BaseStyles.create().setVisibility(Visibility.NONE).build()
   );
 
   public EventBoardGuiBuilder(GuiDocument guiDocument) {
@@ -124,7 +124,7 @@ public class EventBoardGuiBuilder {
             .addStyle(visibilityHiddenStyle);
 
         eventText
-          .setText(event.text())
+          .setText(vialsBoard == null ? event.text() : vialsBoard.ai.getGreeting(vialsBoard))
           .styles()
           .removeStyle(visibilityHiddenTextStyle);
 

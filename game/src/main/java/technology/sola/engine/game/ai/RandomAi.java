@@ -18,6 +18,11 @@ public class RandomAi extends Ai {
   }
 
   @Override
+  public String getGreeting(VialsBoard vialsBoard) {
+    return "The name's Ran. Most people just call me Dumb though.";
+  }
+
+  @Override
   public String getStartTurnText(VialsBoard vialsBoard) {
     return "My turn to go.";
   }

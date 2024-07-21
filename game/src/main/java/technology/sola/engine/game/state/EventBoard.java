@@ -37,14 +37,14 @@ public class EventBoard {
     round++;
     // todo temp logic
     return new Event[] {
-      new Event(EventType.BATTLE, "Another common test battle", () -> {
+      new Event(EventType.BATTLE, "", () -> {
         VialsBoard vialsBoard = new VialsBoard(playerKnowledge, new RandomAi());
 
         modifyBoard(vialsBoard);
 
         return vialsBoard;
       }),
-      new Event(EventType.BATTLE, "A common test battle", () -> {
+      new Event(EventType.BATTLE, "", () -> {
         VialsBoard vialsBoard = new VialsBoard(playerKnowledge, new RandomAi());
 
         modifyBoard(vialsBoard);
