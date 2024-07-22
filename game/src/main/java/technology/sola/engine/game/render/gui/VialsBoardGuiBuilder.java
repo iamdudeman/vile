@@ -308,7 +308,7 @@ public class VialsBoardGuiBuilder {
           .setId("rollButton")
           .appendChildren(
             new TextGuiElement()
-              .setText("Roll")
+              .setText("Brew")
               .setId("rollButtonText")
           ),
         new TextGuiElement()
@@ -331,7 +331,7 @@ public class VialsBoardGuiBuilder {
 
     ButtonGuiElement rerollButton = new ButtonGuiElement();
     TextGuiElement rerollText = new TextGuiElement()
-      .setText("Reroll " + knowledge.getCurrentRerolls() + "/" + knowledge.getRerolls());
+      .setText("Rebrew " + knowledge.getCurrentRerolls() + "/" + knowledge.getRerolls());
 
     rerollButton.appendChildren(rerollText);
 
@@ -347,7 +347,7 @@ public class VialsBoardGuiBuilder {
       int nextPh = vialsBoard.rollNextPh();
 
       setRolledPh(nextPh);
-      rerollText.setText("Reroll " + knowledge.getCurrentRerolls() + "/" + knowledge.getRerolls());
+      rerollText.setText("Rebrew " + knowledge.getCurrentRerolls() + "/" + knowledge.getRerolls());
 
       if (knowledge.getCurrentRerolls() == 0) {
         rerollButton.setDisabled(true);
@@ -607,7 +607,7 @@ public class VialsBoardGuiBuilder {
     Ai ai = vialsBoard.ai;
 
     guiDocument.findElementById("aiRerolls", TextGuiElement.class)
-      .setText("Rerolls " + ai.getKnowledge().getCurrentRerolls() + "/" + ai.getKnowledge().getRerolls());
+      .setText("Rebrew " + ai.getKnowledge().getCurrentRerolls() + "/" + ai.getKnowledge().getRerolls());
     var aiNeutralizeText = guiDocument.findElementById("aiNeutralizeAgents", TextGuiElement.class);
 
     if (aiNeutralizeText != null) {

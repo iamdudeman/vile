@@ -33,14 +33,14 @@ public class RandomAi extends Ai {
     if (currentRoll == null) {
       currentRoll = vialsBoard.rollNextPh();
 
-      return "I rolled " + currentRoll + ".";
+      return "I brewed " + currentRoll + ".";
     }
 
     if (knowledge.getCurrentRerolls() > 0 && random.nextInt(10) < 1) {
       knowledge.reroll();
       currentRoll = vialsBoard.rollNextPh();
 
-      return "I rerolled " + currentRoll + ".";
+      return "I rebrewed " + currentRoll + ".";
     }
 
     List<Vial> validVials = new ArrayList<>(

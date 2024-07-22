@@ -45,7 +45,14 @@ public class VialsBoard {
   }
 
   public int rollNextPh() {
-    int value = (int) Math.round(random.nextGaussian(7, 2));
+    float standardDeviation = switch (playerKnowledge.getInstability()) {
+      case 1 -> 2f;
+      case 2 -> 3f;
+      case 3 -> 3.5f;
+      case 4 -> 4f;
+      default -> 2;
+    };
+    int value = (int) Math.round(random.nextGaussian(7, standardDeviation));
 
     if (value > MAX_PH) {
       return MAX_PH;

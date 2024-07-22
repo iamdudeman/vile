@@ -37,7 +37,7 @@ public class AggressiveAi extends Ai {
     if (currentRoll == null) {
       currentRoll = vialsBoard.rollNextPh();
 
-      return "I rolled " + currentRoll + ".";
+      return "I brewed " + currentRoll + ".";
     }
 
     if (currentRoll == 7) {
@@ -82,7 +82,7 @@ public class AggressiveAi extends Ai {
       knowledge.reroll();
       currentRoll = vialsBoard.rollNextPh();
 
-      return "I can't attack well with this. I rerolled " + currentRoll + ".";
+      return "I can't attack well with this. I rebrewed " + currentRoll + ".";
     }
 
     if (turnsDefending < 3) {

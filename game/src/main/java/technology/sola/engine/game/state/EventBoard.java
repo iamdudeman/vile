@@ -41,6 +41,7 @@ public class EventBoard {
       battleRandomAi(),
       battleAggressiveAi(),
       modificationBoardValue(7, true),
+      knowledgeInstability(),
       knowledgeReroll(),
       knowledgeNeutralizingAgent(),
     };
@@ -86,7 +87,15 @@ public class EventBoard {
     return new ModificationEvent("Knowledge", () -> {
       playerKnowledge.addReroll();
 
-      return "You get a small test buff giving you a reroll.";
+      return "You get a small test buff giving you a rebrew.";
+    });
+  }
+
+  private Event<?> knowledgeInstability() {
+    return new ModificationEvent("Knowledge", () -> {
+      playerKnowledge.incrementInstability();
+
+      return "Your brewing has become more unstable, increasing the likelihood of more acidic or basic brews.";
     });
   }
 

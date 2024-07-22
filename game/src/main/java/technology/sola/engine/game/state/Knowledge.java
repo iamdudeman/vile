@@ -1,7 +1,11 @@
 package technology.sola.engine.game.state;
 
 public class Knowledge {
+  // todo unstable (2 -> 3 -> 3.5 -> 4)
+  // todo extra events
+
   private int extraLives;
+  private int instability = 1;
   private int maxHealth;
   private int rerolls;
   private int neutralizeAgents;
@@ -89,6 +93,14 @@ public class Knowledge {
     return currentNeutralizeAgents;
   }
 
+
+  public int getInstability() {
+    return instability;
+  }
+
+  public void incrementInstability() {
+    instability++;
+  }
 
   public int getBattlesWon() {
     return battlesWon;
