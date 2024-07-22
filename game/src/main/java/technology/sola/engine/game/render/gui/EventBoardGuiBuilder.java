@@ -161,7 +161,7 @@ public class EventBoardGuiBuilder {
         if (vialsBoard == null) {
           guiDocument.setRootElement(
             new EventBoardGuiBuilder(guiDocument)
-              .build(eventBoard)
+              .build(new EventBoard(eventBoard))
           );
 
           eventTextElement.styles().addStyle(visibilityHiddenTextStyle);

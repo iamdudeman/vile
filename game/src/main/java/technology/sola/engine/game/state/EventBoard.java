@@ -29,7 +29,7 @@ public class EventBoard {
 
   public Event<?>[] getNextEvents() {
     int maxRounds = GameBalanceConfiguration.INITIAL_EVENT_ROUNDS;
-    int eventsCount = GameBalanceConfiguration.INITIAL_EVENTS_COUNT;
+    int eventsCount = GameBalanceConfiguration.INITIAL_EVENTS_COUNT + playerKnowledge.getExtraEvents();
 
     if (round >= maxRounds) {
       // todo return only battles
