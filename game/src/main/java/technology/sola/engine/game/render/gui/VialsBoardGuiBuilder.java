@@ -34,6 +34,8 @@ public class VialsBoardGuiBuilder {
         .build()
     )));
   private final GuiDocument guiDocument;
+  private final Color playerColor = new Color(255, 194, 10);
+  private final Color opponentColor = new Color(12, 123, 220);
   private Integer currentRolledPH = null;
   private boolean isNeutralizing = false;
   private final ConditionalStyle<BaseStyles> neutralizeActiveStyle = ConditionalStyle.always(
@@ -45,6 +47,13 @@ public class VialsBoardGuiBuilder {
   private final ConditionalStyle<TextStyles> visibilityHiddenTextStyle = ConditionalStyle.always(
     TextStyles.create().setVisibility(Visibility.HIDDEN).build()
   );
+  private final ConditionalStyle<BaseStyles> portraitContainerStyle = ConditionalStyle.always(
+    BaseStyles.create()
+      .setWidth(128)
+      .setHeight(128)
+      .setPadding(4)
+      .build()
+  );
 
   public VialsBoardGuiBuilder(GuiDocument guiDocument) {
     this.guiDocument = guiDocument;
@@ -55,8 +64,18 @@ public class VialsBoardGuiBuilder {
 
     var topSection = new SectionGuiElement()
       .appendChildren(
+        new SectionGuiElement()
+          .setStyle(List.of(
+            portraitContainerStyle,
+            ConditionalStyle.always(BaseStyles.create().setBorderColor(playerColor).build())
+          )),
         elementPlayerSection(vialsBoard),
-        elementsAiSection(vialsBoard.ai)
+        elementsAiSection(vialsBoard.ai),
+        new SectionGuiElement()
+          .setStyle(List.of(
+            portraitContainerStyle,
+            ConditionalStyle.always(BaseStyles.create().setBorderColor(opponentColor).build())
+          ))
       ).setStyle(List.of(ConditionalStyle.always(
         BaseStyles.create()
           .setDirection(Direction.ROW)
@@ -147,7 +166,7 @@ public class VialsBoardGuiBuilder {
             .setGap(30)
             .setPadding(4)
             .setCrossAxisChildren(CrossAxisChildren.CENTER)
-            .setBorderColor(isPlayerVial ? new Color(255, 194, 10) : new Color(12, 123, 220))
+            .setBorderColor(isPlayerVial ? playerColor : opponentColor)
             .build()
         )
       ));
