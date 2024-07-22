@@ -5,6 +5,7 @@ import technology.sola.engine.game.state.Vial;
 import technology.sola.engine.game.state.VialsBoard;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class RandomAi extends Ai {
@@ -42,19 +43,11 @@ public class RandomAi extends Ai {
       return "I rerolled " + currentRoll + ".";
     }
 
-    List<Vial> validVials = new ArrayList<>();
+    List<Vial> validVials = new ArrayList<>(
+      Arrays.asList(vialsBoard.getPlayerVials())
+    );
 
-    for (var vial : vialsBoard.getPlayerVials()) {
-      if (!vial.isFull()) {
-        validVials.add(vial);
-      }
-    }
-
-    for (var vial : vialsBoard.getOpponentVials()) {
-      if (!vial.isFull()) {
-        validVials.add(vial);
-      }
-    }
+    validVials.addAll(Arrays.asList(vialsBoard.getOpponentVials()));
 
     Vial chosenVial = validVials.get(random.nextInt(validVials.size()));
 
