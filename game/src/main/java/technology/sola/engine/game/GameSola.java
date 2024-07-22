@@ -1,16 +1,12 @@
 package technology.sola.engine.game;
 
-import technology.sola.ecs.World;
 import technology.sola.engine.assets.BulkAssetLoader;
-import technology.sola.engine.assets.input.ControlsConfig;
+import technology.sola.engine.assets.graphics.SolaImage;
 import technology.sola.engine.core.SolaConfiguration;
 import technology.sola.engine.defaults.SolaWithDefaults;
-import technology.sola.engine.game.ai.RandomAi;
 import technology.sola.engine.game.render.LoadingScreen;
 import technology.sola.engine.game.render.gui.EventBoardGuiBuilder;
-import technology.sola.engine.game.render.gui.VialsBoardGuiBuilder;
 import technology.sola.engine.game.state.Knowledge;
-import technology.sola.engine.game.state.VialsBoard;
 import technology.sola.engine.graphics.renderer.Renderer;
 import technology.sola.engine.graphics.screen.AspectMode;
 
@@ -31,34 +27,21 @@ public class GameSola extends SolaWithDefaults {
 
   @Override
   protected void onAsyncInit(Runnable completeAsyncInit) {
-//    new BulkAssetLoader(assetLoaderProvider)
-////      .addAsset(ControlsConfig.class, AssetIds.Controls.PLAYER, "assets/input/player.controls.json")
-//      .loadAll()
-//      .onComplete(assets -> {
-////        if (assets[0] instanceof ControlsConfig controlsConfig) {
-////          solaControls.addControls(controlsConfig);
-////        }
-//
-//        guiDocument.setRootElement(
-//          new VialsBoardGuiBuilder(guiDocument).build(new VialsBoard(new Knowledge(), new RandomAi()))
-//        );
-//
-//        // finish async load
-////        solaEcs.setWorld(buildWorld());
-//        isLoading = false;
-//        loadingScreen = null;
-//        completeAsyncInit.run();
-//      });
+    new BulkAssetLoader(assetLoaderProvider)
+      .addAsset(SolaImage.class, AssetIds.Images.PLAYER, "assets/images/wizzarrrrdcat.png")
+      .addAsset(SolaImage.class, AssetIds.Images.WARLOCAT, "assets/images/evilwarloccat.png")
+      .addAsset(SolaImage.class, AssetIds.Images.DUCKY, "assets/images/alchemistducky.png")
+      .loadAll()
+      .onComplete(assets -> {
+        guiDocument.setRootElement(
+          new EventBoardGuiBuilder(guiDocument).build(new Knowledge())
+        );
 
-    isLoading = false;
-    loadingScreen = null;
-
-    guiDocument.setRootElement(
-      new EventBoardGuiBuilder(guiDocument).build(new Knowledge())
-    );
-
-    completeAsyncInit.run();
-
+        // finish async load
+        isLoading = false;
+        loadingScreen = null;
+        completeAsyncInit.run();
+      });
   }
 
   @Override
@@ -68,11 +51,5 @@ public class GameSola extends SolaWithDefaults {
     } else {
       super.onRender(renderer);
     }
-  }
-
-  private World buildWorld() {
-    World world = new World(100);
-
-    return world;
   }
 }

@@ -1,5 +1,6 @@
 package technology.sola.engine.game.ai;
 
+import technology.sola.engine.game.AssetIds;
 import technology.sola.engine.game.state.Knowledge;
 import technology.sola.engine.game.state.Vial;
 import technology.sola.engine.game.state.VialsBoard;
@@ -16,6 +17,11 @@ public class RandomAi extends Ai {
   @Override
   public String getName() {
     return "Ran Dum";
+  }
+
+  @Override
+  public String getAssetId() {
+    return AssetIds.Images.WARLOCAT;
   }
 
   @Override

@@ -23,6 +23,15 @@ public final class AssetIds {
     }
   }
 
+  public static final class Images {
+    public static final String PLAYER = "player";
+    public static final String WARLOCAT = "warlocat";
+    public static final String DUCKY = "ducky";
+
+    private Images() {
+    }
+  }
+
   public static final class Sprites {
     public static final class Duck {
       private Duck() {

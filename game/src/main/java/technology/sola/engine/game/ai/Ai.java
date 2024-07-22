@@ -17,6 +17,8 @@ public abstract class Ai {
 
   public abstract String getName();
 
+  public abstract String getAssetId();
+
   public abstract String getGreeting(VialsBoard vialsBoard);
 
   public abstract String getStartTurnText(VialsBoard vialsBoard);

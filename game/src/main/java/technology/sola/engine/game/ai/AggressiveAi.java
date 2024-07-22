@@ -1,5 +1,6 @@
 package technology.sola.engine.game.ai;
 
+import technology.sola.engine.game.AssetIds;
 import technology.sola.engine.game.state.Knowledge;
 import technology.sola.engine.game.state.VialsBoard;
 
@@ -14,6 +15,11 @@ public class AggressiveAi extends Ai {
   public String getName() {
     // todo
     return "Aggressive AI";
+  }
+
+  @Override
+  public String getAssetId() {
+    return AssetIds.Images.DUCKY;
   }
 
   @Override

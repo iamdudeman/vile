@@ -1,5 +1,6 @@
 package technology.sola.engine.game.render.gui;
 
+import technology.sola.engine.game.AssetIds;
 import technology.sola.engine.game.ai.Ai;
 import technology.sola.engine.game.state.Knowledge;
 import technology.sola.engine.game.state.Vial;
@@ -7,6 +8,7 @@ import technology.sola.engine.game.state.VialsBoard;
 import technology.sola.engine.graphics.Color;
 import technology.sola.engine.graphics.gui.GuiDocument;
 import technology.sola.engine.graphics.gui.GuiElement;
+import technology.sola.engine.graphics.gui.elements.ImageGuiElement;
 import technology.sola.engine.graphics.gui.elements.SectionGuiElement;
 import technology.sola.engine.graphics.gui.elements.TextGuiElement;
 import technology.sola.engine.graphics.gui.elements.TextStyles;
@@ -52,6 +54,13 @@ public class VialsBoardGuiBuilder {
       .setWidth(128)
       .setHeight(128)
       .setPadding(4)
+      .setBackgroundColor(Color.WHITE)
+      .build()
+  );
+  private final ConditionalStyle<BaseStyles> portraitImageStyle = ConditionalStyle.always(
+    BaseStyles.create()
+      .setWidth("100%")
+      .setHeight("100%")
       .build()
   );
 
@@ -62,13 +71,22 @@ public class VialsBoardGuiBuilder {
   public GuiElement<?> build(VialsBoard vialsBoard) {
     currentRolledPH = null;
 
+    ImageGuiElement playerPortrait = new ImageGuiElement();
+    playerPortrait.setAssetId(AssetIds.Images.PLAYER);
+    playerPortrait.setStyle(List.of(portraitImageStyle));
+
+    ImageGuiElement opponentPortrait = new ImageGuiElement();
+    opponentPortrait.setAssetId(vialsBoard.ai.getAssetId());
+    opponentPortrait.setStyle(List.of(portraitImageStyle));
+
     var topSection = new SectionGuiElement()
       .appendChildren(
         new SectionGuiElement()
           .setStyle(List.of(
             portraitContainerStyle,
             ConditionalStyle.always(BaseStyles.create().setBorderColor(playerColor).build())
-          )),
+          ))
+          .appendChildren(playerPortrait),
         elementPlayerSection(vialsBoard),
         elementsAiSection(vialsBoard.ai),
         new SectionGuiElement()
@@ -76,6 +94,7 @@ public class VialsBoardGuiBuilder {
             portraitContainerStyle,
             ConditionalStyle.always(BaseStyles.create().setBorderColor(opponentColor).build())
           ))
+          .appendChildren(opponentPortrait)
       ).setStyle(List.of(ConditionalStyle.always(
         BaseStyles.create()
           .setDirection(Direction.ROW)
@@ -286,7 +305,7 @@ public class VialsBoardGuiBuilder {
             .create()
             .setGap(10)
             .setPadding(8)
-            .setBorderColor(Color.WHITE)
+            .setBorderColor(playerColor)
             .build()
         )
       ));
@@ -428,7 +447,7 @@ public class VialsBoardGuiBuilder {
             .create()
             .setGap(10)
             .setPadding(8)
-            .setBorderColor(Color.WHITE)
+            .setBorderColor(opponentColor)
             .build()
         )
       ));
