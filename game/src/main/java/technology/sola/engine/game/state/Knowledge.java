@@ -7,18 +7,18 @@ public class Knowledge {
   private int extraLives;
   private int instability = 1;
   private int maxHealth;
-  private int rerolls;
+  private int reBrews;
   private int neutralizeAgents;
   private int battlesWon = 0;
   // in battle stats
   private float currentHealth;
-  private int currentRerolls;
+  private int currentRebrews;
   private int currentNeutralizeAgents;
 
   public Knowledge() {
     maxHealth = 4;
     extraLives = 0;
-    rerolls = 1;
+    reBrews = 1;
     neutralizeAgents = 0;
 
     reset();
@@ -26,7 +26,7 @@ public class Knowledge {
 
   public void reset() {
     currentHealth = maxHealth;
-    currentRerolls = rerolls;
+    currentRebrews = reBrews;
     currentNeutralizeAgents = neutralizeAgents;
   }
 
@@ -58,21 +58,21 @@ public class Knowledge {
   }
 
 
-  public void addReroll() {
-    rerolls++;
-    currentRerolls = rerolls;
+  public void addReBrew() {
+    reBrews++;
+    currentRebrews = reBrews;
   }
 
-  public void reroll() {
-    currentRerolls--;
+  public void reBrew() {
+    currentRebrews--;
   }
 
-  public int getRerolls() {
-    return rerolls;
+  public int getReBrews() {
+    return reBrews;
   }
 
-  public int getCurrentRerolls() {
-    return currentRerolls;
+  public int getCurrentRebrews() {
+    return currentRebrews;
   }
 
 

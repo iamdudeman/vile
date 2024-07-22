@@ -15,12 +15,12 @@ public class RandomAi extends Ai {
 
   @Override
   public String getName() {
-    return "Ran Dumb";
+    return "Ran Dum";
   }
 
   @Override
   public String getGreeting(VialsBoard vialsBoard) {
-    return "The name's Ran. Most people just call me Dumb though.";
+    return "The name's Ran. Most people just call me Dum though.";
   }
 
   @Override
@@ -30,17 +30,17 @@ public class RandomAi extends Ai {
 
   @Override
   public String nextAction(VialsBoard vialsBoard) {
-    if (currentRoll == null) {
-      currentRoll = vialsBoard.rollNextPh();
+    if (currentBrew == null) {
+      currentBrew = vialsBoard.brewNextPh();
 
-      return "I brewed " + currentRoll + ".";
+      return "I brewed " + currentBrew + ".";
     }
 
-    if (knowledge.getCurrentRerolls() > 0 && random.nextInt(10) < 1) {
-      knowledge.reroll();
-      currentRoll = vialsBoard.rollNextPh();
+    if (knowledge.getCurrentRebrews() > 0 && random.nextInt(10) < 1) {
+      knowledge.reBrew();
+      currentBrew = vialsBoard.brewNextPh();
 
-      return "I rebrewed " + currentRoll + ".";
+      return "I rebrewed " + currentBrew + ".";
     }
 
     List<Vial> validVials = new ArrayList<>(
@@ -51,9 +51,9 @@ public class RandomAi extends Ai {
 
     Vial chosenVial = validVials.get(random.nextInt(validVials.size()));
 
-    chosenVial.addLiquidToTop(currentRoll);
+    chosenVial.addLiquidToTop(currentBrew);
     isDone = true;
 
-    return "I poured " + currentRoll + " on a random vial.";
+    return "I poured " + currentBrew + " in a random vial.";
   }
 }

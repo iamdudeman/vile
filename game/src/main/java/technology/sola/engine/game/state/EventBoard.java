@@ -85,7 +85,7 @@ public class EventBoard {
 
   private Event<?> knowledgeReroll() {
     return new ModificationEvent("Knowledge", () -> {
-      playerKnowledge.addReroll();
+      playerKnowledge.addReBrew();
 
       return "You get a small test buff giving you a rebrew.";
     });

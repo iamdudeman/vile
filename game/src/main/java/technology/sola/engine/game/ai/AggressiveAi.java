@@ -9,8 +9,8 @@ public class AggressiveAi extends Ai {
   public AggressiveAi() {
     knowledge = new Knowledge();
 
-    knowledge.addReroll();
-    knowledge.addReroll();
+    knowledge.addReBrew();
+    knowledge.addReBrew();
 
     knowledge.addMaxHealth();
   }
@@ -34,15 +34,15 @@ public class AggressiveAi extends Ai {
 
   @Override
   public String nextAction(VialsBoard vialsBoard) {
-    if (currentRoll == null) {
-      currentRoll = vialsBoard.rollNextPh();
+    if (currentBrew == null) {
+      currentBrew = vialsBoard.brewNextPh();
 
-      return "I brewed " + currentRoll + ".";
+      return "I brewed " + currentBrew + ".";
     }
 
-    if (currentRoll == 7) {
+    if (currentBrew == 7) {
       vialsBoard.getOpponentVials()[random.nextInt(vialsBoard.getOpponentVials().length)]
-        .addLiquidToTop(currentRoll);
+        .addLiquidToTop(currentBrew);
 
       isDone = true;
       return "I poured my 7 on my board.";
@@ -51,67 +51,67 @@ public class AggressiveAi extends Ai {
     for (var vial : vialsBoard.getPlayerVials()) {
       float value = vial.getCurrentAverage();
 
-      if (value < 7 && currentRoll < 7) {
-        vial.addLiquidToTop(currentRoll);
+      if (value < 7 && currentBrew < 7) {
+        vial.addLiquidToTop(currentBrew);
 
         turnsDefending = 0;
         isDone = true;
-        return "I poured " + currentRoll + " on your acidic vial.";
+        return "I poured " + currentBrew + " in your acidic vial.";
       }
 
-      if (value > 7 && currentRoll > 7) {
-        vial.addLiquidToTop(currentRoll);
+      if (value > 7 && currentBrew > 7) {
+        vial.addLiquidToTop(currentBrew);
 
         turnsDefending = 0;
         isDone = true;
-        return "I poured " + currentRoll + " on your basic vial.";
+        return "I poured " + currentBrew + " in your basic vial.";
       }
     }
 
     for (var vial : vialsBoard.getPlayerVials()) {
       if (vial.isEmpty()) {
-        vial.addLiquidToTop(currentRoll);
+        vial.addLiquidToTop(currentBrew);
 
         isDone = true;
         turnsDefending = 0;
-        return "I poured " + currentRoll + " in your empty vial.";
+        return "I poured " + currentBrew + " in your empty vial.";
       }
     }
 
-    if (knowledge.getCurrentRerolls() > 0) {
-      knowledge.reroll();
-      currentRoll = vialsBoard.rollNextPh();
+    if (knowledge.getCurrentRebrews() > 0) {
+      knowledge.reBrew();
+      currentBrew = vialsBoard.brewNextPh();
 
-      return "I can't attack well with this. I rebrewed " + currentRoll + ".";
+      return "I can't attack well with this. I rebrewed " + currentBrew + ".";
     }
 
     if (turnsDefending < 3) {
       for (var vial : vialsBoard.getOpponentVials()) {
         float value = vial.getCurrentAverage();
 
-        if (value > 7 && currentRoll < 7) {
-          vial.addLiquidToTop(currentRoll);
+        if (value > 7 && currentBrew < 7) {
+          vial.addLiquidToTop(currentBrew);
 
           isDone = true;
           turnsDefending++;
-          return "I poured " + currentRoll + " on my basic vial.";
+          return "I poured " + currentBrew + " in my basic vial.";
         }
 
-        if (value < 7 && currentRoll > 7) {
-          vial.addLiquidToTop(currentRoll);
+        if (value < 7 && currentBrew > 7) {
+          vial.addLiquidToTop(currentBrew);
 
           isDone = true;
           turnsDefending++;
-          return "I poured " + currentRoll + " on my acidic vial.";
+          return "I poured " + currentBrew + " in my acidic vial.";
         }
       }
     }
 
 
     vialsBoard.getPlayerVials()[random.nextInt(vialsBoard.getPlayerVials().length)]
-      .addLiquidToTop(currentRoll);
+      .addLiquidToTop(currentBrew);
 
     isDone = true;
-    return "I'm tired of defending. I pour " + currentRoll + " on one of your vials.";
+    return "I'm tired of defending. I pour " + currentBrew + " in one of your vials.";
   }
 }

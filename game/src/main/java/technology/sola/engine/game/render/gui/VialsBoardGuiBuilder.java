@@ -301,7 +301,7 @@ public class VialsBoardGuiBuilder {
               return;
             }
 
-            int nextPh = vialsBoard.rollNextPh();
+            int nextPh = vialsBoard.brewNextPh();
 
             setRolledPh(nextPh);
           })
@@ -331,7 +331,7 @@ public class VialsBoardGuiBuilder {
 
     ButtonGuiElement rerollButton = new ButtonGuiElement();
     TextGuiElement rerollText = new TextGuiElement()
-      .setText("Rebrew " + knowledge.getCurrentRerolls() + "/" + knowledge.getRerolls());
+      .setText("Rebrew " + knowledge.getCurrentRebrews() + "/" + knowledge.getReBrews());
 
     rerollButton.appendChildren(rerollText);
 
@@ -341,15 +341,15 @@ public class VialsBoardGuiBuilder {
       }
 
       if (currentRolledPH != null) {
-        knowledge.reroll();
+        knowledge.reBrew();
       }
 
-      int nextPh = vialsBoard.rollNextPh();
+      int nextPh = vialsBoard.brewNextPh();
 
       setRolledPh(nextPh);
-      rerollText.setText("Rebrew " + knowledge.getCurrentRerolls() + "/" + knowledge.getRerolls());
+      rerollText.setText("Rebrew " + knowledge.getCurrentRebrews() + "/" + knowledge.getReBrews());
 
-      if (knowledge.getCurrentRerolls() == 0) {
+      if (knowledge.getCurrentRebrews() == 0) {
         rerollButton.setDisabled(true);
       }
     });
@@ -405,7 +405,7 @@ public class VialsBoardGuiBuilder {
 
     knowledgeSection.appendChildren(
       new TextGuiElement()
-        .setText("Rerolls " + ai.getKnowledge().getCurrentRerolls() + "/" + ai.getKnowledge().getRerolls())
+        .setText("Rerolls " + ai.getKnowledge().getCurrentRebrews() + "/" + ai.getKnowledge().getReBrews())
         .setId("aiRerolls")
     );
 
@@ -607,7 +607,7 @@ public class VialsBoardGuiBuilder {
     Ai ai = vialsBoard.ai;
 
     guiDocument.findElementById("aiRerolls", TextGuiElement.class)
-      .setText("Rebrew " + ai.getKnowledge().getCurrentRerolls() + "/" + ai.getKnowledge().getRerolls());
+      .setText("Rebrew " + ai.getKnowledge().getCurrentRebrews() + "/" + ai.getKnowledge().getReBrews());
     var aiNeutralizeText = guiDocument.findElementById("aiNeutralizeAgents", TextGuiElement.class);
 
     if (aiNeutralizeText != null) {

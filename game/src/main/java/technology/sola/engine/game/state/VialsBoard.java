@@ -44,7 +44,7 @@ public class VialsBoard {
     isPlayerTurn = true;
   }
 
-  public int rollNextPh() {
+  public int brewNextPh() {
     float standardDeviation = switch (playerKnowledge.getInstability()) {
       case 1 -> 2f;
       case 2 -> 3f;
