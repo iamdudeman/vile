@@ -1,4 +1,4 @@
-module technology.sola.engine.template.javafx {
+module technology.sola.engine.vile.javafx {
   requires technology.sola.engine.platform.javafx;
-  requires technology.sola.engine.template.game;
+  requires technology.sola.engine.vile.game;
 }

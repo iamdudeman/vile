@@ -1,8 +1,9 @@
 # Vile
 
-Template project for building a game using [sola-game-engine](https://github.com/iamdudeman/sola-game-engine).
+This is a game made for the Pirate Software Game Jam 15. The theme for the codejam was "Alchemy and Shadows." It was
+built on sola-game-engine using repo template sola-game-template to start the project.
 
-A [Design document template](docs/DesignDocument.md) is provided inspired by the content found on [develop.games](https://develop.games/)
+A [Design document](docs/DesignDocument.md) with more info about the game is available.
 
 ## Project structure
 

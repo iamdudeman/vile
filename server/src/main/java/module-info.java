@@ -1,4 +1,4 @@
-module technology.sola.engine.template.server {
+module technology.sola.engine.vile.server {
   requires technology.sola.engine.server;
-  requires technology.sola.engine.template.game;
+  requires technology.sola.engine.vile.game;
 }
