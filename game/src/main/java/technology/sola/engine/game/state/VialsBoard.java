@@ -41,6 +41,7 @@ public class VialsBoard {
 
     playerKnowledge.reset();
     ai.getKnowledge().reset();
+    isPlayerTurn = true;
   }
 
   public int rollNextPh() {

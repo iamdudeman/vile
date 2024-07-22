@@ -86,6 +86,19 @@ public class VialsBoardGuiBuilder {
     var vialsBoardSection = new SectionGuiElement()
       .appendChildren(
         topSection,
+        new TextGuiElement()
+          .setId("dialogText")
+          .setStyle(List.of(
+            ConditionalStyle.always(
+              TextStyles.create()
+                .setPadding(8)
+                .setBorderColor(Color.WHITE)
+                .setHeight(100)
+                .setWidth(400)
+                .build()
+            ),
+            visibilityHiddenTextStyle
+          )),
         elementVials(vialsBoard)
       )
       .setStyle(List.of(
@@ -278,52 +291,8 @@ public class VialsBoardGuiBuilder {
         )
       ));
 
-    var winLoseText = new TextGuiElement()
-      .setText("")
-      .setId("winLoseText")
-      .setStyle(List.of(
-        ConditionalStyle.always(
-          TextStyles.create()
-            .setHeight(70)
-            .setWidth(350)
-            .build()
-        ))
-      );
-    var tryAgainButton = new ButtonGuiElement()
-      .setOnAction(() -> {
-        vialsBoard.reset();
-
-        guiDocument.setRootElement(
-          new VialsBoardGuiBuilder(guiDocument)
-            .build(vialsBoard)
-        );
-      })
-      .setId("tryAgainButton")
-      .appendChildren(
-        new TextGuiElement()
-          .setText("Retry")
-      )
-      .setStyle(List.of(visibilityHiddenStyle));
-    var resultsSection = new SectionGuiElement()
-      .setId("resultsSection")
-      .appendChildren(
-        winLoseText,
-        tryAgainButton
-      )
-      .setStyle(List.of(
-        ConditionalStyle.always(
-          BaseStyles.create()
-            .setPadding(8)
-            .setBorderColor(Color.WHITE)
-            .build()
-        ), visibilityHiddenStyle)
-      );
-
     return new SectionGuiElement()
-      .appendChildren(
-        playerSection,
-        resultsSection
-      )
+      .appendChildren(playerSection)
       .setStyle(List.of(
         ConditionalStyle.always(
           BaseStyles
@@ -351,6 +320,7 @@ public class VialsBoardGuiBuilder {
           .appendChildren(
             new TextGuiElement()
               .setText("Roll")
+              .setId("rollButtonText")
           ),
         new TextGuiElement()
           .setText("--")
@@ -458,24 +428,10 @@ public class VialsBoardGuiBuilder {
       );
     }
 
-    var aiDialog = new TextGuiElement()
-      .setId("aiDialog")
-      .setStyle(List.of(
-        ConditionalStyle.always(
-          TextStyles.create()
-            .setPadding(8)
-            .setBorderColor(Color.WHITE)
-            .setHeight(100)
-            .setWidth(200)
-            .build()
-        ), visibilityHiddenTextStyle)
-      );
-
     var infoSection = new SectionGuiElement()
       .appendChildren(
         new TextGuiElement().setText(ai.getName()),
-        knowledgeSection,
-        aiDialog
+        knowledgeSection
       )
       .setStyle(List.of(
         ConditionalStyle.always(
@@ -490,8 +446,7 @@ public class VialsBoardGuiBuilder {
 
     return new SectionGuiElement()
       .appendChildren(
-        infoSection,
-        aiDialog
+        infoSection
       )
       .setStyle(List.of(
         ConditionalStyle.always(
@@ -556,7 +511,17 @@ public class VialsBoardGuiBuilder {
         vialsBoard.reduceLives();
 
         if (vialsBoard.getLives() > 0) {
-          guiDocument.findElementById("tryAgainButton", ButtonGuiElement.class).styles().removeStyle(visibilityHiddenStyle);
+          guiDocument.findElementById("rollButton", ButtonGuiElement.class)
+              .setOnAction(() -> {
+                vialsBoard.reset();
+
+                guiDocument.setRootElement(
+                  new VialsBoardGuiBuilder(guiDocument)
+                    .build(vialsBoard)
+                );
+              });
+          guiDocument.findElementById("rollButtonText", TextGuiElement.class)
+              .setText("Retry");
         }
 
         text = switch (vialsBoard.getLives()) {
@@ -566,11 +531,10 @@ public class VialsBoardGuiBuilder {
         };
       }
 
-      guiDocument.findElementById("winLoseText", TextGuiElement.class)
-        .setText(text);
-      guiDocument.findElementById("resultsSection", SectionGuiElement.class)
+      guiDocument.findElementById("dialogText", TextGuiElement.class)
+        .setText(text)
         .styles()
-        .removeStyle(visibilityHiddenStyle);
+        .removeStyle(visibilityHiddenTextStyle);
     }
   }
 
@@ -578,10 +542,10 @@ public class VialsBoardGuiBuilder {
     Ai ai = vialsBoard.ai;
     Random random = new Random();
 
-    var aiDialog  = guiDocument.findElementById("aiDialog", TextGuiElement.class);
+    var dialogText = guiDocument.findElementById("dialogText", TextGuiElement.class);
     String startTurnText = ai.startTurn(vialsBoard);
 
-    aiDialog.setText(startTurnText)
+    dialogText.setText(startTurnText)
       .styles()
       .removeStyle(visibilityHiddenTextStyle);
 
@@ -595,7 +559,7 @@ public class VialsBoardGuiBuilder {
       @Override
       public void run() {
         if (vialsBoard.ai.isDone()) {
-          guiDocument.findElementById("aiDialog", TextGuiElement.class)
+          guiDocument.findElementById("dialogText", TextGuiElement.class)
             .styles()
             .addStyle(visibilityHiddenTextStyle);
 
@@ -607,7 +571,7 @@ public class VialsBoardGuiBuilder {
         } else {
           String actionText = vialsBoard.ai.nextAction(vialsBoard);
 
-          guiDocument.findElementById("aiDialog", TextGuiElement.class)
+          guiDocument.findElementById("dialogText", TextGuiElement.class)
             .setText(actionText)
             .styles()
             .removeStyle(visibilityHiddenTextStyle);
