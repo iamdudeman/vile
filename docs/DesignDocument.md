@@ -152,18 +152,19 @@ todo
 
 ### Outline
 
-| Task              | Type    | Status | Details                                             |
-|-------------------|---------|--------|-----------------------------------------------------|
-| Design Document   | `Misc`  | `WIP`  | This document!                                      |
-| Vials Gameplay    | `Code`  | `DONE` | Basic gameplay loop                                 |
-| AI                | `Code`  | `DONE` | Create some AI to play against                      |
-| Events            | `Code`  | `WIP`  | Implement events where upgrades can be received     |
-| Story progression | `Code`  | `TODO` | Implement story progress between rounds             |
-| Battle music      | `Audio` | `TODO` | Music that plays during a battle                    |
-| Event board music | `Audio` | `TODO` | Menu that plays on the world map after a battle     |
-| Sound effects     | `Audio` | `TODO` | Add in sound effects where they make sense!         |
-| Menu music        | `Audio` | `TODO` | Music that plays at the main menu                   |
-| Event tiles       | `Art`   | `TODO` | The world map tiles                                 |
-| Icons             | `Art`   | `TODO` | The icons for the various buffs used during battles |
-| Numbers           | `Art`   | `TODO` | The sprites for the numbers (0-14)                  |
-| Vials             | `Art`   | `TODO` | The sprites for the vials that contain numbers      |
+| Task              | Type    | Status | Details                                         |
+|-------------------|---------|--------|-------------------------------------------------|
+| Design Document   | `Misc`  | `WIP`  | This document!                                  |
+| Vials Gameplay    | `Code`  | `DONE` | Basic gameplay loop                             |
+| AI                | `Code`  | `DONE` | Create some AI to play against                  |
+| Events            | `Code`  | `WIP`  | Implement events where upgrades can be received |
+| Player portraits  | `Code`  | `WIP`  | Implement portraits in UI                       |
+| Battle music      | `Audio` | `TODO` | Music that plays during a battle                |
+| Event board music | `Audio` | `TODO` | Menu that plays on the world map after a battle |
+| Event icons       | `Art`   | `TODO` | The event icons (boss, vial, book)              |
+| Player portrait   | `Art`   | `TODO` | The player portrait                             |
+| AI portraits      | `Art`   | `TODO` | The opponent portraits                          |
+| Vile main title   | `Art`   | `TODO` | The word "Vile" in main title                   |
+| Story progression | `Code`  | `TODO` | Implement story progress between rounds         |
+| Sound effects     | `Audio` | `TODO` | Add in sound effects where they make sense!     |
+| Voice acting      | `Audio` | `TODO` | Voice act opponent lines                        |
