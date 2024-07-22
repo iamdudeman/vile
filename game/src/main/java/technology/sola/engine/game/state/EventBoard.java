@@ -1,6 +1,7 @@
 package technology.sola.engine.game.state;
 
 import technology.sola.engine.game.GameBalanceConfiguration;
+import technology.sola.engine.game.ai.AggressiveAi;
 import technology.sola.engine.game.ai.RandomAi;
 
 import java.util.ArrayList;
@@ -39,6 +40,13 @@ public class EventBoard {
     return new Event[] {
       new Event(EventType.BATTLE, "", () -> {
         VialsBoard vialsBoard = new VialsBoard(playerKnowledge, new RandomAi());
+
+        modifyBoard(vialsBoard);
+
+        return vialsBoard;
+      }),
+      new Event(EventType.BATTLE, "", () -> {
+        VialsBoard vialsBoard = new VialsBoard(playerKnowledge, new AggressiveAi());
 
         modifyBoard(vialsBoard);
 

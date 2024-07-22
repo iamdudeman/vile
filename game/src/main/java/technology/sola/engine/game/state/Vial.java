@@ -21,15 +21,31 @@ public class Vial {
   }
 
   public float getDamage() {
+    return Math.abs(getCurrentAverage() - 7);
+  }
+
+  public float getCurrentAverage() {
     float score = 0;
+    int count = 0;
 
     for (Integer content : contents) {
-      score += content;
+      if (content != null) {
+        score += content;
+        count++;
+      }
     }
 
-    score /= contents.length;
+    if (count == 0) {
+      return 7;
+    }
 
-    return Math.abs(score - 7);
+    score /= count;
+
+    return score;
+  }
+
+  public boolean isEmpty() {
+    return firstEmptyIndex == contents.length - 1;
   }
 
   public boolean isFull() {
