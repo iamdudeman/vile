@@ -1,11 +1,7 @@
 package technology.sola.engine.game.ai;
 
 import technology.sola.engine.game.state.Knowledge;
-import technology.sola.engine.game.state.Vial;
 import technology.sola.engine.game.state.VialsBoard;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class AggressiveAi extends Ai {
   private int turnsDefending = 0;

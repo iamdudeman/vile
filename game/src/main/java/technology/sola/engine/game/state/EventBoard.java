@@ -27,7 +27,7 @@ public class EventBoard {
     this.opponentModifications = eventBoard.opponentModifications;
   }
 
-  public Event[] getNextEvents() {
+  public Event<?>[] getNextEvents() {
     int maxRounds = GameBalanceConfiguration.INITIAL_EVENT_ROUNDS;
     int eventsCount = GameBalanceConfiguration.INITIAL_EVENTS_COUNT;
 
@@ -38,44 +38,64 @@ public class EventBoard {
     round++;
     // todo temp logic
     return new Event[] {
-      new BattleEvent("Battle", () -> {
-        VialsBoard vialsBoard = new VialsBoard(playerKnowledge, new RandomAi());
-
-        modifyBoard(vialsBoard);
-
-        return vialsBoard;
-      }),
-      new BattleEvent("Battle", () -> {
-        VialsBoard vialsBoard = new VialsBoard(playerKnowledge, new AggressiveAi());
-
-        modifyBoard(vialsBoard);
-
-        return vialsBoard;
-      }),
-      new ModificationEvent("Modification", () -> {
-        playerModifications.add(7);
-
-        return "Modified the next battle so you have a starting pH of 7";
-      }),
-      new ModificationEvent("Knowledge", () -> {
-        playerKnowledge.addReroll();
-
-        return "You get a small test buff giving you a reroll.";
-      }),
-      new ModificationEvent("Knowledge", () -> {
-        playerKnowledge.addNeutralize();
-
-        return "You get a small test buff giving you a neutralizing agent.";
-      }),
+      battleRandomAi(),
+      battleAggressiveAi(),
+      modificationBoardValue(7, true),
+      knowledgeReroll(),
+      knowledgeNeutralizingAgent(),
     };
   }
 
-  public Knowledge getPlayerKnowledge() {
-    return playerKnowledge;
+  private Event<?> battleRandomAi() {
+    return new BattleEvent("Battle", () -> {
+      VialsBoard vialsBoard = new VialsBoard(playerKnowledge, new RandomAi());
+
+      modifyBoard(vialsBoard);
+
+      return vialsBoard;
+    });
   }
 
-  public int getRound() {
-    return round;
+  private Event<?> battleAggressiveAi() {
+    return new BattleEvent("Battle", () -> {
+      VialsBoard vialsBoard = new VialsBoard(playerKnowledge, new AggressiveAi());
+
+      modifyBoard(vialsBoard);
+
+      return vialsBoard;
+    });
+  }
+
+  private Event<?> modificationBoardValue(int value, boolean isPlayer) {
+    return new ModificationEvent("Modification", () -> {
+      String whoPhrase = "";
+
+      if (isPlayer) {
+        playerModifications.add(value);
+        whoPhrase = "you have";
+      } else {
+        opponentModifications.add(value);
+        whoPhrase = "your opponent has";
+      }
+
+      return String.format("Modified the next battle so %s a starting pH of %d", whoPhrase, value);
+    });
+  }
+
+  private Event<?> knowledgeReroll() {
+    return new ModificationEvent("Knowledge", () -> {
+      playerKnowledge.addReroll();
+
+      return "You get a small test buff giving you a reroll.";
+    });
+  }
+
+  private Event<?> knowledgeNeutralizingAgent() {
+    return new ModificationEvent("Knowledge", () -> {
+      playerKnowledge.addNeutralize();
+
+      return "You get a small test buff giving you a neutralizing agent.";
+    });
   }
 
   private void modifyBoard(VialsBoard board) {

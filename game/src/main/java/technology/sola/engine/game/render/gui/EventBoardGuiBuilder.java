@@ -25,6 +25,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class EventBoardGuiBuilder {
+  private boolean isEventsVisible = true;
   private final GuiDocument guiDocument;
   private final GuiTheme guiTheme = DefaultThemeBuilder.buildDarkTheme()
     .addStyle(ButtonGuiElement.class, List.of(ConditionalStyle.always(
@@ -115,6 +116,12 @@ public class EventBoardGuiBuilder {
   private GuiElement<?> elementEvent(EventBoard.Event<?> event, EventBoard eventBoard) {
     return new ButtonGuiElement()
       .setOnAction(() -> {
+        if (!isEventsVisible) {
+          return;
+        }
+
+        isEventsVisible = false;
+
         VialsBoard vialsBoard = null;
         String eventText = "";
 
