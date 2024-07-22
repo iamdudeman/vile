@@ -272,7 +272,7 @@ public class VialsBoardGuiBuilder {
   }
 
   private GuiElement<?> elementPlayerSection(VialsBoard vialsBoard) {
-    var playerSection = new SectionGuiElement()
+    return new SectionGuiElement()
       .appendChildren(
         elementRollButton(vialsBoard),
         new TextGuiElement()
@@ -287,17 +287,6 @@ public class VialsBoardGuiBuilder {
             .setGap(10)
             .setPadding(8)
             .setBorderColor(Color.WHITE)
-            .build()
-        )
-      ));
-
-    return new SectionGuiElement()
-      .appendChildren(playerSection)
-      .setStyle(List.of(
-        ConditionalStyle.always(
-          BaseStyles
-            .create()
-            .setGap(4)
             .build()
         )
       ));
@@ -428,7 +417,7 @@ public class VialsBoardGuiBuilder {
       );
     }
 
-    var infoSection = new SectionGuiElement()
+    return new SectionGuiElement()
       .appendChildren(
         new TextGuiElement().setText(ai.getName()),
         knowledgeSection
@@ -440,19 +429,6 @@ public class VialsBoardGuiBuilder {
             .setGap(10)
             .setPadding(8)
             .setBorderColor(Color.WHITE)
-            .build()
-        )
-      ));
-
-    return new SectionGuiElement()
-      .appendChildren(
-        infoSection
-      )
-      .setStyle(List.of(
-        ConditionalStyle.always(
-          BaseStyles
-            .create()
-            .setGap(10)
             .build()
         )
       ));
