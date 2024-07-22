@@ -7,12 +7,7 @@ public class AggressiveAi extends Ai {
   private int turnsDefending = 0;
 
   public AggressiveAi() {
-    knowledge = new Knowledge();
-
-    knowledge.addReBrew();
-    knowledge.addReBrew();
-
-    knowledge.addMaxHealth();
+    super(prepareKnowledge());
   }
 
   @Override
@@ -113,5 +108,16 @@ public class AggressiveAi extends Ai {
 
     isDone = true;
     return "I'm tired of defending. I pour " + currentBrew + " in one of your vials.";
+  }
+
+  private static Knowledge prepareKnowledge() {
+    Knowledge knowledge = new Knowledge();
+
+    knowledge.addReBrew();
+    knowledge.addReBrew();
+
+    knowledge.addMaxHealth();
+
+    return knowledge;
   }
 }

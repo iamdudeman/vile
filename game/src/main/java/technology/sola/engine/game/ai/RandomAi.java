@@ -10,7 +10,7 @@ import java.util.List;
 
 public class RandomAi extends Ai {
   public RandomAi() {
-    knowledge = new Knowledge();
+    super(new Knowledge());
   }
 
   @Override

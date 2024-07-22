@@ -6,10 +6,14 @@ import technology.sola.engine.game.state.VialsBoard;
 import java.util.Random;
 
 public abstract class Ai {
+  protected final Random random = new Random();
+  protected final Knowledge knowledge;
   protected Integer currentBrew = null;
-  protected Random random = new Random();
   protected boolean isDone = false;
-  protected Knowledge knowledge;
+
+  protected Ai(Knowledge knowledge) {
+    this.knowledge = knowledge;
+  }
 
   public abstract String getName();
 
