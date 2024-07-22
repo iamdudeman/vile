@@ -45,19 +45,8 @@ public class AggressiveAi extends Ai {
     }
 
     if (currentRoll == 7) {
-      if (knowledge.getCurrentRerolls() > 0) {
-        knowledge.reroll();
-        currentRoll = vialsBoard.rollNextPh();
-
-        return "I rerolled " + currentRoll + ".";
-      }
-
-      for (var vial : vialsBoard.getOpponentVials()) {
-        if (!vial.isFull()) {
-          vial.addLiquidToTop(currentRoll);
-          break;
-        }
-      }
+      vialsBoard.getOpponentVials()[random.nextInt(vialsBoard.getOpponentVials().length)]
+        .addLiquidToTop(currentRoll);
 
       isDone = true;
       return "I poured my 7 on my board.";

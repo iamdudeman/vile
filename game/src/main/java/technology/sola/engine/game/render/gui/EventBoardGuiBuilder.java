@@ -2,6 +2,7 @@ package technology.sola.engine.game.render.gui;
 
 import technology.sola.engine.game.state.EventBoard;
 import technology.sola.engine.game.state.Knowledge;
+import technology.sola.engine.game.state.VialsBoard;
 import technology.sola.engine.graphics.Color;
 import technology.sola.engine.graphics.gui.GuiDocument;
 import technology.sola.engine.graphics.gui.GuiElement;
@@ -111,49 +112,62 @@ public class EventBoardGuiBuilder {
     return eventsSection;
   }
 
-  private GuiElement<?> elementEvent(EventBoard.Event event, EventBoard eventBoard) {
+  private GuiElement<?> elementEvent(EventBoard.Event<?> event, EventBoard eventBoard) {
     return new ButtonGuiElement()
       .setOnAction(() -> {
-        var vialsBoard = event.applyEvent().get();
+        VialsBoard vialsBoard = null;
+        String eventText = "";
+
+        if (event instanceof EventBoard.BattleEvent battleEvent) {
+          vialsBoard = battleEvent.payload().get();
+          eventText = vialsBoard.ai.getGreeting(vialsBoard);
+        } else if (event instanceof EventBoard.ModificationEvent modificationEvent) {
+          eventText = modificationEvent.payload().get();
+        }
+
 
         var eventsSection = guiDocument.findElementById("eventsSection", SectionGuiElement.class);
-        var eventText = guiDocument.findElementById("eventText", TextGuiElement.class);
+        var eventTextElement = guiDocument.findElementById("eventText", TextGuiElement.class);
 
         eventsSection
             .styles()
             .addStyle(visibilityHiddenStyle);
 
-        eventText
-          .setText(vialsBoard == null ? event.text() : vialsBoard.ai.getGreeting(vialsBoard))
+        eventTextElement
+          .setText(eventText)
           .styles()
           .removeStyle(visibilityHiddenTextStyle);
 
         Timer timer = new Timer();
 
-        timer.schedule(new TimerTask() {
-          @Override
-          public void run() {
-            if (vialsBoard == null) {
-              guiDocument.setRootElement(
-                new EventBoardGuiBuilder(guiDocument)
-                  .build(eventBoard)
-              );
-
-              eventText.styles().addStyle(visibilityHiddenTextStyle);
-            } else {
-              guiDocument.setRootElement(
-                new VialsBoardGuiBuilder(guiDocument)
-                  .build(vialsBoard)
-              );
-            }
-
-            cancel();
-            timer.cancel();
-          }
-        }, 4000);
+        timer.schedule(buildTimerTask(timer, eventBoard, vialsBoard, eventTextElement), 4000);
       })
       .appendChildren(
-        new TextGuiElement().setText(event.type().title)
+        new TextGuiElement().setText(event.title())
       );
+  }
+
+  private TimerTask buildTimerTask(Timer timer, EventBoard eventBoard, VialsBoard vialsBoard, TextGuiElement eventTextElement) {
+    return new TimerTask() {
+      @Override
+      public void run() {
+        if (vialsBoard == null) {
+          guiDocument.setRootElement(
+            new EventBoardGuiBuilder(guiDocument)
+              .build(eventBoard)
+          );
+
+          eventTextElement.styles().addStyle(visibilityHiddenTextStyle);
+        } else {
+          guiDocument.setRootElement(
+            new VialsBoardGuiBuilder(guiDocument)
+              .build(vialsBoard)
+          );
+        }
+
+        cancel();
+        timer.cancel();
+      }
+    };
   }
 }

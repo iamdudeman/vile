@@ -38,35 +38,35 @@ public class EventBoard {
     round++;
     // todo temp logic
     return new Event[] {
-      new Event(EventType.BATTLE, "", () -> {
+      new BattleEvent("Battle", () -> {
         VialsBoard vialsBoard = new VialsBoard(playerKnowledge, new RandomAi());
 
         modifyBoard(vialsBoard);
 
         return vialsBoard;
       }),
-      new Event(EventType.BATTLE, "", () -> {
+      new BattleEvent("Battle", () -> {
         VialsBoard vialsBoard = new VialsBoard(playerKnowledge, new AggressiveAi());
 
         modifyBoard(vialsBoard);
 
         return vialsBoard;
       }),
-      new Event(EventType.MODIFICATION, "Modified the next battle so you have a starting pH of 7", () -> {
+      new ModificationEvent("Modification", () -> {
         playerModifications.add(7);
 
-        return null;
+        return "Modified the next battle so you have a starting pH of 7";
       }),
-      new Event(EventType.KNOWLEDGE, "You get a small test buff giving you a reroll", () -> {
+      new ModificationEvent("Knowledge", () -> {
         playerKnowledge.addReroll();
 
-        return null;
+        return "You get a small test buff giving you a reroll.";
       }),
-      new Event(EventType.KNOWLEDGE, "You get a small test buff giving you a neutralizing agent.", () -> {
+      new ModificationEvent("Knowledge", () -> {
         playerKnowledge.addNeutralize();
 
-        return null;
-      })
+        return "You get a small test buff giving you a neutralizing agent.";
+      }),
     };
   }
 
@@ -92,22 +92,15 @@ public class EventBoard {
     });
   }
 
-  public record Event(
-    EventType type,
-    String text,
-    Supplier<VialsBoard> applyEvent
-  ) {
+  public interface Event<T> {
+    String title();
+
+    Supplier<T> payload();
   }
 
-  public enum EventType {
-    BATTLE("Battle"),
-    MODIFICATION("Laboratory"),
-    KNOWLEDGE("Library");
+  public record BattleEvent(String title, Supplier<VialsBoard> payload) implements Event<VialsBoard> {
+  }
 
-    public final String title;
-
-    EventType(String title) {
-      this.title = title;
-    }
+  public record ModificationEvent(String title, Supplier<String> payload) implements Event<String> {
   }
 }
