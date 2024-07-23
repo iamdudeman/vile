@@ -1,7 +1,9 @@
 package technology.sola.engine.game.render.gui;
 
 import technology.sola.engine.game.GameSettings;
+import technology.sola.engine.game.ai.TutorialAi;
 import technology.sola.engine.game.state.Knowledge;
+import technology.sola.engine.game.state.VialsBoard;
 import technology.sola.engine.graphics.Color;
 import technology.sola.engine.graphics.gui.GuiDocument;
 import technology.sola.engine.graphics.gui.GuiElement;
@@ -46,7 +48,13 @@ public class MainMenuGuiBuilder {
         new ButtonGuiElement()
           .setOnAction(() -> {
             guiDocument.setRootElement(
-              new EventBoardGuiBuilder(guiDocument).build(new Knowledge())
+              new VialsBoardGuiBuilder(guiDocument)
+                .build(new VialsBoard(
+                  new Knowledge(),
+                  new TutorialAi(),
+                  2,
+                  3
+                ))
             );
           })
           .appendChildren(

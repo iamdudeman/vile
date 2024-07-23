@@ -77,8 +77,13 @@ public class VialsBoardGuiBuilder {
     playerPortrait.setStyle(List.of(portraitImageStyle));
 
     ImageGuiElement opponentPortrait = new ImageGuiElement();
-    opponentPortrait.setAssetId(vialsBoard.ai.getAssetId());
-    opponentPortrait.setStyle(List.of(portraitImageStyle));
+    String assetId = vialsBoard.ai.getAssetId();
+    boolean isTutorial = assetId == null;
+
+    if (!isTutorial) {
+      opponentPortrait.setAssetId(vialsBoard.ai.getAssetId());
+      opponentPortrait.setStyle(List.of(portraitImageStyle));
+    }
 
     var topSection = new SectionGuiElement()
       .appendChildren(
@@ -95,7 +100,7 @@ public class VialsBoardGuiBuilder {
             portraitContainerStyle,
             ConditionalStyle.always(BaseStyles.create().setBorderColor(opponentColor).build())
           ))
-          .appendChildren(opponentPortrait)
+          .appendChildren(isTutorial ? new SectionGuiElement() : opponentPortrait)
       ).setStyle(List.of(ConditionalStyle.always(
         BaseStyles.create()
           .setDirection(Direction.ROW)
@@ -135,6 +140,11 @@ public class VialsBoardGuiBuilder {
             .build()
         )
       ));
+
+    if (isTutorial) {
+      vialsBoardSection
+        .appendChildren(elementTutorialText(), elementTutorialPhGuide());
+    }
 
     guiTheme.applyToTree(vialsBoardSection);
 
@@ -347,7 +357,7 @@ public class VialsBoardGuiBuilder {
     )));
 
     knowledgeSectionGuiElement
-      .appendChildren(new TextGuiElement().setText("Knowledge"));
+      .appendChildren(new TextGuiElement().setText("-Knowledge-"));
 
     ButtonGuiElement rerollButton = new ButtonGuiElement();
     TextGuiElement rerollText = new TextGuiElement()
@@ -420,7 +430,7 @@ public class VialsBoardGuiBuilder {
       new TextGuiElement()
         .setText("Health: " + ai.getKnowledge().getFormattedCurrentHealth())
         .setId("aiHealth"),
-      new TextGuiElement().setText("Knowledge")
+      new TextGuiElement().setText("-Knowledge-")
     );
 
     knowledgeSection.appendChildren(
@@ -652,4 +662,67 @@ public class VialsBoardGuiBuilder {
     guiDocument.findElementById("aiHealth", TextGuiElement.class)
       .setText("Health: " + vialsBoard.ai.getKnowledge().getFormattedCurrentHealth());
   }
+
+  private GuiElement<?> elementTutorialText() {
+    var tutorialText = new TextGuiElement()
+      .setText(
+        """
+               --Tutorial--
+
+        1)Brew a liquid with pH 0-14
+
+        2)Pour brew in a vial to make it more acidic or basic
+
+        3)Wait for opponent to play their turn
+
+        4)Players will drink filled vials
+
+        5)The more acidic or basic the more damage you take
+
+        6)Use Knowledge to manipulate the flow of the game.
+
+        7)Last player alive wins!
+        """
+      );
+
+    tutorialText.styles().addStyle(ConditionalStyle.always(
+      TextStyles.create()
+        .setPositionX("4")
+        .setPositionY("35%")
+        .setHeight(600)
+        .setWidth(300)
+        .setPadding(8)
+        .build()
+    ));
+
+    return tutorialText;
+  }
+
+  private GuiElement<?> elementTutorialPhGuide() {
+    var tutorialText = new TextGuiElement()
+      .setText(
+        """
+         --pH Refresher--
+
+         0 - most acidic
+         7 - neutral
+        14 - most basic
+
+        Damage = |7 - pH|
+        """
+      );
+
+    tutorialText.styles().addStyle(ConditionalStyle.always(
+      TextStyles.create()
+        .setPositionX("75%")
+        .setPositionY("35%")
+        .setHeight(200)
+        .setWidth("25%")
+        .setPadding(8)
+        .build()
+    ));
+
+    return tutorialText;
+  }
+
 }
