@@ -55,7 +55,7 @@ public class VialsBoardGuiBuilder {
       .setWidth(128)
       .setHeight(128)
       .setPadding(4)
-      .setBackgroundColor(Color.WHITE)
+      .setBackgroundColor(new Color(96, 96, 96))
       .build()
   );
   private final ConditionalStyle<BaseStyles> portraitImageStyle = ConditionalStyle.always(

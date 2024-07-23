@@ -37,6 +37,16 @@ public class RandomAi extends Ai {
   @Override
   public String nextAction(VialsBoard vialsBoard) {
     if (currentBrew == null) {
+      if (knowledge.getCurrentNeutralizeAgents() > 0 && random.nextInt(10) < 1 && currentTurn > 2) {
+        Vial chosenVial = getRandomVial(vialsBoard);
+
+        knowledge.neutralize();
+        chosenVial.neutralizeTop();
+
+        isDone = true;
+        return "I neutralized the top of a random vial.";
+      }
+
       currentBrew = vialsBoard.brewNextPh();
 
       return "I brewed " + currentBrew + ".";
@@ -49,17 +59,21 @@ public class RandomAi extends Ai {
       return "I rebrewed " + currentBrew + ".";
     }
 
+    Vial chosenVial = getRandomVial(vialsBoard);
+
+    chosenVial.addLiquidToTop(currentBrew);
+    isDone = true;
+
+    return "I poured " + currentBrew + " in a random vial.";
+  }
+
+  private Vial getRandomVial(VialsBoard vialsBoard) {
     List<Vial> validVials = new ArrayList<>(
       Arrays.asList(vialsBoard.getPlayerVials())
     );
 
     validVials.addAll(Arrays.asList(vialsBoard.getOpponentVials()));
 
-    Vial chosenVial = validVials.get(random.nextInt(validVials.size()));
-
-    chosenVial.addLiquidToTop(currentBrew);
-    isDone = true;
-
-    return "I poured " + currentBrew + " in a random vial.";
+    return validVials.get(random.nextInt(validVials.size()));
   }
 }

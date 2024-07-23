@@ -10,6 +10,7 @@ public abstract class Ai {
   protected final Knowledge knowledge;
   protected Integer currentBrew = null;
   protected boolean isDone = false;
+  protected int currentTurn = 0;
 
   protected Ai(Knowledge knowledge) {
     this.knowledge = knowledge;
@@ -32,6 +33,7 @@ public abstract class Ai {
   public String startTurn(VialsBoard vialsBoard) {
     isDone = false;
     currentBrew = null;
+    currentTurn++;
 
     return getStartTurnText(vialsBoard);
   }
