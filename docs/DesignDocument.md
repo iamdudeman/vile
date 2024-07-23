@@ -73,10 +73,13 @@ progressively more difficult challenges.
         * Boss battle
     * Library
         * Chance to gain additional knowledge usages
-        * Chance to see more events each event round
+        * Chance to gain an additional life
+        * Chance to gain additional max health
     * Modification
         * Give you or your opponent a head start in the next round
         * Possible upgrades to starting player health
+        * Additional vials or vial depth
+        * Chance to see more events each event round
 
 ### Story overview
 

@@ -4,7 +4,7 @@ public class Knowledge {
   private int extraLives;
   private int extraEvents;
   private int instability;
-  private int maxHealth;
+  private float maxHealth;
   private int reBrews;
   private int neutralizeAgents;
   private int battlesWon = 0;
@@ -31,8 +31,8 @@ public class Knowledge {
   }
 
 
-  public void addMaxHealth() {
-    maxHealth++;
+  public void addMaxHealth(float additionalMaxHealth) {
+    maxHealth += additionalMaxHealth;
     currentHealth = maxHealth;
   }
 

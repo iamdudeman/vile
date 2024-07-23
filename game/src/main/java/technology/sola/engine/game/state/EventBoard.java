@@ -11,11 +11,15 @@ import java.util.function.Supplier;
 public class EventBoard {
   private static final int INITIAL_EVENTS_COUNT = 2;
   private static final int INITIAL_EVENT_ROUNDS = 3;
+  private static final int INITIAL_VIAL_COUNT = 3;
+  private static final int INITIAL_VIAL_DEPTH = 5;
   private final Random random = new Random();
   private final Knowledge playerKnowledge;
   private int round = 1;
   private List<Integer> playerModifications = new ArrayList<>();
   private List<Integer> opponentModifications = new ArrayList<>();
+  private int vialCountModification = 0;
+  private int vialDepthModification = 0;
 
   public EventBoard(Knowledge playerKnowledge) {
     this.playerKnowledge = playerKnowledge;
@@ -43,14 +47,19 @@ public class EventBoard {
       battleAggressiveAi(),
       modificationBoardValue(7, true),
       knowledgeInstability(),
-      knowledgeReroll(),
+      knowledgeReBrew(),
       knowledgeNeutralizingAgent(),
     };
   }
 
   private Event<?> battleRandomAi() {
     return new BattleEvent("Battle", () -> {
-      VialsBoard vialsBoard = new VialsBoard(playerKnowledge, new RandomAi());
+      VialsBoard vialsBoard = new VialsBoard(
+        playerKnowledge,
+        new RandomAi(),
+        INITIAL_VIAL_COUNT + vialCountModification,
+        INITIAL_VIAL_DEPTH + vialDepthModification
+      );
 
       modifyBoard(vialsBoard);
 
@@ -60,7 +69,12 @@ public class EventBoard {
 
   private Event<?> battleAggressiveAi() {
     return new BattleEvent("Battle", () -> {
-      VialsBoard vialsBoard = new VialsBoard(playerKnowledge, new AggressiveAi());
+      VialsBoard vialsBoard = new VialsBoard(
+        playerKnowledge,
+        new AggressiveAi(),
+        INITIAL_VIAL_COUNT + vialCountModification,
+        INITIAL_VIAL_DEPTH + vialDepthModification
+      );
 
       modifyBoard(vialsBoard);
 
@@ -80,15 +94,55 @@ public class EventBoard {
         whoPhrase = "your opponent has";
       }
 
-      return String.format("Modified the next battle so %s a starting pH of %d", whoPhrase, value);
+      return String.format("The next set of vials have been modified so %s a vile with a pH of %d poured in it.", whoPhrase, value);
     });
   }
 
-  private Event<?> knowledgeReroll() {
+  private Event<?> modificationVialsBoardVialDepth() {
+    return new ModificationEvent("Modification", () -> {
+      vialDepthModification++;
+
+      return "Your next game of vials will have deeper vials in play.";
+    });
+  }
+
+  private Event<?> modificationVialsBoardVialCount() {
+    return new ModificationEvent("Modification", () -> {
+      vialCountModification++;
+
+      return "Your next game of vials will have an additional vial in play.";
+    });
+  }
+
+  private Event<?> modificationEventBoard() {
+    return new ModificationEvent("Modification", () -> {
+      playerKnowledge.incrementExtraEvents();
+
+      return "Your craftiness has allowed you to see more events each round.";
+    });
+  }
+
+  private Event<?> knowledgePlayerHealth() {
+    return new ModificationEvent("Knowledge", () -> {
+      playerKnowledge.addMaxHealth(0.5f);
+
+      return "You have modified your body to be able to handle poisonous brews more effectively.";
+    });
+  }
+
+  private Event<?> knowledgeReBrew() {
     return new ModificationEvent("Knowledge", () -> {
       playerKnowledge.addReBrew();
 
-      return "You get a small test buff giving you a rebrew.";
+      return "You learned how to make an additional rebrews.";
+    });
+  }
+
+  private Event<?> knowledgeExtraLife() {
+    return new ModificationEvent("Knowledge", () -> {
+      playerKnowledge.addExtraLife();
+
+      return "You learned how to cheat death another time.";
     });
   }
 
@@ -104,7 +158,11 @@ public class EventBoard {
     return new ModificationEvent("Knowledge", () -> {
       playerKnowledge.addNeutralize();
 
-      return "You get a small test buff giving you a neutralizing agent.";
+      if (playerKnowledge.getNeutralizeAgents() == 1) {
+        return "You learned how to make neutralizing agents. Neutralizing agents will neutralize the top of a vial in place of pouring a brew that round.";
+      }
+
+      return "You learned how to make an additional neutralizing agent.";
     });
   }
 

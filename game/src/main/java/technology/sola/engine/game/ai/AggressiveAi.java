@@ -122,7 +122,7 @@ public class AggressiveAi extends Ai {
     knowledge.addReBrew();
     knowledge.addReBrew();
 
-    knowledge.addMaxHealth();
+    knowledge.addMaxHealth(1);
 
     return knowledge;
   }
