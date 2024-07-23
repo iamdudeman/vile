@@ -6,6 +6,7 @@ import technology.sola.engine.core.SolaConfiguration;
 import technology.sola.engine.defaults.SolaWithDefaults;
 import technology.sola.engine.game.render.LoadingScreen;
 import technology.sola.engine.game.render.gui.EventBoardGuiBuilder;
+import technology.sola.engine.game.render.gui.MainMenuGuiBuilder;
 import technology.sola.engine.game.state.Knowledge;
 import technology.sola.engine.graphics.renderer.Renderer;
 import technology.sola.engine.graphics.screen.AspectMode;
@@ -34,7 +35,7 @@ public class GameSola extends SolaWithDefaults {
       .loadAll()
       .onComplete(assets -> {
         guiDocument.setRootElement(
-          new EventBoardGuiBuilder(guiDocument).build(new Knowledge())
+          new MainMenuGuiBuilder(guiDocument).build()
         );
 
         // finish async load

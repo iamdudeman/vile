@@ -1,6 +1,7 @@
 package technology.sola.engine.game.render.gui;
 
 import technology.sola.engine.game.AssetIds;
+import technology.sola.engine.game.GameSettings;
 import technology.sola.engine.game.ai.Ai;
 import technology.sola.engine.game.state.Knowledge;
 import technology.sola.engine.game.state.Vial;
@@ -550,6 +551,19 @@ public class VialsBoardGuiBuilder {
   private void handleAiTurn(VialsBoard vialsBoard, Random random) {
     Timer timer = new Timer();
 
+    long min = switch (GameSettings.AI_SPEED) {
+      case 1 -> 3000;
+      case 2 -> 2000;
+      case 3 -> 750;
+      default -> 2000;
+    };
+    long max = switch (GameSettings.AI_SPEED) {
+      case 1 -> 5000;
+      case 2 -> 3000;
+      case 3 -> 1500;
+      default -> 3000;
+    };
+
     timer.schedule(new TimerTask() {
       @Override
       public void run() {
@@ -578,7 +592,7 @@ public class VialsBoardGuiBuilder {
           handleAiTurn(vialsBoard, random);
         }
       }
-    }, random.nextLong(2000, 3000));
+    }, random.nextLong(min, max));
   }
 
   private void updateGameStateUi(VialsBoard vialsBoard) {
