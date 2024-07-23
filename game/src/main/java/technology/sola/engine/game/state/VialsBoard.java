@@ -51,7 +51,9 @@ public class VialsBoard {
   }
 
   public int brewNextPh() {
-    float standardDeviation = switch (playerKnowledge.getInstability()) {
+    Knowledge knowledge = isPlayerTurn ? playerKnowledge : ai.getKnowledge();
+
+    float standardDeviation = switch (knowledge.getInstability()) {
       case 1 -> 2f;
       case 2 -> 3f;
       case 3 -> 3.5f;
