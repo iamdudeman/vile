@@ -158,12 +158,13 @@ todo
 | Vials Gameplay    | `Code`  | `DONE` | Basic gameplay loop                             |
 | AI                | `Code`  | `DONE` | Create some AI to play against                  |
 | Events            | `Code`  | `WIP`  | Implement events where upgrades can be received |
-| Player portraits  | `Code`  | `WIP`  | Implement portraits in UI                       |
+| Player portraits  | `Code`  | `DONE` | Implement portraits in UI                       |
+| Main menu         | `Code`  | `DONE` | Implement the games main menu                   |
 | Battle music      | `Audio` | `TODO` | Music that plays during a battle                |
 | Event board music | `Audio` | `TODO` | Menu that plays on the world map after a battle |
 | Event icons       | `Art`   | `TODO` | The event icons (boss, vial, book)              |
-| Player portrait   | `Art`   | `TODO` | The player portrait                             |
-| AI portraits      | `Art`   | `TODO` | The opponent portraits                          |
+| Player portrait   | `Art`   | `DONE` | The player portrait                             |
+| AI portraits      | `Art`   | `WIP`  | The opponent portraits                          |
 | Vile main title   | `Art`   | `TODO` | The word "Vile" in main title                   |
 | Story progression | `Code`  | `TODO` | Implement story progress between rounds         |
 | Sound effects     | `Audio` | `TODO` | Add in sound effects where they make sense!     |
