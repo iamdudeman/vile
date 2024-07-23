@@ -1,6 +1,5 @@
 package technology.sola.engine.game.state;
 
-import technology.sola.engine.game.GameBalanceConfiguration;
 import technology.sola.engine.game.ai.Ai;
 
 import java.util.Random;
@@ -8,13 +7,14 @@ import java.util.Random;
 public class VialsBoard {
   public final Knowledge playerKnowledge;
   public final Ai ai;
+  private static final int INITIAL_LIVES = 2;
   private static final int MAX_PH = 14;
   private final Random random = new Random();
   private final Vial[] playerVials;
   private final Vial[] opponentVials;
+  private final int vialDepth;
   private boolean isPlayerTurn = true;
   private int lives;
-  private int vialDepth;
 
   public VialsBoard(Knowledge playerKnowledge, Ai ai) {
     this(playerKnowledge, ai, 3, 5);
@@ -27,7 +27,7 @@ public class VialsBoard {
     this.opponentVials = new Vial[vialCount];
     this.vialDepth = vialDepth;
 
-    lives = GameBalanceConfiguration.INITIAL_LIVES + playerKnowledge.getExtraLives();
+    lives = INITIAL_LIVES + playerKnowledge.getExtraLives();
 
     for (int i = 0; i < playerVials.length; i++) {
       playerVials[i] = new Vial(vialDepth);

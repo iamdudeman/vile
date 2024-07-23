@@ -1,6 +1,5 @@
 package technology.sola.engine.game.state;
 
-import technology.sola.engine.game.GameBalanceConfiguration;
 import technology.sola.engine.game.ai.AggressiveAi;
 import technology.sola.engine.game.ai.RandomAi;
 
@@ -10,6 +9,8 @@ import java.util.Random;
 import java.util.function.Supplier;
 
 public class EventBoard {
+  private static final int INITIAL_EVENTS_COUNT = 2;
+  private static final int INITIAL_EVENT_ROUNDS = 3;
   private final Random random = new Random();
   private final Knowledge playerKnowledge;
   private int round = 1;
@@ -28,8 +29,8 @@ public class EventBoard {
   }
 
   public Event<?>[] getNextEvents() {
-    int maxRounds = GameBalanceConfiguration.INITIAL_EVENT_ROUNDS;
-    int eventsCount = GameBalanceConfiguration.INITIAL_EVENTS_COUNT + playerKnowledge.getExtraEvents();
+    int maxRounds = INITIAL_EVENT_ROUNDS;
+    int eventsCount = INITIAL_EVENTS_COUNT + playerKnowledge.getExtraEvents();
 
     if (round >= maxRounds) {
       // todo return only battles
