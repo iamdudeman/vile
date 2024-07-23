@@ -134,7 +134,7 @@ public class EventBoard {
     return new ModificationEvent("Knowledge", () -> {
       playerKnowledge.addReBrew();
 
-      return "You learned how to make an additional rebrews.";
+      return "You learned how to make an additional rebrew.";
     });
   }
 

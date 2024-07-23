@@ -435,7 +435,7 @@ public class VialsBoardGuiBuilder {
 
     knowledgeSection.appendChildren(
       new TextGuiElement()
-        .setText("Rerolls " + ai.getKnowledge().getCurrentRebrews() + "/" + ai.getKnowledge().getReBrews())
+        .setText("Rebrew " + ai.getKnowledge().getCurrentRebrews() + "/" + ai.getKnowledge().getReBrews())
         .setId("aiRerolls")
     );
 

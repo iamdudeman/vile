@@ -93,8 +93,6 @@ public class EventBoardGuiBuilder {
   private GuiElement<?> elementEventsSection(EventBoard eventBoard) {
     SectionGuiElement eventsSection = new SectionGuiElement();
 
-    eventsSection.setId("eventsSection");
-
     eventsSection.appendChildren(
       Arrays.stream(eventBoard.getNextEvents())
         .map(event -> elementEvent(event, eventBoard))
@@ -110,7 +108,26 @@ public class EventBoardGuiBuilder {
         .build()
     )));
 
-    return eventsSection;
+    return new SectionGuiElement()
+      .setId("eventsSection")
+      .appendChildren(
+        new TextGuiElement()
+          .setText("Acquire Knowledge or Modify the vials for your next round until it starts!")
+          .setStyle(List.of(
+            ConditionalStyle.always(
+              TextStyles.create()
+                .setPaddingBottom(12)
+                .build()
+            )
+          )),
+        eventsSection
+      )
+      .setStyle(List.of(ConditionalStyle.always(
+        BaseStyles.create()
+          .setDirection(Direction.COLUMN)
+          .setGap(16)
+          .build()
+      )));
   }
 
   private GuiElement<?> elementEvent(EventBoard.Event<?> event, EventBoard eventBoard) {
