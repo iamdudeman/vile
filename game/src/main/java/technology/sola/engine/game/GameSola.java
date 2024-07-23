@@ -5,9 +5,7 @@ import technology.sola.engine.assets.graphics.SolaImage;
 import technology.sola.engine.core.SolaConfiguration;
 import technology.sola.engine.defaults.SolaWithDefaults;
 import technology.sola.engine.game.render.LoadingScreen;
-import technology.sola.engine.game.render.gui.EventBoardGuiBuilder;
 import technology.sola.engine.game.render.gui.MainMenuGuiBuilder;
-import technology.sola.engine.game.state.Knowledge;
 import technology.sola.engine.graphics.renderer.Renderer;
 import technology.sola.engine.graphics.screen.AspectMode;
 

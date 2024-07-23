@@ -14,29 +14,35 @@ public class VialsBoard {
   private final Vial[] opponentVials;
   private boolean isPlayerTurn = true;
   private int lives;
+  private int vialDepth;
 
   public VialsBoard(Knowledge playerKnowledge, Ai ai) {
+    this(playerKnowledge, ai, 3, 5);
+  }
+
+  public VialsBoard(Knowledge playerKnowledge, Ai ai, int vialCount, int vialDepth) {
     this.playerKnowledge = playerKnowledge;
     this.ai = ai;
-    this.playerVials = new Vial[GameBalanceConfiguration.VIAL_COUNT];
-    this.opponentVials = new Vial[GameBalanceConfiguration.VIAL_COUNT];
+    this.playerVials = new Vial[vialCount];
+    this.opponentVials = new Vial[vialCount];
+    this.vialDepth = vialDepth;
 
     lives = GameBalanceConfiguration.INITIAL_LIVES + playerKnowledge.getExtraLives();
 
     for (int i = 0; i < playerVials.length; i++) {
-      playerVials[i] = new Vial();
+      playerVials[i] = new Vial(vialDepth);
     }
     for (int i = 0; i < opponentVials.length; i++) {
-      opponentVials[i] = new Vial();
+      opponentVials[i] = new Vial(vialDepth);
     }
   }
 
   public void reset() {
     for (int i = 0; i < playerVials.length; i++) {
-      playerVials[i] = new Vial();
+      playerVials[i] = new Vial(vialDepth);
     }
     for (int i = 0; i < opponentVials.length; i++) {
-      opponentVials[i] = new Vial();
+      opponentVials[i] = new Vial(vialDepth);
     }
 
     playerKnowledge.reset();

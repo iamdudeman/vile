@@ -34,7 +34,9 @@ Puzzle rogue-lite
 
 #### First minutes
 
-todo
+The first minutes of the game will expose the player to the basics of the gameplay of Vials. They will play a simple
+AI opponent that will not be very difficult to beat. After the first victory they will experience their first event
+board where the game will start to be modified between each battle.
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -66,9 +68,10 @@ progressively more difficult challenges.
         * might be too strong so might not implement
 
 * Event tiles
-    * Regular fight
-    * Boss fight
-    * Library (could have a rare variant)
+    * Battle
+        * Normal battle
+        * Boss battle
+    * Library
         * Chance to gain additional knowledge usages
         * Chance to see more events each event round
     * Modification
@@ -127,12 +130,14 @@ todo
 ### Controls
 
 * Arrow keys to move between UI elements
-* Space or enter key to interact
-* Mouse click to interact
+* Space or enter key to interact with a button
+* Mouse click to interact as well
 
 ### UI
 
-todo
+The UI will be fairly basic allowing the user to interact with buttons to control the flow of the game. During a battle
+the UI will display the current health of each player as well as information about Knowledge they can use and what the
+AI is currently doing.
 
 ------------------------------------------------------------------------------------------------------------------------
 

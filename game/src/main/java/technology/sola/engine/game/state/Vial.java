@@ -1,15 +1,13 @@
 package technology.sola.engine.game.state;
 
-import technology.sola.engine.game.GameBalanceConfiguration;
-
 import java.util.Arrays;
 
 public class Vial {
   private final Integer[] contents;
   private int firstEmptyIndex;
 
-  public Vial() {
-    this.contents = new Integer[GameBalanceConfiguration.VIAL_DEPTH];
+  public Vial(int depth) {
+    this.contents = new Integer[depth];
 
     reset();
   }

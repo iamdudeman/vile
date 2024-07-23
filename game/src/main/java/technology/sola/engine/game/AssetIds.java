@@ -6,20 +6,8 @@ public final class AssetIds {
     }
   }
 
-  public static final class Controls {
-    public static final String PLAYER = "player";
-
-    private Controls() {
-    }
-  }
-
   public static final class Font {
     private Font() {
-    }
-  }
-
-  public static final class Gui {
-    private Gui() {
     }
   }
 
