@@ -1,5 +1,6 @@
 package technology.sola.engine.game.render.gui;
 
+import technology.sola.engine.game.AssetIds;
 import technology.sola.engine.game.GameSettings;
 import technology.sola.engine.game.ai.TutorialAi;
 import technology.sola.engine.game.state.Knowledge;
@@ -7,6 +8,7 @@ import technology.sola.engine.game.state.VialsBoard;
 import technology.sola.engine.graphics.Color;
 import technology.sola.engine.graphics.gui.GuiDocument;
 import technology.sola.engine.graphics.gui.GuiElement;
+import technology.sola.engine.graphics.gui.elements.ImageGuiElement;
 import technology.sola.engine.graphics.gui.elements.SectionGuiElement;
 import technology.sola.engine.graphics.gui.elements.TextGuiElement;
 import technology.sola.engine.graphics.gui.elements.input.ButtonGuiElement;
@@ -41,10 +43,20 @@ public class MainMenuGuiBuilder {
   }
 
   public GuiElement<?> build() {
+    var titleImage = new ImageGuiElement();
+
+    titleImage.setAssetId(AssetIds.Images.TITLE);
+
+    titleImage.setStyle(List.of(ConditionalStyle.always(
+      BaseStyles.create()
+        .setWidth(312)
+        .setHeight(266)
+        .build()
+    )));
+
     var rootSection = new SectionGuiElement()
       .appendChildren(
-        new TextGuiElement()
-          .setText("Vile"),
+        titleImage,
         new ButtonGuiElement()
           .setOnAction(() -> {
             guiDocument.setRootElement(

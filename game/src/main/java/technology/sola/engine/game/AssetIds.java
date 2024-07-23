@@ -15,6 +15,7 @@ public final class AssetIds {
     public static final String PLAYER = "player";
     public static final String WARLOCAT = "warlocat";
     public static final String DUCKY = "ducky";
+    public static final String TITLE = "title";
 
     private Images() {
     }
