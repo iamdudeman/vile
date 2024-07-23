@@ -44,9 +44,6 @@ public class VialsBoardGuiBuilder {
   private final ConditionalStyle<BaseStyles> neutralizeActiveStyle = ConditionalStyle.always(
     BaseStyles.create().setBackgroundColor(new Color(195, 177, 104)).build()
   );
-  private final ConditionalStyle<BaseStyles> visibilityHiddenStyle = ConditionalStyle.always(
-    BaseStyles.create().setVisibility(Visibility.HIDDEN).build()
-  );
   private final ConditionalStyle<TextStyles> visibilityHiddenTextStyle = ConditionalStyle.always(
     TextStyles.create().setVisibility(Visibility.HIDDEN).build()
   );

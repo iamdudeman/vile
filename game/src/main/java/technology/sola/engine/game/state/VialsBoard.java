@@ -16,10 +16,6 @@ public class VialsBoard {
   private boolean isPlayerTurn = true;
   private int lives;
 
-  public VialsBoard(Knowledge playerKnowledge, Ai ai) {
-    this(playerKnowledge, ai, 3, 5);
-  }
-
   public VialsBoard(Knowledge playerKnowledge, Ai ai, int vialCount, int vialDepth) {
     this.playerKnowledge = playerKnowledge;
     this.ai = ai;

@@ -25,7 +25,7 @@ public class TutorialAi extends Ai {
 
   @Override
   public String getGreeting(VialsBoard vialsBoard) {
-    return "Welcome to the game of Vials.";
+    return "";
   }
 
   @Override
