@@ -25,6 +25,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class EventBoardGuiBuilder {
+  private static boolean hasSeenFlavorText = false;
   private boolean isEventsVisible = true;
   private final GuiDocument guiDocument;
   private final GuiTheme guiTheme = DefaultThemeBuilder.buildDarkTheme()
@@ -33,8 +34,11 @@ public class EventBoardGuiBuilder {
         .setPadding(8)
         .build()
     )));
-  private final ConditionalStyle<TextStyles> visibilityHiddenTextStyle = ConditionalStyle.always(
+  private final ConditionalStyle<TextStyles> visibilityNoneTextStyle = ConditionalStyle.always(
     TextStyles.create().setVisibility(Visibility.NONE).build()
+  );
+  private final ConditionalStyle<TextStyles> visibilityHiddenTextStyle = ConditionalStyle.always(
+    TextStyles.create().setVisibility(Visibility.HIDDEN).build()
   );
   private final ConditionalStyle<BaseStyles> visibilityHiddenStyle = ConditionalStyle.always(
     BaseStyles.create().setVisibility(Visibility.NONE).build()
@@ -87,7 +91,7 @@ public class EventBoardGuiBuilder {
           .setWidth("70%")
           .setHeight(200)
           .build()
-      ), visibilityHiddenTextStyle));
+      ), visibilityNoneTextStyle));
   }
 
   private GuiElement<?> elementEventsSection(EventBoard eventBoard) {
@@ -108,23 +112,31 @@ public class EventBoardGuiBuilder {
         .build()
     )));
 
+    var flavorText = new TextGuiElement()
+      .setText("Acquire Knowledge or Modify the vials for your next round until it starts! The longer you prepare however, the longer your opponent also has to prepare.")
+      .setStyle(List.of(
+        ConditionalStyle.always(
+          TextStyles.create()
+            .setPaddingBottom(24)
+            .setWidth("80%")
+            .build()
+        )
+      ));
+
+    if (hasSeenFlavorText) {
+      flavorText.setStyle(List.of(visibilityHiddenTextStyle));
+    }
+
     return new SectionGuiElement()
       .setId("eventsSection")
       .appendChildren(
-        new TextGuiElement()
-          .setText("Acquire Knowledge or Modify the vials for your next round until it starts!")
-          .setStyle(List.of(
-            ConditionalStyle.always(
-              TextStyles.create()
-                .setPaddingBottom(12)
-                .build()
-            )
-          )),
+        flavorText,
         eventsSection
       )
       .setStyle(List.of(ConditionalStyle.always(
         BaseStyles.create()
           .setDirection(Direction.COLUMN)
+          .setCrossAxisChildren(CrossAxisChildren.CENTER)
           .setGap(16)
           .build()
       )));
@@ -137,6 +149,7 @@ public class EventBoardGuiBuilder {
           return;
         }
 
+        hasSeenFlavorText = true;
         isEventsVisible = false;
 
         VialsBoard vialsBoard = null;
@@ -160,7 +173,7 @@ public class EventBoardGuiBuilder {
         eventTextElement
           .setText(eventText)
           .styles()
-          .removeStyle(visibilityHiddenTextStyle);
+          .removeStyle(visibilityNoneTextStyle);
 
         Timer timer = new Timer();
 
@@ -181,7 +194,7 @@ public class EventBoardGuiBuilder {
               .build(new EventBoard(eventBoard))
           );
 
-          eventTextElement.styles().addStyle(visibilityHiddenTextStyle);
+          eventTextElement.styles().addStyle(visibilityNoneTextStyle);
         } else {
           guiDocument.setRootElement(
             new VialsBoardGuiBuilder(guiDocument)
