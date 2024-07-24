@@ -33,7 +33,8 @@ public class VialsBoardGuiBuilder {
   private final GuiTheme guiTheme = DefaultThemeBuilder.buildDarkTheme()
     .addStyle(ButtonGuiElement.class, List.of(ConditionalStyle.always(
       BaseStyles.create()
-        .setPadding(4)
+        .setPaddingVertical(4)
+        .setPaddingHorizontal(8)
         .build()
     )));
   private final GuiDocument guiDocument;
@@ -66,12 +67,12 @@ public class VialsBoardGuiBuilder {
     this.guiDocument = guiDocument;
   }
 
-  public GuiElement<?> build(VialsBoard vialsBoard) {
+  public GuiElement<?, ?> build(VialsBoard vialsBoard) {
     currentRolledPH = null;
 
     ImageGuiElement playerPortrait = new ImageGuiElement();
     playerPortrait.setAssetId(AssetIds.Images.PLAYER);
-    playerPortrait.setStyle(List.of(portraitImageStyle));
+    playerPortrait.addStyle(portraitImageStyle);
 
     ImageGuiElement opponentPortrait = new ImageGuiElement();
     String assetId = vialsBoard.ai.getAssetId();
@@ -79,38 +80,36 @@ public class VialsBoardGuiBuilder {
 
     if (!isTutorial) {
       opponentPortrait.setAssetId(vialsBoard.ai.getAssetId());
-      opponentPortrait.setStyle(List.of(portraitImageStyle));
+      opponentPortrait.addStyle(portraitImageStyle);
     }
 
     var topSection = new SectionGuiElement()
       .appendChildren(
         new SectionGuiElement()
-          .setStyle(List.of(
-            portraitContainerStyle,
-            ConditionalStyle.always(BaseStyles.create().setBorderColor(playerColor).build())
-          ))
+          .addStyle(portraitContainerStyle)
+          .addStyle(ConditionalStyle.always(BaseStyles.create().setBorderColor(playerColor).build()))
           .appendChildren(playerPortrait),
         elementPlayerSection(vialsBoard),
         elementsAiSection(vialsBoard.ai),
         new SectionGuiElement()
-          .setStyle(List.of(
-            portraitContainerStyle,
-            ConditionalStyle.always(BaseStyles.create().setBorderColor(opponentColor).build())
-          ))
+          .addStyle(portraitContainerStyle)
+          .addStyle(ConditionalStyle.always(BaseStyles.create().setBorderColor(opponentColor).build()))
           .appendChildren(isTutorial ? new SectionGuiElement() : opponentPortrait)
-      ).setStyle(List.of(ConditionalStyle.always(
+      )
+      .addStyle(ConditionalStyle.always(
         BaseStyles.create()
           .setDirection(Direction.ROW)
           .setGap(30)
           .build()
-      )));
+      ));
 
     var vialsBoardSection = new SectionGuiElement()
       .appendChildren(
         topSection,
         new TextGuiElement()
           .setId("dialogText")
-          .setStyle(List.of(
+          .addStyle(visibilityHiddenTextStyle)
+          .addStyle(
             ConditionalStyle.always(
               TextStyles.create()
                 .setPadding(8)
@@ -118,12 +117,11 @@ public class VialsBoardGuiBuilder {
                 .setHeight(100)
                 .setWidth(400)
                 .build()
-            ),
-            visibilityHiddenTextStyle
-          )),
+            )
+          ),
         elementVials(vialsBoard)
       )
-      .setStyle(List.of(
+      .addStyle(
         ConditionalStyle.always(
           BaseStyles
             .create()
@@ -136,7 +134,7 @@ public class VialsBoardGuiBuilder {
             .setWidth("100%")
             .build()
         )
-      ));
+      );
 
     if (isTutorial) {
       vialsBoardSection
@@ -148,10 +146,10 @@ public class VialsBoardGuiBuilder {
     return vialsBoardSection;
   }
 
-  private GuiElement<?> elementVials(VialsBoard vialsBoard) {
+  private GuiElement<?, ?> elementVials(VialsBoard vialsBoard) {
     var playerVials = vialsBoard.getPlayerVials();
     var opponentVials = vialsBoard.getOpponentVials();
-    GuiElement<?>[] vialElements = new GuiElement<?>[playerVials.length + opponentVials.length];
+    GuiElement<?, ?>[] vialElements = new GuiElement<?, ?>[playerVials.length + opponentVials.length];
 
     for (int i = 0; i < playerVials.length; i++) {
       vialElements[i] = elementVial(playerVials[i], vialsBoard, true, false);
@@ -164,19 +162,19 @@ public class VialsBoardGuiBuilder {
     return new SectionGuiElement()
       .setId("vialsContainer")
       .appendChildren(vialElements)
-      .setStyle(List.of(
+      .addStyle(
         ConditionalStyle.always(
           BaseStyles
             .create()
             .setGap(10)
             .setDirection(Direction.ROW)
             .build()
-        ))
+        )
       );
   }
 
-  private GuiElement<?> elementVial(Vial vial, VialsBoard vialsBoard, boolean isPlayerVial, boolean hasExtraPadding) {
-    Supplier<GuiElement<?>[]> buildVialContents = () -> {
+  private GuiElement<?, ?> elementVial(Vial vial, VialsBoard vialsBoard, boolean isPlayerVial, boolean hasExtraPadding) {
+    Supplier<GuiElement<?, ?>[]> buildVialContents = () -> {
       var contentsLength = vial.getContents().length;
       var contentGuiItems = new GuiElement[contentsLength];
 
@@ -185,13 +183,13 @@ public class VialsBoardGuiBuilder {
 
         contentGuiItems[i] = new TextGuiElement()
           .setText(value == null ? "--" : String.valueOf(value))
-          .setStyle(List.of(ConditionalStyle.always(
+          .addStyle(ConditionalStyle.always(
             TextStyles.create()
               .setTextAlignment(TextStyles.TextAlignment.CENTER)
               .setPadding(4)
               .setWidth(50)
               .build()
-          )));
+          ));
       }
 
       return contentGuiItems;
@@ -199,7 +197,7 @@ public class VialsBoardGuiBuilder {
 
     var contentGuiItemsContainer = new SectionGuiElement()
       .appendChildren(buildVialContents.get())
-      .setStyle(List.of(
+      .addStyle(
         ConditionalStyle.always(
           BaseStyles
             .create()
@@ -209,7 +207,7 @@ public class VialsBoardGuiBuilder {
             .setBorderColor(isPlayerVial ? playerColor : opponentColor)
             .build()
         )
-      ));
+      );
 
     var pourText = new TextGuiElement()
       .setText("Pour");
@@ -285,7 +283,7 @@ public class VialsBoardGuiBuilder {
         pourButton,
         contentGuiItemsContainer
       )
-      .setStyle(List.of(
+      .addStyle(
         ConditionalStyle.always(
           BaseStyles
             .create()
@@ -294,11 +292,10 @@ public class VialsBoardGuiBuilder {
             .setGap(10)
             .build()
         )
-      ))
-      ;
+      );
   }
 
-  private GuiElement<?> elementPlayerSection(VialsBoard vialsBoard) {
+  private GuiElement<?, ?> elementPlayerSection(VialsBoard vialsBoard) {
     return new SectionGuiElement()
       .appendChildren(
         elementRollButton(vialsBoard),
@@ -307,7 +304,7 @@ public class VialsBoardGuiBuilder {
           .setId("playerHealth"),
         elementKnowledgeSection(vialsBoard.playerKnowledge, vialsBoard)
       )
-      .setStyle(List.of(
+      .addStyle(
         ConditionalStyle.always(
           BaseStyles
             .create()
@@ -316,10 +313,10 @@ public class VialsBoardGuiBuilder {
             .setBorderColor(playerColor)
             .build()
         )
-      ));
+      );
   }
 
-  private GuiElement<?> elementRollButton(VialsBoard vialsBoard) {
+  private GuiElement<?, ?> elementRollButton(VialsBoard vialsBoard) {
     return new SectionGuiElement()
       .appendChildren(
         new ButtonGuiElement()
@@ -344,14 +341,14 @@ public class VialsBoardGuiBuilder {
       );
   }
 
-  private GuiElement<?> elementKnowledgeSection(Knowledge knowledge, VialsBoard vialsBoard) {
+  private GuiElement<?, ?> elementKnowledgeSection(Knowledge knowledge, VialsBoard vialsBoard) {
     SectionGuiElement knowledgeSectionGuiElement = new SectionGuiElement();
 
-    knowledgeSectionGuiElement.setStyle(List.of(ConditionalStyle.always(
+    knowledgeSectionGuiElement.addStyle(ConditionalStyle.always(
       BaseStyles.create()
         .setGap(4)
         .build()
-    )));
+    ));
 
     knowledgeSectionGuiElement
       .appendChildren(new TextGuiElement().setText("-Knowledge-"));
@@ -414,14 +411,14 @@ public class VialsBoardGuiBuilder {
     return knowledgeSectionGuiElement;
   }
 
-  private GuiElement<?> elementsAiSection(Ai ai) {
+  private GuiElement<?, ?> elementsAiSection(Ai ai) {
     SectionGuiElement knowledgeSection = new SectionGuiElement();
 
-    knowledgeSection.setStyle(List.of(ConditionalStyle.always(
+    knowledgeSection.addStyle(ConditionalStyle.always(
       BaseStyles.create()
         .setGap(4)
         .build()
-    )));
+    ));
 
     knowledgeSection.appendChildren(
       new TextGuiElement()
@@ -449,7 +446,7 @@ public class VialsBoardGuiBuilder {
         new TextGuiElement().setText(ai.getName()),
         knowledgeSection
       )
-      .setStyle(List.of(
+      .addStyle(
         ConditionalStyle.always(
           BaseStyles
             .create()
@@ -458,7 +455,7 @@ public class VialsBoardGuiBuilder {
             .setBorderColor(opponentColor)
             .build()
         )
-      ));
+      );
   }
 
   private void setRolledPh(Integer newPh) {
@@ -660,7 +657,7 @@ public class VialsBoardGuiBuilder {
       .setText("Health: " + vialsBoard.ai.getKnowledge().getFormattedCurrentHealth());
   }
 
-  private GuiElement<?> elementTutorialText() {
+  private GuiElement<?, ?> elementTutorialText() {
     var tutorialText = new TextGuiElement()
       .setText(
         """
@@ -695,7 +692,7 @@ public class VialsBoardGuiBuilder {
     return tutorialText;
   }
 
-  private GuiElement<?> elementTutorialPhGuide() {
+  private GuiElement<?, ?> elementTutorialPhGuide() {
     var tutorialText = new TextGuiElement()
       .setText(
         """

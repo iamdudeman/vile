@@ -48,13 +48,13 @@ public class EventBoardGuiBuilder {
     this.guiDocument = guiDocument;
   }
 
-  public GuiElement<?> build(Knowledge playerKnowledge) {
+  public GuiElement<?, ?> build(Knowledge playerKnowledge) {
     EventBoard eventBoard = new EventBoard(playerKnowledge);
 
     return build(eventBoard);
   }
 
-  public GuiElement<?> build(EventBoard eventBoard) {
+  public GuiElement<?, ?> build(EventBoard eventBoard) {
     var rootSection = new SectionGuiElement();
 
     rootSection.setId("rootSection");
@@ -64,7 +64,7 @@ public class EventBoardGuiBuilder {
       elementEventText()
     );
 
-    rootSection.setStyle(List.of(ConditionalStyle.always(
+    rootSection.addStyle(ConditionalStyle.always(
       BaseStyles.create()
         .setCrossAxisChildren(CrossAxisChildren.CENTER)
         .setMainAxisChildren(MainAxisChildren.CENTER)
@@ -73,58 +73,59 @@ public class EventBoardGuiBuilder {
         .setHeight("100%")
         .setWidth("100%")
         .build()
-    )));
+    ));
 
     guiTheme.applyToTree(rootSection);
 
     return rootSection;
   }
 
-  private GuiElement<?> elementEventText() {
+  private GuiElement<?, ?> elementEventText() {
     return new TextGuiElement()
       .setText("")
       .setId("eventText")
-      .setStyle(List.of(ConditionalStyle.always(
+      .addStyle(ConditionalStyle.always(
         TextStyles.create()
           .setBorderColor(Color.WHITE)
           .setPadding(8)
           .setWidth("70%")
           .setHeight(200)
           .build()
-      ), visibilityNoneTextStyle));
+      ))
+      .addStyle(visibilityNoneTextStyle);
   }
 
-  private GuiElement<?> elementEventsSection(EventBoard eventBoard) {
+  private GuiElement<?, ?> elementEventsSection(EventBoard eventBoard) {
     SectionGuiElement eventsSection = new SectionGuiElement();
 
     eventsSection.appendChildren(
       Arrays.stream(eventBoard.getNextEvents())
         .map(event -> elementEvent(event, eventBoard))
-        .toArray(GuiElement<?>[]::new)
+        .toArray(GuiElement<?, ?>[]::new)
     );
 
-    eventsSection.setStyle(List.of(ConditionalStyle.always(
+    eventsSection.addStyle(ConditionalStyle.always(
       BaseStyles.create()
         .setCrossAxisChildren(CrossAxisChildren.CENTER)
         .setMainAxisChildren(MainAxisChildren.CENTER)
         .setGap(12)
         .setDirection(Direction.ROW)
         .build()
-    )));
+    ));
 
     var flavorText = new TextGuiElement()
       .setText("Acquire Knowledge or Modify the vials for your next round until it starts! The longer you prepare however, the longer your opponent also has to prepare.")
-      .setStyle(List.of(
+      .addStyle(
         ConditionalStyle.always(
           TextStyles.create()
             .setPaddingBottom(24)
             .setWidth("80%")
             .build()
         )
-      ));
+      );
 
     if (hasSeenFlavorText) {
-      flavorText.setStyle(List.of(visibilityHiddenTextStyle));
+      flavorText.addStyle(visibilityHiddenTextStyle);
     }
 
     return new SectionGuiElement()
@@ -133,16 +134,16 @@ public class EventBoardGuiBuilder {
         flavorText,
         eventsSection
       )
-      .setStyle(List.of(ConditionalStyle.always(
+      .addStyle(ConditionalStyle.always(
         BaseStyles.create()
           .setDirection(Direction.COLUMN)
           .setCrossAxisChildren(CrossAxisChildren.CENTER)
           .setGap(16)
           .build()
-      )));
+      ));
   }
 
-  private GuiElement<?> elementEvent(EventBoard.Event<?> event, EventBoard eventBoard) {
+  private GuiElement<?, ?> elementEvent(EventBoard.Event<?> event, EventBoard eventBoard) {
     return new ButtonGuiElement()
       .setOnAction(() -> {
         if (!isEventsVisible) {
@@ -196,6 +197,7 @@ public class EventBoardGuiBuilder {
 
           eventTextElement.styles().addStyle(visibilityNoneTextStyle);
         } else {
+          vialsBoard.playerKnowledge.reset();
           guiDocument.setRootElement(
             new VialsBoardGuiBuilder(guiDocument)
               .build(vialsBoard)

@@ -42,17 +42,17 @@ public class MainMenuGuiBuilder {
     this.guiDocument = guiDocument;
   }
 
-  public GuiElement<?> build() {
+  public GuiElement<?, ?> build() {
     var titleImage = new ImageGuiElement();
 
     titleImage.setAssetId(AssetIds.Images.TITLE);
 
-    titleImage.setStyle(List.of(ConditionalStyle.always(
+    titleImage.addStyle(ConditionalStyle.always(
       BaseStyles.create()
         .setWidth(312)
         .setHeight(266)
         .build()
-    )));
+    ));
 
     var rootSection = new SectionGuiElement()
       .appendChildren(
@@ -84,7 +84,7 @@ public class MainMenuGuiBuilder {
               .setText("Options")
           )
       )
-      .setStyle(List.of(ConditionalStyle.always(
+      .addStyle(ConditionalStyle.always(
         BaseStyles.create()
           .setMainAxisChildren(MainAxisChildren.CENTER)
           .setCrossAxisChildren(CrossAxisChildren.CENTER)
@@ -93,14 +93,14 @@ public class MainMenuGuiBuilder {
           .setHeight("100%")
           .setGap(10)
           .build()
-      )));
+      ));
 
     guiTheme.applyToTree(rootSection);
 
     return rootSection;
   }
 
-  private GuiElement<?> buildOptions() {
+  private GuiElement<?, ?> buildOptions() {
     var rootSection = new SectionGuiElement()
       .appendChildren(
         new TextGuiElement()
@@ -122,7 +122,7 @@ public class MainMenuGuiBuilder {
               .setText("Done")
           )
       )
-      .setStyle(List.of(ConditionalStyle.always(
+      .addStyle(ConditionalStyle.always(
         BaseStyles.create()
           .setDirection(Direction.COLUMN)
           .setGap(16)
@@ -131,7 +131,7 @@ public class MainMenuGuiBuilder {
           .setHeight("100%")
           .setWidth("100%")
           .build()
-      )));
+      ));
 
     guiTheme.applyToTree(rootSection);
 
@@ -145,23 +145,23 @@ public class MainMenuGuiBuilder {
     return rootSection;
   }
 
-  private GuiElement<?> elementAiSpeed() {
+  private GuiElement<?, ?> elementAiSpeed() {
     return new SectionGuiElement()
       .appendChildren(
         createAiSpeedButton("Slow", 1),
         createAiSpeedButton("Normal", 2),
         createAiSpeedButton("Fast", 3)
       )
-      .setStyle(List.of(ConditionalStyle.always(
+      .addStyle(ConditionalStyle.always(
         BaseStyles.create()
           .setDirection(Direction.ROW)
           .setCrossAxisChildren(CrossAxisChildren.CENTER)
           .setGap(12)
           .build()
-      )));
+      ));
   }
 
-  private GuiElement<?> createAiSpeedButton(String label, int aiSpeed) {
+  private GuiElement<?, ?> createAiSpeedButton(String label, int aiSpeed) {
     ButtonGuiElement buttonGuiElement = new ButtonGuiElement()
       .setOnAction(() -> {
         int currentSpeed = GameSettings.AI_SPEED;
@@ -185,7 +185,7 @@ public class MainMenuGuiBuilder {
     return buttonGuiElement;
   }
 
-  private GuiElement<?> elementVolume() {
+  private GuiElement<?, ?> elementVolume() {
     return new SectionGuiElement()
       .appendChildren(
         createVolumeButton("Lowest", 1),
@@ -194,16 +194,16 @@ public class MainMenuGuiBuilder {
         createVolumeButton("High", 4),
         createVolumeButton("Highest", 5)
       )
-      .setStyle(List.of(ConditionalStyle.always(
+      .addStyle(ConditionalStyle.always(
         BaseStyles.create()
           .setDirection(Direction.ROW)
           .setCrossAxisChildren(CrossAxisChildren.CENTER)
           .setGap(12)
           .build()
-      )));
+      ));
   }
 
-  private GuiElement<?> createVolumeButton(String label, int volume) {
+  private GuiElement<?, ?> createVolumeButton(String label, int volume) {
     ButtonGuiElement buttonGuiElement = new ButtonGuiElement()
       .setOnAction(() -> {
         int currentVolume = GameSettings.VOLUME;
