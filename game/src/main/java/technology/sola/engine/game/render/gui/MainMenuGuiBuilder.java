@@ -49,8 +49,8 @@ public class MainMenuGuiBuilder {
 
     titleImage.addStyle(ConditionalStyle.always(
       BaseStyles.create()
-        .setWidth(312)
-        .setHeight(266)
+        .setWidth(575)
+        .setHeight(575)
         .build()
     ));
 
@@ -86,7 +86,6 @@ public class MainMenuGuiBuilder {
       )
       .addStyle(ConditionalStyle.always(
         BaseStyles.create()
-          .setMainAxisChildren(MainAxisChildren.CENTER)
           .setCrossAxisChildren(CrossAxisChildren.CENTER)
           .setDirection(Direction.COLUMN)
           .setWidth("100%")
