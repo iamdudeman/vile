@@ -228,7 +228,7 @@ public class VialsBoardGuiBuilder {
 
       if (isNeutralizing) {
         vial.neutralizeTop();
-        Knowledge knowledge = isPlayerVial ? vialsBoard.playerKnowledge : vialsBoard.ai.getKnowledge();
+        Knowledge knowledge = vialsBoard.isPlayerTurn() ? vialsBoard.playerKnowledge : vialsBoard.ai.getKnowledge();
 
         knowledge.neutralize();
 
@@ -246,7 +246,7 @@ public class VialsBoardGuiBuilder {
         vial.addLiquidToTop(currentRolledPH);
       }
 
-      setRolledPh(null);
+      setRolledPh(null, vialsBoard);
       guiDocument.findElementById("rollButton", ButtonGuiElement.class).requestFocus();
 
       var contents = vial.getContents();
@@ -327,7 +327,7 @@ public class VialsBoardGuiBuilder {
 
             int nextPh = vialsBoard.brewNextPh();
 
-            setRolledPh(nextPh);
+            setRolledPh(nextPh, vialsBoard);
           })
           .setId("rollButton")
           .appendChildren(
@@ -370,7 +370,7 @@ public class VialsBoardGuiBuilder {
 
       int nextPh = vialsBoard.brewNextPh();
 
-      setRolledPh(nextPh);
+      setRolledPh(nextPh, vialsBoard);
       rerollText.setText("Rebrew " + knowledge.getCurrentRebrews() + "/" + knowledge.getReBrews());
 
       if (knowledge.getCurrentRebrews() == 0) {
@@ -458,7 +458,7 @@ public class VialsBoardGuiBuilder {
       );
   }
 
-  private void setRolledPh(Integer newPh) {
+  private void setRolledPh(Integer newPh, VialsBoard vialsBoard) {
     var rollButton = guiDocument.findElementById("rollButton", ButtonGuiElement.class);
     var rollText = guiDocument.findElementById("rollText", TextGuiElement.class);
     var neutralizeButton = guiDocument.findElementById("neutralizeButton", ButtonGuiElement.class);
@@ -467,7 +467,7 @@ public class VialsBoardGuiBuilder {
       rollText.setText("--");
       rollButton.setDisabled(false);
 
-      if (neutralizeButton != null) {
+      if (neutralizeButton != null && vialsBoard.playerKnowledge.getCurrentNeutralizeAgents() > 0) {
         neutralizeButton.setDisabled(false);
       }
     } else {
