@@ -30,6 +30,7 @@ public class GameSola extends SolaWithDefaults {
       .addAsset(SolaImage.class, AssetIds.Images.PLAYER, "assets/images/wizzarrrrdcat.png")
       .addAsset(SolaImage.class, AssetIds.Images.WARLOCAT, "assets/images/evilwarloccat.png")
       .addAsset(SolaImage.class, AssetIds.Images.DUCKY, "assets/images/alchemistducky.png")
+      .addAsset(SolaImage.class, AssetIds.Images.DEF_NOT_A_CAT, "assets/images/defnotacat.png")
       .addAsset(SolaImage.class, AssetIds.Images.TITLE, "assets/images/viletitle.png")
       .loadAll()
       .onComplete(assets -> {
