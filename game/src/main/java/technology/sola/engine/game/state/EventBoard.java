@@ -1,7 +1,9 @@
 package technology.sola.engine.game.state;
 
+import technology.sola.engine.game.AssetIds;
 import technology.sola.engine.game.ai.AggressiveAi;
 import technology.sola.engine.game.ai.Ai;
+import technology.sola.engine.game.ai.AiInfo;
 import technology.sola.engine.game.ai.RandomAi;
 
 import java.util.ArrayList;
@@ -11,7 +13,13 @@ import java.util.function.Supplier;
 
 // todo fix full descriptions
 // todo remove short descriptions
+// todo remove board modification choice possibly impacting player
+// todo add board modifications to battle events against player based on factors
 // todo add customizable names + asset ids + greetings to AI
+//   Quack Dealer
+//   Osmeowdias
+//   Isaac Mewton
+//   Cleoquaktra
 
 public class EventBoard {
   private static final int INITIAL_EVENTS_COUNT = 3;
@@ -170,7 +178,11 @@ public class EventBoard {
   }
 
   private Event battleRandomAi() {
-    RandomAi randomAi = new RandomAi();
+    RandomAi randomAi = new RandomAi(new AiInfo(
+      "Ran dum",
+      AssetIds.Images.WARLOCAT,
+      vialsBoard -> "The name's Ran. Most people just call me Dum though."
+    ));
     Knowledge aiKnowledge = randomAi.getKnowledge();
 
     // battles won buffs
@@ -205,7 +217,11 @@ public class EventBoard {
   }
 
   private Event battleAggressiveAi() {
-    AggressiveAi aggressiveAi = new AggressiveAi();
+    AggressiveAi aggressiveAi = new AggressiveAi(new AiInfo(
+      "Aggressive AI",
+      AssetIds.Images.DUCKY,
+      vialsBoard -> "I'm not aggressive, you're aggressive"
+    ));
     Knowledge aiKnowledge = aggressiveAi.getKnowledge();
 
     // battles won buffs

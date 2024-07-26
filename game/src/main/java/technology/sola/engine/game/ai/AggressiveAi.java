@@ -1,36 +1,35 @@
 package technology.sola.engine.game.ai;
 
-import technology.sola.engine.game.AssetIds;
 import technology.sola.engine.game.state.Knowledge;
 import technology.sola.engine.game.state.VialsBoard;
 
 public class AggressiveAi extends Ai {
+  private final AiInfo aiInfo;
   private int turnsDefending = 0;
 
-  public AggressiveAi() {
+  public AggressiveAi(AiInfo aiInfo) {
     super(prepareKnowledge());
+    this.aiInfo = aiInfo;
   }
 
   @Override
   public String getName() {
-    // todo
-    return "Aggressive AI";
+    return aiInfo.name();
   }
 
   @Override
   public String getAssetId() {
-    return AssetIds.Images.DUCKY;
+    return aiInfo.assetId();
   }
 
   @Override
   public String getGreeting(VialsBoard vialsBoard) {
-    // todo
-    return "I'm not aggressive, you're aggressive.";
+    return aiInfo.greeting().apply(vialsBoard);
   }
 
   @Override
   public String getStartTurnText(VialsBoard vialsBoard) {
-    return "My turn!";
+    return "My turn to go.";
   }
 
   @Override

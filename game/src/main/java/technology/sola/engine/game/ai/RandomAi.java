@@ -1,6 +1,5 @@
 package technology.sola.engine.game.ai;
 
-import technology.sola.engine.game.AssetIds;
 import technology.sola.engine.game.state.Knowledge;
 import technology.sola.engine.game.state.Vial;
 import technology.sola.engine.game.state.VialsBoard;
@@ -10,23 +9,26 @@ import java.util.Arrays;
 import java.util.List;
 
 public class RandomAi extends Ai {
-  public RandomAi() {
+  private final AiInfo aiInfo;
+
+  public RandomAi(AiInfo aiInfo) {
     super(new Knowledge());
+    this.aiInfo = aiInfo;
   }
 
   @Override
   public String getName() {
-    return "Ran Dum";
+    return aiInfo.name();
   }
 
   @Override
   public String getAssetId() {
-    return AssetIds.Images.WARLOCAT;
+    return aiInfo.assetId();
   }
 
   @Override
   public String getGreeting(VialsBoard vialsBoard) {
-    return "The name's Ran. Most people just call me Dum though.";
+    return aiInfo.greeting().apply(vialsBoard);
   }
 
   @Override
