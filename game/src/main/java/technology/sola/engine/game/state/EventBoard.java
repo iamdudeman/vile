@@ -77,13 +77,13 @@ public class EventBoard {
     commonEvents.add(
       modificationBoardValue(
         random.nextInt(5, 9),
-        random.nextInt(playerKnowledge.getBattlesWon() + 1) > 1
+        random.nextInt(playerKnowledge.getBattlesWon()) > 1
       )
     );
     commonEvents.add(
       modificationBoardValue(
         random.nextInt(7 - round, 7 + round + 1),
-        random.nextInt(playerKnowledge.getBattlesWon() + 1) > 2
+        random.nextInt(playerKnowledge.getBattlesWon()) > 2
       )
     );
 

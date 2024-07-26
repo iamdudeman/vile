@@ -138,7 +138,7 @@ public class VialsBoardGuiBuilder {
 
     if (isTutorial) {
       vialsBoardSection
-        .appendChildren(elementTutorialText(), elementTutorialPhGuide());
+        .appendChildren(elementTutorialText(), elementTutorialPhGuide(), elementSkipTutorial(vialsBoard));
     }
 
     guiTheme.applyToTree(vialsBoardSection);
@@ -719,4 +719,24 @@ public class VialsBoardGuiBuilder {
     return tutorialText;
   }
 
+  private GuiElement<?, ?> elementSkipTutorial(VialsBoard vialsBoard) {
+    return new ButtonGuiElement()
+      .setOnAction(() -> {
+        vialsBoard.playerKnowledge.incrementBattlesWon();
+        guiDocument.setRootElement(
+          new EventBoardGuiBuilder(guiDocument)
+            .build(vialsBoard.playerKnowledge)
+        );
+      })
+      .appendChildren(
+        new TextGuiElement()
+          .setText("Skip tutorial")
+      )
+      .addStyle(ConditionalStyle.always(
+        BaseStyles.create()
+          .setPositionX("5")
+          .setPositionY("5")
+          .build()
+      ));
+  }
 }
