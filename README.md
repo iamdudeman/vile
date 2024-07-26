@@ -1,4 +1,4 @@
-# Vile
+# [<img src="/assets/images/purplevial.png" width="32"/>](/assets/images/purplevial.png) Vile
 
 This is a game made for the Pirate Software Game Jam 15. The theme for the codejam was "Alchemy and Shadows." It was
 built on sola-game-engine using repo template sola-game-template to start the project.
