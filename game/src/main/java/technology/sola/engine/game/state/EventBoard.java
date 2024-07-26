@@ -9,10 +9,10 @@ import java.util.Random;
 import java.util.function.Supplier;
 
 public class EventBoard {
-  private static final int INITIAL_EVENTS_COUNT = 2;
-  private static final int INITIAL_EVENT_ROUNDS = 3;
-  private static final int INITIAL_VIAL_COUNT = 3;
-  private static final int INITIAL_VIAL_DEPTH = 5;
+  private static final int INITIAL_EVENTS_COUNT = 3;
+  private static final int INITIAL_EVENT_ROUNDS = 5;
+  private static final int INITIAL_VIAL_COUNT = 2;
+  private static final int INITIAL_VIAL_DEPTH = 4;
   private final Random random = new Random();
   private final Knowledge playerKnowledge;
   private int round = 1;
@@ -30,26 +30,129 @@ public class EventBoard {
     this.round = eventBoard.round + 1;
     this.playerModifications = eventBoard.playerModifications;
     this.opponentModifications = eventBoard.opponentModifications;
+    this.vialCountModification = eventBoard.vialCountModification;
+    this.vialDepthModification = eventBoard.vialDepthModification;
   }
 
   public Event<?>[] getNextEvents() {
-    int maxRounds = INITIAL_EVENT_ROUNDS;
-    int eventsCount = INITIAL_EVENTS_COUNT + playerKnowledge.getExtraEvents();
+    int eventsCount = round == 1 ? INITIAL_EVENTS_COUNT + playerKnowledge.getExtraEvents() : INITIAL_EVENTS_COUNT;
+    Event<?>[] events = new Event[eventsCount];
+    List<Event<?>> commonEvents = generateCommonEvents();
+    List<Event<?>> rareEvents = generateRareEvents();
 
-    if (round >= maxRounds) {
-      // todo return only battles
+    for (int i = 0; i < eventsCount; i++) {
+      if (random.nextInt(5) < 1 && !rareEvents.isEmpty()) {
+        events[i] = rareEvents.remove(random.nextInt(rareEvents.size()));
+      }
+      else {
+        events[i] = commonEvents.remove(random.nextInt(commonEvents.size()));
+      }
     }
 
-    round++;
-    // todo temp logic
-    return new Event[] {
-      battleRandomAi(),
-      battleAggressiveAi(),
-      modificationBoardValue(7, true),
-      knowledgeInstability(),
-      knowledgeReBrew(),
-      knowledgeNeutralizingAgent(),
-    };
+    return events;
+  }
+
+  private List<Event<?>> generateCommonEvents() {
+    List<Event<?>> commonEvents = new ArrayList<>();
+
+    if (round >= INITIAL_EVENT_ROUNDS) {
+      commonEvents.add(battleRandomAi());
+      commonEvents.add(battleAggressiveAi());
+      commonEvents.add(battleAggressiveAi());
+      commonEvents.add(battleAggressiveAi());
+
+      return commonEvents;
+    }
+
+    // battle events
+    if (round > 0 && round < 3) {
+      commonEvents.add(battleRandomAi());
+    }
+
+    if (round >= 3 && random.nextBoolean()) {
+      commonEvents.add(battleAggressiveAi());
+    }
+
+    // modification events
+    commonEvents.add(
+      modificationBoardValue(
+        random.nextInt(5, 9),
+        random.nextInt(playerKnowledge.getBattlesWon() + 1) > 1
+      )
+    );
+    commonEvents.add(
+      modificationBoardValue(
+        random.nextInt(7 - round, 7 + round + 1),
+        random.nextInt(playerKnowledge.getBattlesWon() + 1) > 2
+      )
+    );
+
+    if (vialCountModification == 0) {
+      commonEvents.add(modificationVialsBoardVialCount());
+    }
+
+    // knowledge events
+    commonEvents.add(knowledgeReBrew());
+
+    if (playerKnowledge.getNeutralizeAgents() == 0) {
+      commonEvents.add(knowledgeNeutralizingAgent());
+    } else if (playerKnowledge.getNeutralizeAgents() < 3 && random.nextBoolean()) {
+      commonEvents.add(knowledgeNeutralizingAgent());
+    } else if (playerKnowledge.getNeutralizeAgents() > 3 && random.nextInt(10) < 3) {
+      commonEvents.add(knowledgeNeutralizingAgent());
+    }
+
+    if (playerKnowledge.getInstability() == 1 && random.nextInt(10) < 3) {
+      commonEvents.add(knowledgeInstability());
+    }
+
+    if (playerKnowledge.getCurrentHealth() < 5) {
+      commonEvents.add(knowledgePlayerHealth());
+    }
+
+    return commonEvents;
+  }
+
+  private List<Event<?>> generateRareEvents() {
+    List<Event<?>> rareEvents = new ArrayList<>();
+
+    if (round >= INITIAL_EVENT_ROUNDS) {
+      rareEvents.add(battleAggressiveAi());
+
+      return rareEvents;
+    }
+
+    // battle events
+    rareEvents.add(battleAggressiveAi());
+
+    // modification events
+    rareEvents.add(
+      modificationBoardValue(
+        random.nextInt(2, 12),
+        random.nextInt(playerKnowledge.getBattlesWon()) > 1
+      )
+    );
+
+    if (vialDepthModification == 0) {
+      rareEvents.add(modificationVialsBoardVialDepth());
+    }
+
+    if (playerKnowledge.getExtraEvents() == 0) {
+      rareEvents.add(modificationEventBoard());
+    }
+
+    // knowledge events
+    rareEvents.add(knowledgeInstability());
+
+    if (playerKnowledge.getCurrentHealth() < 10) {
+      rareEvents.add(knowledgePlayerHealth());
+    }
+
+    if (playerKnowledge.getExtraLives() == 0) {
+      rareEvents.add(knowledgeExtraLife());
+    }
+
+    return rareEvents;
   }
 
   private Event<?> battleRandomAi() {
@@ -118,7 +221,7 @@ public class EventBoard {
     return new ModificationEvent("Modification", () -> {
       playerKnowledge.incrementExtraEvents();
 
-      return "Your craftiness has allowed you to see more events each round.";
+      return "Your craftiness has allowed you to choose from more events once in between battles.";
     });
   }
 
