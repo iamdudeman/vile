@@ -24,7 +24,7 @@ public class AggressiveAi extends Ai {
 
   @Override
   public String getGreeting(VialsBoard vialsBoard) {
-    return aiInfo.greeting().apply(vialsBoard);
+    return aiInfo.greeting();
   }
 
   @Override

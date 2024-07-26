@@ -12,11 +12,6 @@ import java.util.Random;
 import java.util.function.Supplier;
 
 // todo fix full descriptions
-// todo add customizable names + asset ids + greetings to AI
-//   Quack Dealer
-//   Osmeowdias
-//   Isaac Mewton
-//   Cleoquaktra
 
 public class EventBoard {
   private static final int INITIAL_EVENTS_COUNT = 3;
@@ -30,6 +25,34 @@ public class EventBoard {
   private List<Integer> opponentModifications = new ArrayList<>();
   private int vialCountModification = 0;
   private int vialDepthModification = 0;
+  private static final List<AiInfo> randomAiInfoList = new ArrayList<>();
+  private static final List<AiInfo> aggressiveAiInfoList = new ArrayList<>();
+
+  static {
+    // random options
+    randomAiInfoList.add(new AiInfo(
+      "Ran dum",
+      AssetIds.Images.WARLOCAT,
+      "The name's Ran. Most people just call me Dum though."
+    ));
+    randomAiInfoList.add(new AiInfo(
+      "Isaac Mewton",
+      AssetIds.Images.DEF_NOT_A_CAT,
+      "I don't think you understand the gravity of your situation."
+    ));
+
+    // aggressive options
+    aggressiveAiInfoList.add(new AiInfo(
+      "Quack Dealer",
+      AssetIds.Images.DUCKY,
+      "You cannot stop me from my dream. I will create the perfect donut!"
+    ));
+    aggressiveAiInfoList.add(new AiInfo(
+      "Osmeowdias",
+      AssetIds.Images.DEF_NOT_A_CAT,
+      "Ozy's the name and being a pharaoh's my game."
+    ));
+  }
 
   public EventBoard(Knowledge playerKnowledge) {
     this.playerKnowledge = playerKnowledge;
@@ -164,11 +187,10 @@ public class EventBoard {
   }
 
   private Event battleRandomAi() {
-    RandomAi randomAi = new RandomAi(new AiInfo(
-      "Ran dum",
-      AssetIds.Images.WARLOCAT,
-      vialsBoard -> "The name's Ran. Most people just call me Dum though."
-    ));
+    AiInfo aiInfo = randomAiInfoList.size() == 1
+      ? randomAiInfoList.get(0)
+      : randomAiInfoList.remove(random.nextInt(randomAiInfoList.size()));
+    RandomAi randomAi = new RandomAi(aiInfo);
     Knowledge aiKnowledge = randomAi.getKnowledge();
 
     // battles won buffs
@@ -199,15 +221,14 @@ public class EventBoard {
       aiKnowledge.addNeutralize();
     }
 
-    return battle(randomAi);
+    return battle(randomAi, aiInfo.greeting());
   }
 
   private Event battleAggressiveAi() {
-    AggressiveAi aggressiveAi = new AggressiveAi(new AiInfo(
-      "Aggressive AI",
-      AssetIds.Images.DUCKY,
-      vialsBoard -> "I'm not aggressive, you're aggressive"
-    ));
+    AiInfo aiInfo = aggressiveAiInfoList.size() == 1
+      ? aggressiveAiInfoList.get(0)
+      : aggressiveAiInfoList.remove(random.nextInt(aggressiveAiInfoList.size()));
+    AggressiveAi aggressiveAi = new AggressiveAi(aiInfo);
     Knowledge aiKnowledge = aggressiveAi.getKnowledge();
 
     // battles won buffs
@@ -229,11 +250,11 @@ public class EventBoard {
       aiKnowledge.addReBrew();
     }
 
-    return battle(aggressiveAi);
+    return battle(aggressiveAi, aiInfo.greeting());
   }
 
-  private Event battle(Ai ai) {
-    return new BattleEvent("Battle", "", () -> {
+  private Event battle(Ai ai, String description) {
+    return new BattleEvent("Battle", description, () -> {
       VialsBoard vialsBoard = new VialsBoard(
         playerKnowledge,
         ai,
