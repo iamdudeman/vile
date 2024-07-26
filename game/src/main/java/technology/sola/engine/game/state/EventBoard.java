@@ -12,7 +12,6 @@ import java.util.Random;
 import java.util.function.Supplier;
 
 // todo fix full descriptions
-// todo remove board modification choice possibly impacting player
 // todo add board modifications to battle events against player based on factors
 // todo add customizable names + asset ids + greetings to AI
 //   Quack Dealer
@@ -96,16 +95,10 @@ public class EventBoard {
 
     // modification events
     commonEvents.add(
-      modificationBoardValue(
-        random.nextInt(5, 9),
-        random.nextInt(playerKnowledge.getBattlesWon()) > 1
-      )
+      modificationBoardValue(random.nextInt(5, 9))
     );
     commonEvents.add(
-      modificationBoardValue(
-        random.nextInt(7 - round, 7 + round + 1),
-        random.nextInt(playerKnowledge.getBattlesWon()) > 2
-      )
+      modificationBoardValue(random.nextInt(7 - round, 7 + round + 1))
     );
 
     if (vialCountModification == 0) {
@@ -147,12 +140,7 @@ public class EventBoard {
     rareEvents.add(battleAggressiveAi());
 
     // modification events
-    rareEvents.add(
-      modificationBoardValue(
-        random.nextInt(2, 12),
-        random.nextInt(playerKnowledge.getBattlesWon()) > 1
-      )
-    );
+    rareEvents.add(modificationBoardValue(random.nextInt(2, 12)));
 
     if (vialDepthModification == 0) {
       rareEvents.add(modificationVialsBoardVialDepth());
@@ -260,23 +248,11 @@ public class EventBoard {
     });
   }
 
-  private Event modificationBoardValue(int value, boolean isPlayer) {
-    String whoPhrase;
-
-    if (isPlayer) {
-      whoPhrase = "you have";
-    } else {
-      whoPhrase = "your opponent has";
-    }
-
-    String description = String.format("The next set of vials have been modified so %s a vile with a pH of %d poured in it.", whoPhrase, value);
+  private Event modificationBoardValue(int value) {
+    String description = String.format("The next set of vials have been modified your opponent's vile starts with a pH of %d poured in it.", value);
 
     return new ModificationEvent("Modification", description, () -> {
-      if (isPlayer) {
-        playerModifications.add(value);
-      } else {
-        opponentModifications.add(value);
-      }
+      opponentModifications.add(value);
     });
   }
 
