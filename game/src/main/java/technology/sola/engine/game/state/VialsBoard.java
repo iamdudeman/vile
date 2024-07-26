@@ -51,9 +51,9 @@ public class VialsBoard {
 
     float standardDeviation = switch (knowledge.getInstability()) {
       case 1 -> 2f;
-      case 2 -> 3f;
-      case 3 -> 3.5f;
-      case 4 -> 4f;
+      case 2 -> 2.5f;
+      case 3 -> 3f;
+      case 4 -> 3.5f;
       default -> 2;
     };
     int value = (int) Math.round(random.nextGaussian(7, standardDeviation));

@@ -42,6 +42,13 @@ public class AggressiveAi extends Ai {
     }
 
     if (currentBrew == 7) {
+      if (knowledge.getReBrews() > 0 && random.nextBoolean()) {
+        knowledge.reBrew();
+        currentBrew = vialsBoard.brewNextPh();
+
+        return "I brewed " + currentBrew + ".";
+      }
+
       vialsBoard.getOpponentVials()[random.nextInt(vialsBoard.getOpponentVials().length)]
         .addLiquidToTop(currentBrew);
 
@@ -70,7 +77,7 @@ public class AggressiveAi extends Ai {
     }
 
     for (var vial : vialsBoard.getPlayerVials()) {
-      if (vial.isEmpty()) {
+      if (vial.isEmpty() || vial.getDamage() == 7) {
         vial.addLiquidToTop(currentBrew);
 
         isDone = true;
