@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
 
-// todo fix full descriptions
-
 public class EventBoard {
   private static final int INITIAL_EVENTS_COUNT = 3;
   private static final int INITIAL_EVENT_ROUNDS = 5;
@@ -277,7 +275,7 @@ public class EventBoard {
   }
 
   private Event modificationBoardValue(int value) {
-    String description = String.format("The next set of vials have been modified your opponent's vile starts with a pH of %d poured in it.", value);
+    String description = String.format("Modify your opponent's next set of vials to start with a pH of %d poured in it.", value);
 
     return new ModificationEvent("Modification", description, () -> {
       opponentModifications.add(value);
@@ -285,52 +283,52 @@ public class EventBoard {
   }
 
   private Event modificationVialsBoardVialDepth() {
-    return new ModificationEvent("Modification","Your next game of vials will have deeper vials in play.", () -> {
+    return new ModificationEvent("Modification","Modify the next game of Vials to have deeper vials in play.", () -> {
       vialDepthModification++;
     });
   }
 
   private Event modificationVialsBoardVialCount() {
-    return new ModificationEvent("Modification", "Your next game of vials will have an additional vial in play.", () -> {
+    return new ModificationEvent("Modification", "Modify the next game of Vials to have an additional vial in play.", () -> {
       vialCountModification++;
     });
   }
 
   private Event modificationEventBoard() {
-    return new ModificationEvent("Modification", "Your craftiness has allowed you to choose from more events once in between battles.", () -> {
+    return new ModificationEvent("Modification", "See more events to choose from once between each battle.", () -> {
       playerKnowledge.incrementExtraEvents();
     });
   }
 
   private Event knowledgePlayerHealth() {
-    return new ModificationEvent("Knowledge", "You have modified your body to be able to handle poisonous brews more effectively.", () -> {
+    return new ModificationEvent("Knowledge", "Modify your body to be able to handle poisonous brews more effectively.", () -> {
       playerKnowledge.addMaxHealth(0.5f);
     });
   }
 
   private Event knowledgeReBrew() {
-    return new ModificationEvent("Knowledge", "You learned how to make an additional rebrew.", () -> {
+    return new ModificationEvent("Knowledge", "Learn how to make an additional rebrew.", () -> {
       playerKnowledge.addReBrew();
     });
   }
 
   private Event knowledgeExtraLife() {
-    return new ModificationEvent("Knowledge", "You learned how to cheat death another time.", () -> {
+    return new ModificationEvent("Knowledge", "Learn how to cheat death another time.", () -> {
       playerKnowledge.addExtraLife();
     });
   }
 
   private Event knowledgeInstability() {
-    return new ModificationEvent("Knowledge", "Your brewing has become more unstable, increasing the likelihood of more acidic or basic brews.", () -> {
+    return new ModificationEvent("Knowledge", "Learn how to make more unstable brews; increasing the likelihood of more acidic or basic brews.", () -> {
       playerKnowledge.incrementInstability();
     });
   }
 
   private Event knowledgeNeutralizingAgent() {
-    String description = "You learned how to make an additional neutralizing agent.";
+    String description = "Learn how to make an additional neutralizing agent.";
 
     if (playerKnowledge.getNeutralizeAgents() == 1) {
-      description = "You learned how to make neutralizing agents. Neutralizing agents will neutralize the top of a vial in place of pouring a brew that round.";
+      description = "Learn how to make neutralizing agents. Neutralizing agents will neutralize the top of a vial in place of pouring a brew that round.";
     }
 
     return new ModificationEvent("Knowledge", description, () -> {
