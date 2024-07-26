@@ -56,9 +56,56 @@ public class Vial {
 
   public void addLiquidToTop(int liquid) {
     if (this.firstEmptyIndex >= 0) {
-      this.contents[this.firstEmptyIndex] = liquid;
-      this.firstEmptyIndex--;
+      if (willCauseCollapse(liquid)) {
+        this.contents[this.firstEmptyIndex + 1] = null;
+        this.contents[this.firstEmptyIndex + 2] = null;
+        this.firstEmptyIndex += 2;
+
+        while (this.firstEmptyIndex + 1 < this.contents.length) {
+          if (this.contents[this.firstEmptyIndex + 1] == 7) {
+            this.contents[this.firstEmptyIndex + 1] = null;
+            this.firstEmptyIndex++;
+          } else {
+            break;
+          }
+        }
+
+      } else {
+        this.contents[this.firstEmptyIndex] = liquid;
+        this.firstEmptyIndex--;
+      }
     }
+  }
+
+  public boolean willCauseCollapse(int liquid) {
+    if (this.firstEmptyIndex >= 0) {
+      int diff = contents.length - firstEmptyIndex;
+
+      if (diff < 3) {
+        return false;
+      }
+
+      int topValue = this.contents[this.firstEmptyIndex + 1];
+      int belowValue = this.contents[this.firstEmptyIndex + 2];
+
+      if (topValue == 7) {
+        return false;
+      }
+
+      if (liquid == 7) {
+        int minValue = Math.min(topValue, belowValue);
+        int maxValue = Math.max(topValue, belowValue);
+
+        return maxValue + minValue == 14;
+      } else if (belowValue == 7) {
+        int minValue = Math.min(topValue, liquid);
+        int maxValue = Math.max(topValue, liquid);
+
+        return maxValue + minValue == 14;
+      }
+    }
+
+    return false;
   }
 
   public void neutralizeTop() {

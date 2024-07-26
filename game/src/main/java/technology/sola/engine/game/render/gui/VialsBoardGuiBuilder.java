@@ -703,6 +703,9 @@ public class VialsBoardGuiBuilder {
         14 - most basic
 
         Damage = |7 - pH|
+
+        Note:
+        Something special may happen when pouring 7 near liquids with neutralized pH
         """
       );
 
