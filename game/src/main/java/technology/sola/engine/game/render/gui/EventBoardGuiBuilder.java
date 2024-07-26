@@ -74,8 +74,7 @@ public class EventBoardGuiBuilder {
 
   private GuiElement<?, ?> elementEvent(EventBoard.Event event, EventBoard eventBoard) {
     String title = event.title();
-    String shortDescription = event.shortDescription();
-    String fullDescription = event.fullDescription();
+    String fullDescription = event.description();
 
     return new ButtonGuiElement()
       .addStyle(ConditionalStyle.always(

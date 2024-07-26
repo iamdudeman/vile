@@ -12,7 +12,6 @@ import java.util.Random;
 import java.util.function.Supplier;
 
 // todo fix full descriptions
-// todo remove short descriptions
 // todo remove board modification choice possibly impacting player
 // todo add board modifications to battle events against player based on factors
 // todo add customizable names + asset ids + greetings to AI
@@ -247,7 +246,7 @@ public class EventBoard {
   }
 
   private Event battle(Ai ai) {
-    return new BattleEvent("Battle", "", "", () -> {
+    return new BattleEvent("Battle", "", () -> {
       VialsBoard vialsBoard = new VialsBoard(
         playerKnowledge,
         ai,
@@ -270,9 +269,9 @@ public class EventBoard {
       whoPhrase = "your opponent has";
     }
 
-    String full = String.format("The next set of vials have been modified so %s a vile with a pH of %d poured in it.", whoPhrase, value);
+    String description = String.format("The next set of vials have been modified so %s a vile with a pH of %d poured in it.", whoPhrase, value);
 
-    return new ModificationEvent("Modification", "", full, () -> {
+    return new ModificationEvent("Modification", description, () -> {
       if (isPlayer) {
         playerModifications.add(value);
       } else {
@@ -282,55 +281,55 @@ public class EventBoard {
   }
 
   private Event modificationVialsBoardVialDepth() {
-    return new ModificationEvent("Modification","", "Your next game of vials will have deeper vials in play.", () -> {
+    return new ModificationEvent("Modification","Your next game of vials will have deeper vials in play.", () -> {
       vialDepthModification++;
     });
   }
 
   private Event modificationVialsBoardVialCount() {
-    return new ModificationEvent("Modification", "", "Your next game of vials will have an additional vial in play.", () -> {
+    return new ModificationEvent("Modification", "Your next game of vials will have an additional vial in play.", () -> {
       vialCountModification++;
     });
   }
 
   private Event modificationEventBoard() {
-    return new ModificationEvent("Modification", "", "Your craftiness has allowed you to choose from more events once in between battles.", () -> {
+    return new ModificationEvent("Modification", "Your craftiness has allowed you to choose from more events once in between battles.", () -> {
       playerKnowledge.incrementExtraEvents();
     });
   }
 
   private Event knowledgePlayerHealth() {
-    return new ModificationEvent("Knowledge", "", "You have modified your body to be able to handle poisonous brews more effectively.", () -> {
+    return new ModificationEvent("Knowledge", "You have modified your body to be able to handle poisonous brews more effectively.", () -> {
       playerKnowledge.addMaxHealth(0.5f);
     });
   }
 
   private Event knowledgeReBrew() {
-    return new ModificationEvent("Knowledge", "", "You learned how to make an additional rebrew.", () -> {
+    return new ModificationEvent("Knowledge", "You learned how to make an additional rebrew.", () -> {
       playerKnowledge.addReBrew();
     });
   }
 
   private Event knowledgeExtraLife() {
-    return new ModificationEvent("Knowledge", "", "You learned how to cheat death another time.", () -> {
+    return new ModificationEvent("Knowledge", "You learned how to cheat death another time.", () -> {
       playerKnowledge.addExtraLife();
     });
   }
 
   private Event knowledgeInstability() {
-    return new ModificationEvent("Knowledge", "", "Your brewing has become more unstable, increasing the likelihood of more acidic or basic brews.", () -> {
+    return new ModificationEvent("Knowledge", "Your brewing has become more unstable, increasing the likelihood of more acidic or basic brews.", () -> {
       playerKnowledge.incrementInstability();
     });
   }
 
   private Event knowledgeNeutralizingAgent() {
-    String full = "You learned how to make an additional neutralizing agent.";
+    String description = "You learned how to make an additional neutralizing agent.";
 
     if (playerKnowledge.getNeutralizeAgents() == 1) {
-      full = "You learned how to make neutralizing agents. Neutralizing agents will neutralize the top of a vial in place of pouring a brew that round.";
+      description = "You learned how to make neutralizing agents. Neutralizing agents will neutralize the top of a vial in place of pouring a brew that round.";
     }
 
-    return new ModificationEvent("Knowledge", "", full, () -> {
+    return new ModificationEvent("Knowledge", description, () -> {
       playerKnowledge.addNeutralize();
     });
   }
@@ -352,23 +351,19 @@ public class EventBoard {
   public interface Event {
     String title();
 
-    String shortDescription();
-
-    String fullDescription();
+    String description();
   }
 
   public record BattleEvent(
     String title,
-    String shortDescription,
-    String fullDescription,
+    String description,
     Supplier<VialsBoard> buildBoard
   ) implements Event {
   }
 
   public record ModificationEvent(
     String title,
-    String shortDescription,
-    String fullDescription,
+    String description,
     Runnable apply
   ) implements Event {
   }
