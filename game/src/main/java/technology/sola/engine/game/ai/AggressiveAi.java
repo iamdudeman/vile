@@ -23,11 +23,6 @@ public class AggressiveAi extends Ai {
   }
 
   @Override
-  public String getGreeting(VialsBoard vialsBoard) {
-    return aiInfo.greeting();
-  }
-
-  @Override
   public String getStartTurnText(VialsBoard vialsBoard) {
     return "My turn to go.";
   }

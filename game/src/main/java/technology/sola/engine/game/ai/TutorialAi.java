@@ -24,11 +24,6 @@ public class TutorialAi extends Ai {
   }
 
   @Override
-  public String getGreeting(VialsBoard vialsBoard) {
-    return "";
-  }
-
-  @Override
   public String getStartTurnText(VialsBoard vialsBoard) {
     return "My turn to go.";
   }
