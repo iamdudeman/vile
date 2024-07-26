@@ -35,11 +35,11 @@ public class EventBoard {
     this.vialDepthModification = eventBoard.vialDepthModification;
   }
 
-  public Event<?>[] getNextEvents() {
+  public Event[] getNextEvents() {
     int eventsCount = round == 1 ? INITIAL_EVENTS_COUNT + playerKnowledge.getExtraEvents() : INITIAL_EVENTS_COUNT;
-    Event<?>[] events = new Event[eventsCount];
-    List<Event<?>> commonEvents = generateCommonEvents();
-    List<Event<?>> rareEvents = generateRareEvents();
+    Event[] events = new Event[eventsCount];
+    List<Event> commonEvents = generateCommonEvents();
+    List<Event> rareEvents = generateRareEvents();
 
     for (int i = 0; i < eventsCount; i++) {
       if (random.nextInt(5) < 1 && !rareEvents.isEmpty()) {
@@ -53,8 +53,8 @@ public class EventBoard {
     return events;
   }
 
-  private List<Event<?>> generateCommonEvents() {
-    List<Event<?>> commonEvents = new ArrayList<>();
+  private List<Event> generateCommonEvents() {
+    List<Event> commonEvents = new ArrayList<>();
 
     if (round >= INITIAL_EVENT_ROUNDS) {
       commonEvents.add(battleRandomAi());
@@ -123,8 +123,8 @@ public class EventBoard {
     return commonEvents;
   }
 
-  private List<Event<?>> generateRareEvents() {
-    List<Event<?>> rareEvents = new ArrayList<>();
+  private List<Event> generateRareEvents() {
+    List<Event> rareEvents = new ArrayList<>();
 
     if (round >= INITIAL_EVENT_ROUNDS) {
       rareEvents.add(battleAggressiveAi());
@@ -165,7 +165,7 @@ public class EventBoard {
     return rareEvents;
   }
 
-  private Event<?> battleRandomAi() {
+  private Event battleRandomAi() {
     RandomAi randomAi = new RandomAi();
     Knowledge aiKnowledge = randomAi.getKnowledge();
 
@@ -200,7 +200,7 @@ public class EventBoard {
     return battle(randomAi);
   }
 
-  private Event<?> battleAggressiveAi() {
+  private Event battleAggressiveAi() {
     AggressiveAi aggressiveAi = new AggressiveAi();
     Knowledge aiKnowledge = aggressiveAi.getKnowledge();
 
@@ -226,8 +226,8 @@ public class EventBoard {
     return battle(aggressiveAi);
   }
 
-  private Event<?> battle(Ai ai) {
-    return new BattleEvent("Battle", () -> {
+  private Event battle(Ai ai) {
+    return new BattleEvent("Battle", "", "", () -> {
       VialsBoard vialsBoard = new VialsBoard(
         playerKnowledge,
         ai,
@@ -241,87 +241,77 @@ public class EventBoard {
     });
   }
 
-  private Event<?> modificationBoardValue(int value, boolean isPlayer) {
-    return new ModificationEvent("Modification", () -> {
-      String whoPhrase = "";
+  private Event modificationBoardValue(int value, boolean isPlayer) {
+    String whoPhrase;
 
+    if (isPlayer) {
+      whoPhrase = "you have";
+    } else {
+      whoPhrase = "your opponent has";
+    }
+
+    String full = String.format("The next set of vials have been modified so %s a vile with a pH of %d poured in it.", whoPhrase, value);
+
+    return new ModificationEvent("Modification", "", full, () -> {
       if (isPlayer) {
         playerModifications.add(value);
-        whoPhrase = "you have";
       } else {
         opponentModifications.add(value);
-        whoPhrase = "your opponent has";
       }
-
-      return String.format("The next set of vials have been modified so %s a vile with a pH of %d poured in it.", whoPhrase, value);
     });
   }
 
-  private Event<?> modificationVialsBoardVialDepth() {
-    return new ModificationEvent("Modification", () -> {
+  private Event modificationVialsBoardVialDepth() {
+    return new ModificationEvent("Modification","", "Your next game of vials will have deeper vials in play.", () -> {
       vialDepthModification++;
-
-      return "Your next game of vials will have deeper vials in play.";
     });
   }
 
-  private Event<?> modificationVialsBoardVialCount() {
-    return new ModificationEvent("Modification", () -> {
+  private Event modificationVialsBoardVialCount() {
+    return new ModificationEvent("Modification", "", "Your next game of vials will have an additional vial in play.", () -> {
       vialCountModification++;
-
-      return "Your next game of vials will have an additional vial in play.";
     });
   }
 
-  private Event<?> modificationEventBoard() {
-    return new ModificationEvent("Modification", () -> {
+  private Event modificationEventBoard() {
+    return new ModificationEvent("Modification", "", "Your craftiness has allowed you to choose from more events once in between battles.", () -> {
       playerKnowledge.incrementExtraEvents();
-
-      return "Your craftiness has allowed you to choose from more events once in between battles.";
     });
   }
 
-  private Event<?> knowledgePlayerHealth() {
-    return new ModificationEvent("Knowledge", () -> {
+  private Event knowledgePlayerHealth() {
+    return new ModificationEvent("Knowledge", "", "You have modified your body to be able to handle poisonous brews more effectively.", () -> {
       playerKnowledge.addMaxHealth(0.5f);
-
-      return "You have modified your body to be able to handle poisonous brews more effectively.";
     });
   }
 
-  private Event<?> knowledgeReBrew() {
-    return new ModificationEvent("Knowledge", () -> {
+  private Event knowledgeReBrew() {
+    return new ModificationEvent("Knowledge", "", "You learned how to make an additional rebrew.", () -> {
       playerKnowledge.addReBrew();
-
-      return "You learned how to make an additional rebrew.";
     });
   }
 
-  private Event<?> knowledgeExtraLife() {
-    return new ModificationEvent("Knowledge", () -> {
+  private Event knowledgeExtraLife() {
+    return new ModificationEvent("Knowledge", "", "You learned how to cheat death another time.", () -> {
       playerKnowledge.addExtraLife();
-
-      return "You learned how to cheat death another time.";
     });
   }
 
-  private Event<?> knowledgeInstability() {
-    return new ModificationEvent("Knowledge", () -> {
+  private Event knowledgeInstability() {
+    return new ModificationEvent("Knowledge", "", "Your brewing has become more unstable, increasing the likelihood of more acidic or basic brews.", () -> {
       playerKnowledge.incrementInstability();
-
-      return "Your brewing has become more unstable, increasing the likelihood of more acidic or basic brews.";
     });
   }
 
-  private Event<?> knowledgeNeutralizingAgent() {
-    return new ModificationEvent("Knowledge", () -> {
+  private Event knowledgeNeutralizingAgent() {
+    String full = "You learned how to make an additional neutralizing agent.";
+
+    if (playerKnowledge.getNeutralizeAgents() == 1) {
+      full = "You learned how to make neutralizing agents. Neutralizing agents will neutralize the top of a vial in place of pouring a brew that round.";
+    }
+
+    return new ModificationEvent("Knowledge", "", full, () -> {
       playerKnowledge.addNeutralize();
-
-      if (playerKnowledge.getNeutralizeAgents() == 1) {
-        return "You learned how to make neutralizing agents. Neutralizing agents will neutralize the top of a vial in place of pouring a brew that round.";
-      }
-
-      return "You learned how to make an additional neutralizing agent.";
     });
   }
 
@@ -339,15 +329,27 @@ public class EventBoard {
     });
   }
 
-  public interface Event<T> {
+  public interface Event {
     String title();
 
-    Supplier<T> payload();
+    String shortDescription();
+
+    String fullDescription();
   }
 
-  public record BattleEvent(String title, Supplier<VialsBoard> payload) implements Event<VialsBoard> {
+  public record BattleEvent(
+    String title,
+    String shortDescription,
+    String fullDescription,
+    Supplier<VialsBoard> buildBoard
+  ) implements Event {
   }
 
-  public record ModificationEvent(String title, Supplier<String> payload) implements Event<String> {
+  public record ModificationEvent(
+    String title,
+    String shortDescription,
+    String fullDescription,
+    Runnable apply
+  ) implements Event {
   }
 }

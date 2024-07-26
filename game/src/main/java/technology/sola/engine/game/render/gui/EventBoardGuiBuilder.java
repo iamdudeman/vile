@@ -15,30 +15,14 @@ import technology.sola.engine.graphics.gui.style.ConditionalStyle;
 import technology.sola.engine.graphics.gui.style.property.CrossAxisChildren;
 import technology.sola.engine.graphics.gui.style.property.Direction;
 import technology.sola.engine.graphics.gui.style.property.MainAxisChildren;
-import technology.sola.engine.graphics.gui.style.property.Visibility;
 import technology.sola.engine.graphics.gui.style.theme.DefaultThemeBuilder;
 import technology.sola.engine.graphics.gui.style.theme.GuiTheme;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class EventBoardGuiBuilder {
-  private boolean isEventsVisible = true;
   private final GuiDocument guiDocument;
-  private final GuiTheme guiTheme = DefaultThemeBuilder.buildDarkTheme()
-    .addStyle(ButtonGuiElement.class, List.of(ConditionalStyle.always(
-      BaseStyles.create()
-        .setPadding(8)
-        .build()
-    )));
-  private final ConditionalStyle<TextStyles> visibilityNoneTextStyle = ConditionalStyle.always(
-    TextStyles.create().setVisibility(Visibility.NONE).build()
-  );
-  private final ConditionalStyle<BaseStyles> visibilityHiddenStyle = ConditionalStyle.always(
-    BaseStyles.create().setVisibility(Visibility.NONE).build()
-  );
+  private final GuiTheme guiTheme = DefaultThemeBuilder.buildDarkTheme();
 
   public EventBoardGuiBuilder(GuiDocument guiDocument) {
     this.guiDocument = guiDocument;
@@ -55,43 +39,6 @@ public class EventBoardGuiBuilder {
 
     rootSection.setId("rootSection");
 
-    rootSection.appendChildren(
-      elementEventsSection(eventBoard),
-      elementEventText()
-    );
-
-    rootSection.addStyle(ConditionalStyle.always(
-      BaseStyles.create()
-        .setCrossAxisChildren(CrossAxisChildren.CENTER)
-        .setMainAxisChildren(MainAxisChildren.CENTER)
-        .setGap(12)
-        .setDirection(Direction.COLUMN)
-        .setHeight("100%")
-        .setWidth("100%")
-        .build()
-    ));
-
-    guiTheme.applyToTree(rootSection);
-
-    return rootSection;
-  }
-
-  private GuiElement<?, ?> elementEventText() {
-    return new TextGuiElement()
-      .setText("")
-      .setId("eventText")
-      .addStyle(ConditionalStyle.always(
-        TextStyles.create()
-          .setBorderColor(Color.WHITE)
-          .setPadding(8)
-          .setWidth("70%")
-          .setHeight(200)
-          .build()
-      ))
-      .addStyle(visibilityNoneTextStyle);
-  }
-
-  private GuiElement<?, ?> elementEventsSection(EventBoard eventBoard) {
     SectionGuiElement eventsSection = new SectionGuiElement();
 
     eventsSection.appendChildren(
@@ -102,79 +49,84 @@ public class EventBoardGuiBuilder {
 
     eventsSection.addStyle(ConditionalStyle.always(
       BaseStyles.create()
-        .setCrossAxisChildren(CrossAxisChildren.CENTER)
-        .setMainAxisChildren(MainAxisChildren.CENTER)
         .setGap(12)
         .setDirection(Direction.ROW)
         .build()
     ));
 
-    return new SectionGuiElement()
-      .setId("eventsSection")
-      .appendChildren(
-        eventsSection
-      )
+    rootSection.appendChildren(
+      eventsSection
+    );
+
+    rootSection.addStyle(ConditionalStyle.always(
+      BaseStyles.create()
+        .setCrossAxisChildren(CrossAxisChildren.CENTER)
+        .setMainAxisChildren(MainAxisChildren.CENTER)
+        .setHeight("100%")
+        .setWidth("100%")
+        .build()
+    ));
+
+    guiTheme.applyToTree(rootSection);
+
+    return rootSection;
+  }
+
+  private GuiElement<?, ?> elementEvent(EventBoard.Event event, EventBoard eventBoard) {
+    String title = event.title();
+    String shortDescription = event.shortDescription();
+    String fullDescription = event.fullDescription();
+
+    return new ButtonGuiElement()
       .addStyle(ConditionalStyle.always(
         BaseStyles.create()
-          .setDirection(Direction.COLUMN)
-          .setCrossAxisChildren(CrossAxisChildren.CENTER)
-          .setGap(16)
+          .setWidth(225)
+          .setHeight(280)
           .build()
-      ));
-  }
-
-  private GuiElement<?, ?> elementEvent(EventBoard.Event<?> event, EventBoard eventBoard) {
-    return new ButtonGuiElement()
+      ))
+      .appendChildren(
+        new SectionGuiElement()
+          .appendChildren(
+            new TextGuiElement()
+              .setText(title)
+              .addStyle(ConditionalStyle.always(
+                TextStyles.create()
+                  .setBackgroundColor(new Color(96, 96, 96))
+                  .setBorderColor(Color.WHITE)
+                  .setWidth("100%")
+                  .setTextAlignment(TextStyles.TextAlignment.CENTER)
+                  .setPadding(8)
+                  .build()
+              )),
+            new TextGuiElement()
+              .setText(fullDescription)
+              .addStyle(ConditionalStyle.always(
+                TextStyles.create()
+                  .setPadding(8)
+                  .build()
+              ))
+          )
+          .addStyle(ConditionalStyle.always(
+            BaseStyles.create()
+              .setDirection(Direction.COLUMN)
+              .setGap(8)
+              .build()
+          ))
+      )
       .setOnAction(() -> {
-        if (!isEventsVisible) {
-          return;
-        }
-
-        isEventsVisible = false;
-
         VialsBoard vialsBoard = null;
-        String eventText = "";
 
         if (event instanceof EventBoard.BattleEvent battleEvent) {
-          vialsBoard = battleEvent.payload().get();
-          eventText = vialsBoard.ai.getGreeting(vialsBoard);
+          vialsBoard = battleEvent.buildBoard().get();
         } else if (event instanceof EventBoard.ModificationEvent modificationEvent) {
-          eventText = modificationEvent.payload().get();
+          modificationEvent.apply().run();
         }
 
-
-        var eventsSection = guiDocument.findElementById("eventsSection", SectionGuiElement.class);
-        var eventTextElement = guiDocument.findElementById("eventText", TextGuiElement.class);
-
-        eventsSection
-            .styles()
-            .addStyle(visibilityHiddenStyle);
-
-        eventTextElement
-          .setText(eventText)
-          .styles()
-          .removeStyle(visibilityNoneTextStyle);
-
-        Timer timer = new Timer();
-
-        timer.schedule(buildTimerTask(timer, eventBoard, vialsBoard, eventTextElement), 4000);
-      })
-      .appendChildren(
-        new TextGuiElement().setText(event.title())
-      );
-  }
-
-  private TimerTask buildTimerTask(Timer timer, EventBoard eventBoard, VialsBoard vialsBoard, TextGuiElement eventTextElement) {
-    return new TimerTask() {
-      @Override
-      public void run() {
         if (vialsBoard == null) {
           guiDocument.setRootElement(
             new EventBoardGuiBuilder(guiDocument)
               .build(new EventBoard(eventBoard))
           );
-
-          eventTextElement.styles().addStyle(visibilityNoneTextStyle);
         } else {
           vialsBoard.playerKnowledge.reset();
           guiDocument.setRootElement(
@@ -182,10 +134,6 @@ public class EventBoardGuiBuilder {
               .build(vialsBoard)
           );
         }
-
-        cancel();
-        timer.cancel();
-      }
-    };
+      });
   }
 }
