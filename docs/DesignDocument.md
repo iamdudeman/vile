@@ -90,10 +90,14 @@ learn other forbidden knowledge that will assist them in winning the tournament.
 ##### NPC opponents
 
 * Ran Dum
-    * Play-style - completely random
-* Duck
-    * Play-style - only plays on own board unless it is full
+    * Play-style - random
+* Quack Dealer
+    * Play-style - aggressive
     * Reason - To create the perfect donut
+* Isaac Mewton
+    * Play-style - random
+* Osmeowdias
+    * Play-style - aggressive
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -101,7 +105,8 @@ learn other forbidden knowledge that will assist them in winning the tournament.
 
 ### Style
 
-todo
+The Vials game board itself will be pretty simplistic only showing the player and opponent portraits for images.
+Everything else will be "GUI" elements. The event board will contain cards that are also very simplistic.
 
 ### Camera
 
@@ -154,6 +159,9 @@ AI is currently doing.
 
 ### Outline
 
+Things towards the bottom will likely be implemented post game jam. Story progression especially will be a lot more work
+than time allows.
+
 | Task              | Type    | Status | Details                                         |
 |-------------------|---------|--------|-------------------------------------------------|
 | Design Document   | `Misc`  | `WIP`  | This document!                                  |
@@ -164,9 +172,8 @@ AI is currently doing.
 | Main menu         | `Code`  | `DONE` | Implement the games main menu                   |
 | Battle music      | `Audio` | `WIP`  | Music that plays during a battle                |
 | Event board music | `Audio` | `WIP`  | Menu that plays on the world map after a battle |
-| Event icons       | `Art`   | `TODO` | The event icons (boss, vial, book)              |
 | Player portrait   | `Art`   | `DONE` | The player portrait                             |
-| AI portraits      | `Art`   | `WIP`  | The opponent portraits                          |
+| AI portraits      | `Art`   | `DONE` | The opponent portraits                          |
 | Vile main title   | `Art`   | `DONE` | The word "Vile" in main title                   |
 | Balance           | `Code`  | `WIP`  | Balance the systems implemented above           |
 | Story progression | `Code`  | `TODO` | Implement story progress between rounds         |
