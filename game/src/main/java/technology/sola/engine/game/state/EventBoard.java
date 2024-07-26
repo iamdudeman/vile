@@ -1,6 +1,7 @@
 package technology.sola.engine.game.state;
 
 import technology.sola.engine.game.ai.AggressiveAi;
+import technology.sola.engine.game.ai.Ai;
 import technology.sola.engine.game.ai.RandomAi;
 
 import java.util.ArrayList;
@@ -57,9 +58,18 @@ public class EventBoard {
 
     if (round >= INITIAL_EVENT_ROUNDS) {
       commonEvents.add(battleRandomAi());
-      commonEvents.add(battleAggressiveAi());
-      commonEvents.add(battleAggressiveAi());
-      commonEvents.add(battleAggressiveAi());
+
+      if (playerKnowledge.getBattlesWon() > 1) {
+        commonEvents.add(battleRandomAi());
+        commonEvents.add(battleAggressiveAi());
+        commonEvents.add(battleAggressiveAi());
+        commonEvents.add(battleAggressiveAi());
+      } else {
+        commonEvents.add(battleRandomAi());
+        commonEvents.add(battleRandomAi());
+        commonEvents.add(battleRandomAi());
+        commonEvents.add(battleAggressiveAi());
+      }
 
       return commonEvents;
     }
@@ -156,25 +166,71 @@ public class EventBoard {
   }
 
   private Event<?> battleRandomAi() {
-    return new BattleEvent("Battle", () -> {
-      VialsBoard vialsBoard = new VialsBoard(
-        playerKnowledge,
-        new RandomAi(),
-        INITIAL_VIAL_COUNT + vialCountModification,
-        INITIAL_VIAL_DEPTH + vialDepthModification
-      );
+    RandomAi randomAi = new RandomAi();
+    Knowledge aiKnowledge = randomAi.getKnowledge();
 
-      modifyBoard(vialsBoard);
+    // battles won buffs
+    if (playerKnowledge.getBattlesWon() > 1) {
+      aiKnowledge.addNeutralize();
+    }
 
-      return vialsBoard;
-    });
+    if (playerKnowledge.getBattlesWon() > 3) {
+      aiKnowledge.addNeutralize();
+    }
+
+    for (int i = 0; i < playerKnowledge.getBattlesWon(); i++) {
+      aiKnowledge.addReBrew();
+    }
+
+    aiKnowledge.addMaxHealth((playerKnowledge.getBattlesWon() - 1) / 2f);
+
+    // round buffs
+    for (int i = 1; i < round - 1; i++) {
+      aiKnowledge.addMaxHealth(0.25f);
+    }
+
+    if (round >= INITIAL_EVENT_ROUNDS - 1) {
+      aiKnowledge.addReBrew();
+    }
+    if (round >= INITIAL_EVENT_ROUNDS) {
+      aiKnowledge.addReBrew();
+      aiKnowledge.addNeutralize();
+    }
+
+    return battle(randomAi);
   }
 
   private Event<?> battleAggressiveAi() {
+    AggressiveAi aggressiveAi = new AggressiveAi();
+    Knowledge aiKnowledge = aggressiveAi.getKnowledge();
+
+    // battles won buffs
+    if (playerKnowledge.getBattlesWon() > 1) {
+      aiKnowledge.addReBrew();
+    }
+
+    aiKnowledge.addMaxHealth((playerKnowledge.getBattlesWon() - 1) / 2f);
+
+    // round buffs
+    for (int i = 1; i < round - 1; i++) {
+      aiKnowledge.addMaxHealth(0.25f);
+    }
+
+    if (round >= INITIAL_EVENT_ROUNDS - 1) {
+      aiKnowledge.addReBrew();
+    }
+    if (round >= INITIAL_EVENT_ROUNDS) {
+      aiKnowledge.addReBrew();
+    }
+
+    return battle(aggressiveAi);
+  }
+
+  private Event<?> battle(Ai ai) {
     return new BattleEvent("Battle", () -> {
       VialsBoard vialsBoard = new VialsBoard(
         playerKnowledge,
-        new AggressiveAi(),
+        ai,
         INITIAL_VIAL_COUNT + vialCountModification,
         INITIAL_VIAL_DEPTH + vialDepthModification
       );
