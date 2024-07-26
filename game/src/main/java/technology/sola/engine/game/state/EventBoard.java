@@ -9,6 +9,10 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
 
+// todo fix full descriptions
+// todo remove short descriptions
+// todo add customizable names + asset ids + greetings to AI
+
 public class EventBoard {
   private static final int INITIAL_EVENTS_COUNT = 3;
   private static final int INITIAL_EVENT_ROUNDS = 5;

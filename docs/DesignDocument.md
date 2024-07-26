@@ -89,15 +89,11 @@ learn other forbidden knowledge that will assist them in winning the tournament.
 
 ##### NPC opponents
 
-* Ran Dumb
+* Ran Dum
     * Play-style - completely random
-    * Knowledge - none
-* todo name
+* Duck
     * Play-style - only plays on own board unless it is full
-    * Knowledge - todo
-* todo name
-    * Play-style - only plays on opponent's board unless it is full
-    * Knowledge - todo
+    * Reason - To create the perfect donut
 
 ------------------------------------------------------------------------------------------------------------------------
 
