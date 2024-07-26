@@ -25,7 +25,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class EventBoardGuiBuilder {
-  private static boolean hasSeenFlavorText = false;
   private boolean isEventsVisible = true;
   private final GuiDocument guiDocument;
   private final GuiTheme guiTheme = DefaultThemeBuilder.buildDarkTheme()
@@ -36,9 +35,6 @@ public class EventBoardGuiBuilder {
     )));
   private final ConditionalStyle<TextStyles> visibilityNoneTextStyle = ConditionalStyle.always(
     TextStyles.create().setVisibility(Visibility.NONE).build()
-  );
-  private final ConditionalStyle<TextStyles> visibilityHiddenTextStyle = ConditionalStyle.always(
-    TextStyles.create().setVisibility(Visibility.HIDDEN).build()
   );
   private final ConditionalStyle<BaseStyles> visibilityHiddenStyle = ConditionalStyle.always(
     BaseStyles.create().setVisibility(Visibility.NONE).build()
@@ -113,25 +109,9 @@ public class EventBoardGuiBuilder {
         .build()
     ));
 
-    var flavorText = new TextGuiElement()
-      .setText("Acquire Knowledge or Modify the vials for your next round until it starts! The longer you prepare however, the longer your opponent also has to prepare.")
-      .addStyle(
-        ConditionalStyle.always(
-          TextStyles.create()
-            .setPaddingBottom(24)
-            .setWidth("80%")
-            .build()
-        )
-      );
-
-    if (hasSeenFlavorText) {
-      flavorText.addStyle(visibilityHiddenTextStyle);
-    }
-
     return new SectionGuiElement()
       .setId("eventsSection")
       .appendChildren(
-        flavorText,
         eventsSection
       )
       .addStyle(ConditionalStyle.always(
@@ -150,7 +130,6 @@ public class EventBoardGuiBuilder {
           return;
         }
 
-        hasSeenFlavorText = true;
         isEventsVisible = false;
 
         VialsBoard vialsBoard = null;

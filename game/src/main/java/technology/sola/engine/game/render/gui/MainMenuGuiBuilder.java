@@ -11,6 +11,7 @@ import technology.sola.engine.graphics.gui.GuiElement;
 import technology.sola.engine.graphics.gui.elements.ImageGuiElement;
 import technology.sola.engine.graphics.gui.elements.SectionGuiElement;
 import technology.sola.engine.graphics.gui.elements.TextGuiElement;
+import technology.sola.engine.graphics.gui.elements.TextStyles;
 import technology.sola.engine.graphics.gui.elements.input.ButtonGuiElement;
 import technology.sola.engine.graphics.gui.style.BaseStyles;
 import technology.sola.engine.graphics.gui.style.ConditionalStyle;
@@ -60,13 +61,7 @@ public class MainMenuGuiBuilder {
         new ButtonGuiElement()
           .setOnAction(() -> {
             guiDocument.setRootElement(
-              new VialsBoardGuiBuilder(guiDocument)
-                .build(new VialsBoard(
-                  new Knowledge(),
-                  new TutorialAi(),
-                  2,
-                  3
-                ))
+              buildLoreIntro()
             );
           })
           .appendChildren(
@@ -99,13 +94,80 @@ public class MainMenuGuiBuilder {
     return rootSection;
   }
 
+  private GuiElement<?, ?> buildLoreIntro() {
+    TextGuiElement textGuiElement = new TextGuiElement();
+
+    textGuiElement.setText(
+      """
+        The underground world of alchemy is a lucrative well of knowledge. But in this world of equivalent exchanges, such an incredible opportunity for knowledge doesn't come cheap.
+
+      The game of Vials is our scale.
+
+        Alchemists from all over the world compete in the game of Vials with their lives as wager. Win and your journey to discover wonderful secrets, such as transmuting lead into gold, continues. Lose and you'll come face-to-face with the ultimacy of your mortality.
+
+        Your journey is just beginning so take this time to learn the basics of how a game of Vials is played. Between each round you will have chances to gain additional "Knowledge" to help you obtain victory over opposing alchemists. You may even attempt to make "Modifications" to gain an advantage in your next game. The longer you prepare however, the longer your opponent also has to prepare also.
+
+        Now get out there and don't get yourself killed!
+
+      Press any key or click to begin tutorial.
+      """
+    );
+
+    DefaultThemeBuilder.buildDarkTheme().applyToElement(textGuiElement);
+
+    textGuiElement.addStyle(ConditionalStyle.always(
+      TextStyles.create()
+        .setPadding(16)
+        .setWidth("60%")
+        .setHeight("80%")
+        .setBorderColor(Color.WHITE)
+        .build()
+    ));
+
+    Runnable onAction = () -> {
+      guiDocument.setRootElement(
+        new VialsBoardGuiBuilder(guiDocument)
+          .build(new VialsBoard(
+            new Knowledge(),
+            new TutorialAi(),
+            2,
+            3
+          ))
+      );
+    };
+
+
+    ButtonGuiElement buttonGuiElement = new ButtonGuiElement()
+      .setOnAction(onAction)
+      .appendChildren(
+        textGuiElement
+      )
+      .addStyle(ConditionalStyle.always(
+        BaseStyles.create()
+          .setWidth("100%")
+          .setHeight("100%")
+          .setMainAxisChildren(MainAxisChildren.CENTER)
+          .setCrossAxisChildren(CrossAxisChildren.CENTER)
+          .build()
+      ));
+
+    buttonGuiElement.events().keyPressed().on(event -> {
+      onAction.run();
+    });
+    buttonGuiElement.events().mousePressed().on(event -> {
+      onAction.run();
+    });
+
+    return buttonGuiElement;
+  }
+
   private GuiElement<?, ?> buildOptions() {
     var rootSection = new SectionGuiElement()
       .appendChildren(
         new TextGuiElement()
           .setText("Options"),
         new TextGuiElement()
-          .setText("AI Speed"),
+          .setText("AI decision speed"),
         elementAiSpeed(),
         new TextGuiElement()
           .setText("Volume"),
