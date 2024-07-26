@@ -12,7 +12,6 @@ import java.util.Random;
 import java.util.function.Supplier;
 
 // todo fix full descriptions
-// todo add board modifications to battle events against player based on factors
 // todo add customizable names + asset ids + greetings to AI
 //   Quack Dealer
 //   Osmeowdias
@@ -241,6 +240,14 @@ public class EventBoard {
         INITIAL_VIAL_COUNT + vialCountModification,
         INITIAL_VIAL_DEPTH + vialDepthModification
       );
+
+      if (round > 1) {
+        for (int i = 0; i < playerKnowledge.getBattlesWon() - 1; i++) {
+          playerModifications.add(
+            random.nextInt(7 - (round - 1), 7 + (round - 1))
+          );
+        }
+      }
 
       modifyBoard(vialsBoard);
 
