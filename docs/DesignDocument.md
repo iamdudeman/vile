@@ -64,13 +64,11 @@ progressively more difficult challenges.
         * Can only be played if you haven't rolled yet
     * Reroll - gives a new pH to play
     * Extra life - gives another retry attempt
-    * Vaccuum? - remove top pH
-        * might be too strong so might not implement
 
 * Event tiles
     * Battle
         * Normal battle
-        * Boss battle
+        * Difficult battle
     * Library
         * Chance to gain additional knowledge usages
         * Chance to gain an additional life
@@ -160,20 +158,21 @@ AI is currently doing.
 
 ### Outline
 
-| Task              | Type    | Status  | Details                                         |
-|-------------------|---------|---------|-------------------------------------------------|
-| Design Document   | `Misc`  | `WIP`   | This document!                                  |
-| Vials Gameplay    | `Code`  | `DONE`  | Basic gameplay loop                             |
-| AI                | `Code`  | `DONE`  | Create some AI to play against                  |
-| Events            | `Code`  | `WIP`   | Implement events where upgrades can be received |
-| Player portraits  | `Code`  | `DONE`  | Implement portraits in UI                       |
-| Main menu         | `Code`  | `DONE`  | Implement the games main menu                   |
-| Battle music      | `Audio` | `WIP`   | Music that plays during a battle                |
-| Event board music | `Audio` | `WIP`   | Menu that plays on the world map after a battle |
-| Event icons       | `Art`   | `TODO`  | The event icons (boss, vial, book)              |
-| Player portrait   | `Art`   | `DONE`  | The player portrait                             |
-| AI portraits      | `Art`   | `WIP`   | The opponent portraits                          |
-| Vile main title   | `Art`   | `DONE`  | The word "Vile" in main title                   |
-| Story progression | `Code`  | `TODO`  | Implement story progress between rounds         |
-| Sound effects     | `Audio` | `TODO`  | Add in sound effects where they make sense!     |
-| Voice acting      | `Audio` | `TODO`  | Voice act opponent lines                        |
+| Task              | Type    | Status | Details                                         |
+|-------------------|---------|--------|-------------------------------------------------|
+| Design Document   | `Misc`  | `WIP`  | This document!                                  |
+| Vials Gameplay    | `Code`  | `DONE` | Basic gameplay loop                             |
+| AI                | `Code`  | `DONE` | Create some AI to play against                  |
+| Events            | `Code`  | `DONE` | Implement events where upgrades can be received |
+| Player portraits  | `Code`  | `DONE` | Implement portraits in UI                       |
+| Main menu         | `Code`  | `DONE` | Implement the games main menu                   |
+| Battle music      | `Audio` | `WIP`  | Music that plays during a battle                |
+| Event board music | `Audio` | `WIP`  | Menu that plays on the world map after a battle |
+| Event icons       | `Art`   | `TODO` | The event icons (boss, vial, book)              |
+| Player portrait   | `Art`   | `DONE` | The player portrait                             |
+| AI portraits      | `Art`   | `WIP`  | The opponent portraits                          |
+| Vile main title   | `Art`   | `DONE` | The word "Vile" in main title                   |
+| Balance           | `Code`  | `WIP`  | Balance the systems implemented above           |
+| Story progression | `Code`  | `TODO` | Implement story progress between rounds         |
+| Sound effects     | `Audio` | `TODO` | Add in sound effects where they make sense!     |
+| Voice acting      | `Audio` | `TODO` | Voice act opponent lines                        |
