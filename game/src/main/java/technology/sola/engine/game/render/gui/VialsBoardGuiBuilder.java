@@ -665,17 +665,15 @@ public class VialsBoardGuiBuilder {
 
         1)Brew a liquid with pH 0-14
 
-        2)Pour brew in a vial to make it more acidic or basic
+        2)Pour brew in your opponent's vial to make it more acidic/basic or your own to try to neutralize it
 
-        3)Wait for opponent to play their turn
+        3)Players will drink filled vials taking damage
 
-        4)Players will drink filled vials
+        4)The more acidic/basic the more damage you take
 
-        5)The more acidic or basic the more damage you take
+        5)Use Knowledge to manipulate the flow of the game.
 
-        6)Use Knowledge to manipulate the flow of the game.
-
-        7)Last player alive wins!
+        6)Last player alive wins!
         """
       );
 
@@ -704,8 +702,8 @@ public class VialsBoardGuiBuilder {
 
         Damage = |7 - pH|
 
-        Note:
-        Something special may happen when pouring 7 near liquids with neutralized pH
+        Hint:
+        Something special may happen when a liquid with pH of 7 is near adjacent liquids that neutralize each other
         """
       );
 
