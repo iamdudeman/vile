@@ -5,6 +5,8 @@ built on sola-game-engine using repo template sola-game-template to start the pr
 
 A [Design document](docs/DesignDocument.md) with more info about the game is available.
 
+Play it on [itch.io](https://iamdudeman.itch.io/vile)
+
 ## Credits
 
 * @Eliteomnomnivore
