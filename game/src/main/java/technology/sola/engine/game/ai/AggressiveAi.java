@@ -36,7 +36,7 @@ public class AggressiveAi extends Ai {
     }
 
     if (currentBrew == 7) {
-      if (knowledge.getReBrews() > 0 && random.nextBoolean()) {
+      if (knowledge.getCurrentRebrews() > 0 && random.nextBoolean()) {
         knowledge.reBrew();
         currentBrew = vialsBoard.brewNextPh();
 
