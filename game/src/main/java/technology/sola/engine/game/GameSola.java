@@ -2,6 +2,7 @@ package technology.sola.engine.game;
 
 import technology.sola.engine.assets.BulkAssetLoader;
 import technology.sola.engine.assets.graphics.SolaImage;
+import technology.sola.engine.assets.graphics.font.Font;
 import technology.sola.engine.core.SolaConfiguration;
 import technology.sola.engine.defaults.SolaWithDefaults;
 import technology.sola.engine.game.render.LoadingScreen;
@@ -14,7 +15,7 @@ public class GameSola extends SolaWithDefaults {
   private LoadingScreen loadingScreen = new LoadingScreen();
 
   public GameSola() {
-    super(SolaConfiguration.build("Vile", 1080, 720).withTargetUpdatesPerSecond(20));
+    super(SolaConfiguration.build("Vile", 1440, 720).withTargetUpdatesPerSecond(20));
   }
 
   @Override
@@ -32,6 +33,7 @@ public class GameSola extends SolaWithDefaults {
       .addAsset(SolaImage.class, AssetIds.Images.DUCKY, "assets/images/alchemistducky.png")
       .addAsset(SolaImage.class, AssetIds.Images.DEF_NOT_A_CAT, "assets/images/defnotacat.png")
       .addAsset(SolaImage.class, AssetIds.Images.TITLE, "assets/images/viletitle.png")
+      .addAsset(Font.class, AssetIds.Font.MONO_18, "assets/font/monospaced_NORMAL_18.font.json")
       .loadAll()
       .onComplete(assets -> {
         guiDocument.setRootElement(

@@ -31,6 +31,11 @@ import java.util.function.Supplier;
 
 public class VialsBoardGuiBuilder {
   private final GuiTheme guiTheme = DefaultThemeBuilder.buildDarkTheme()
+    .addStyle(TextGuiElement.class, List.of(ConditionalStyle.always(
+      TextStyles.create()
+        .setFontAssetId(AssetIds.Font.MONO_18)
+        .build()
+    )))
     .addStyle(ButtonGuiElement.class, List.of(ConditionalStyle.always(
       BaseStyles.create()
         .setPaddingVertical(4)
@@ -667,20 +672,18 @@ public class VialsBoardGuiBuilder {
 
         2)Pour brew in your opponent's vial to make it more acidic/basic or your own to try to neutralize it
 
-        3)Players will drink filled vials taking damage
+        3)Players will drink filled vials taking damage until only one lives
 
         4)The more acidic/basic the more damage you take
 
         5)Use Knowledge to manipulate the flow of the game.
-
-        6)Last player alive wins!
         """
       );
 
     tutorialText.styles().addStyle(ConditionalStyle.always(
       TextStyles.create()
         .setPositionX("4")
-        .setPositionY("35%")
+        .setPositionY("10%")
         .setHeight(600)
         .setWidth(300)
         .setPadding(8)
@@ -710,7 +713,7 @@ public class VialsBoardGuiBuilder {
     tutorialText.styles().addStyle(ConditionalStyle.always(
       TextStyles.create()
         .setPositionX("75%")
-        .setPositionY("35%")
+        .setPositionY("10%")
         .setHeight(200)
         .setWidth("25%")
         .setPadding(8)

@@ -7,6 +7,8 @@ public final class AssetIds {
   }
 
   public static final class Font {
+    public static final String MONO_18 = "mono-18";
+
     private Font() {
     }
   }

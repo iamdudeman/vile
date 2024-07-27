@@ -26,6 +26,11 @@ import java.util.List;
 public class MainMenuGuiBuilder {
   private final GuiDocument guiDocument;
   private final GuiTheme guiTheme = DefaultThemeBuilder.buildDarkTheme()
+    .addStyle(TextGuiElement.class, List.of(ConditionalStyle.always(
+      TextStyles.create()
+        .setFontAssetId(AssetIds.Font.MONO_18)
+        .build()
+    )))
     .addStyle(ButtonGuiElement.class, List.of(ConditionalStyle.always(
       BaseStyles.create()
         .setPadding(8)
@@ -120,6 +125,7 @@ public class MainMenuGuiBuilder {
         .setPadding(16)
         .setWidth("60%")
         .setHeight("80%")
+        .setFontAssetId(AssetIds.Font.MONO_18)
         .setBorderColor(Color.WHITE)
         .build()
     ));
