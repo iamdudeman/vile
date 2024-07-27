@@ -5,6 +5,13 @@ built on sola-game-engine using repo template sola-game-template to start the pr
 
 A [Design document](docs/DesignDocument.md) with more info about the game is available.
 
+## Credits
+
+* @Eliteomnomnivore
+    * All music
+* @Denise
+    * All artwork
+
 ## Project structure
 
 * [Common game code](game/src)

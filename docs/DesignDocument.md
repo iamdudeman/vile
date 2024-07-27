@@ -35,7 +35,7 @@ Puzzle rogue-lite
 #### First minutes
 
 The first minutes of the game will expose the player to the basics of the gameplay of Vials. They will play a simple
-AI opponent that will not be very difficult to beat. After the first victory they will experience their first event
+AI opponent that will not be very difficult to defeat. After the first victory they will experience their first event
 board where the game will start to be modified between each battle.
 
 ------------------------------------------------------------------------------------------------------------------------
