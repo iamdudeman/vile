@@ -105,7 +105,7 @@ public class MainMenuGuiBuilder {
 
         Alchemists from all over the world compete in the game of Vials with their lives as wager. Win and your journey to discover wonderful secrets, such as transmuting lead into gold, continues. Lose and you'll come face-to-face with the ultimacy of your mortality.
 
-        Your journey is just beginning so take this time to learn the basics of how a game of Vials is played. Between each round you will have chances to gain additional "Knowledge" to help you obtain victory over opposing alchemists. You may even attempt to make "Modifications" to gain an advantage in your next game. The longer you prepare however, the longer your opponent also has to prepare also.
+        Your journey is just beginning so take this time to learn the basics of how a game of Vials is played. Between each round you will have chances to gain additional "Knowledge" to help you obtain victory over opposing alchemists. You may even attempt to make "Modifications" to gain an advantage in your next game. The longer you prepare however, the longer your opponent also has to prepare.
 
         Now get out there and don't get yourself killed!
 
