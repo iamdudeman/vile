@@ -20,7 +20,6 @@ Play it on [itch.io](https://iamdudeman.itch.io/vile)
 * [Swing platform code](swing/src)
 * [JavaFX platform code](javafx/src)
 * [Browser platform code](browser/src)
-* [Server code](server/src)
 
 ## JSON Schema
 
