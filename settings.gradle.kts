@@ -1,5 +1,5 @@
 rootProject.name = "vile"
 
 include(
-  "game", "javafx", "swing", "browser", "server"
+  "game", "javafx", "swing", "browser"
 )
