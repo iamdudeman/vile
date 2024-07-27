@@ -58,26 +58,54 @@ progressively more difficult challenges.
 
 #### Mechanics / Systems overview
 
-* Forbidden knowledge
-    * Chemical tolerance - more "health"
-    * Neutralizing Concoction - reverses last played pH
-        * Can only be played if you haven't rolled yet
-    * Reroll - gives a new pH to play
-    * Extra life - gives another retry attempt
+##### Forbidden knowledge
 
-* Event tiles
-    * Battle
-        * Normal battle
-        * Difficult battle
-    * Library
-        * Chance to gain additional knowledge usages
-        * Chance to gain an additional life
-        * Chance to gain additional max health
-    * Modification
-        * Give you or your opponent a head start in the next round
-        * Possible upgrades to starting player health
-        * Additional vials or vial depth
-        * Chance to see more events each event round
+* Chemical tolerance - more "health"
+* Neutralizing Concoction - reverses last poured pH
+    * Can only be played if you haven't brewed yet
+* Rebrew - gives a new pH to pour
+* Extra life - gives another retry attempt
+
+##### Event tiles
+
+* Battle
+    * Normal battle
+    * Difficult battle
+* Library
+    * Chance to gain additional knowledge usages
+    * Chance to gain an additional life
+    * Chance to gain additional max health
+* Modification
+    * Give you or your opponent a head start in the next round
+    * Possible upgrades to starting player health
+    * Additional vials or vial depth
+    * Chance to see more events each event round
+
+##### 7pH collapsing
+
+When a 7 is adjacent to two adjacent liquids that neutralize each other the
+vial will collapse. This gives 7 more of a purpose than it would otherwise have
+and also gives more options for defense against aggressive opponents.
+
+Example situation 1:
+
+| Current | Pour (7) | Result |
+|:-------:|:--------:|:------:|
+|    -    |    -     |   -    |
+|    -    |    7     |   -    |
+|    6    |    6     |   -    |
+|    8    |    8     |   -    |
+|   10    |    10    |   10   |
+
+Example situation 2:
+
+| Current | Pour (8) | Result |
+|:-------:|:--------:|:------:|
+|    -    |    -     |   -    |
+|    -    |    8     |   -    |
+|    6    |    6     |   -    |
+|    7    |    7     |   -    |
+|   10    |    10    |   10   |
 
 ### Story overview
 
