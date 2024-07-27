@@ -44,8 +44,8 @@ board where the game will start to be modified between each battle.
 
 ### Gameplay overview
 
-In Vials, each player will be forced to drink a full vial. You'll want to keep your vials as close to pH 7 (neutral) as
-possible, or you won't last very long. The player who dies first loses!
+In Vials, each player will be forced to drink a vial once it is full. You'll want to keep your vials as close to
+pH 7 (neutral) as possible, or you won't last very long. The player who dies first loses!
 
 Each turn a random number on a normal distribution between 0 and 14 and the player puts it in one of the not-full files.
 Once a vile is full the player will take damage based on the difference between the sum of the contents of the vial and

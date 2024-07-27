@@ -327,7 +327,7 @@ public class EventBoard {
   private Event knowledgeNeutralizingAgent() {
     String description = "Learn how to make an additional neutralizing agent.";
 
-    if (playerKnowledge.getNeutralizeAgents() == 1) {
+    if (playerKnowledge.getNeutralizeAgents() == 0) {
       description = "Learn how to make neutralizing agents. Neutralizing agents will neutralize the top of a vial in place of pouring a brew that round.";
     }
 
