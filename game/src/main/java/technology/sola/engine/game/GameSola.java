@@ -1,9 +1,11 @@
 package technology.sola.engine.game;
 
 import technology.sola.engine.assets.BulkAssetLoader;
+import technology.sola.engine.assets.audio.AudioClip;
 import technology.sola.engine.assets.graphics.SolaImage;
 import technology.sola.engine.core.SolaConfiguration;
 import technology.sola.engine.defaults.SolaWithDefaults;
+import technology.sola.engine.game.audio.AudioPlayer;
 import technology.sola.engine.game.render.LoadingScreen;
 import technology.sola.engine.game.render.gui.MainMenuGuiBuilder;
 import technology.sola.engine.graphics.renderer.Renderer;
@@ -32,11 +34,22 @@ public class GameSola extends SolaWithDefaults {
       .addAsset(SolaImage.class, AssetIds.Images.DUCKY, "assets/images/alchemistducky.png")
       .addAsset(SolaImage.class, AssetIds.Images.DEF_NOT_A_CAT, "assets/images/defnotacat.png")
       .addAsset(SolaImage.class, AssetIds.Images.TITLE, "assets/images/viletitle.png")
+      .addAsset(AudioClip.class, AssetIds.Audio.DRIPPING, "assets/audio/Dripping_MainMenu.wav")
+      .addAsset(AudioClip.class, AssetIds.Audio.UNSTABLE, "assets/audio/Unstable_BattleMusic.wav")
       .loadAll()
       .onComplete(assets -> {
         guiDocument.setRootElement(
           new MainMenuGuiBuilder(guiDocument).build()
         );
+
+        if (assets[5] instanceof AudioClip mainMenuAudioClip) {
+          if (assets[6] instanceof AudioClip battleAudioClip) {
+            AudioPlayer.initialize(mainMenuAudioClip, battleAudioClip);
+
+            AudioPlayer.setVolume(0.5f);
+            AudioPlayer.playMainMenu();
+          }
+        }
 
         // finish async load
         isLoading = false;

@@ -2,6 +2,9 @@ package technology.sola.engine.game;
 
 public final class AssetIds {
   public static final class Audio {
+    public static final String DRIPPING = "dripping";
+    public static final String UNSTABLE = "unstable";
+
     private Audio() {
     }
   }
@@ -19,16 +22,6 @@ public final class AssetIds {
     public static final String TITLE = "title";
 
     private Images() {
-    }
-  }
-
-  public static final class Sprites {
-    public static final class Duck {
-      private Duck() {
-      }
-    }
-
-    private Sprites() {
     }
   }
 

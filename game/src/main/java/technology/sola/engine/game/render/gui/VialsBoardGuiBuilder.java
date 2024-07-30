@@ -3,6 +3,7 @@ package technology.sola.engine.game.render.gui;
 import technology.sola.engine.game.AssetIds;
 import technology.sola.engine.game.GameSettings;
 import technology.sola.engine.game.ai.Ai;
+import technology.sola.engine.game.audio.AudioPlayer;
 import technology.sola.engine.game.state.Knowledge;
 import technology.sola.engine.game.state.Vial;
 import technology.sola.engine.game.state.VialsBoard;
@@ -69,6 +70,8 @@ public class VialsBoardGuiBuilder {
 
   public GuiElement<?, ?> build(VialsBoard vialsBoard) {
     currentRolledPH = null;
+
+    AudioPlayer.playBattle();
 
     ImageGuiElement playerPortrait = new ImageGuiElement();
     playerPortrait.setAssetId(AssetIds.Images.PLAYER);
@@ -499,6 +502,8 @@ public class VialsBoardGuiBuilder {
         timer.schedule(new TimerTask() {
           @Override
           public void run() {
+            AudioPlayer.playMainMenu();
+
             guiDocument.setRootElement(
               new EventBoardGuiBuilder(guiDocument)
                 .build(vialsBoard.playerKnowledge)
@@ -724,6 +729,7 @@ public class VialsBoardGuiBuilder {
     return new ButtonGuiElement()
       .setOnAction(() -> {
         vialsBoard.playerKnowledge.incrementBattlesWon();
+        AudioPlayer.playMainMenu();
         guiDocument.setRootElement(
           new EventBoardGuiBuilder(guiDocument)
             .build(vialsBoard.playerKnowledge)

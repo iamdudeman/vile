@@ -3,6 +3,7 @@ package technology.sola.engine.game.render.gui;
 import technology.sola.engine.game.AssetIds;
 import technology.sola.engine.game.GameSettings;
 import technology.sola.engine.game.ai.TutorialAi;
+import technology.sola.engine.game.audio.AudioPlayer;
 import technology.sola.engine.game.state.Knowledge;
 import technology.sola.engine.game.state.VialsBoard;
 import technology.sola.engine.graphics.Color;
@@ -249,11 +250,11 @@ public class MainMenuGuiBuilder {
   private GuiElement<?, ?> elementVolume() {
     return new SectionGuiElement()
       .appendChildren(
-        createVolumeButton("Lowest", 1),
+        createVolumeButton("Off", 1),
         createVolumeButton("Low", 2),
         createVolumeButton("Normal", 3),
         createVolumeButton("High", 4),
-        createVolumeButton("Highest", 5)
+        createVolumeButton("Max", 5)
       )
       .addStyle(ConditionalStyle.always(
         BaseStyles.create()
@@ -270,6 +271,16 @@ public class MainMenuGuiBuilder {
         int currentVolume = GameSettings.VOLUME;
 
         GameSettings.VOLUME = volume;
+
+        AudioPlayer.setVolume(
+          switch (GameSettings.VOLUME) {
+            case 1 -> 0;
+            case 2 -> 0.25f;
+            case 3 -> 0.5f;
+            case 4 -> 0.75f;
+            default -> 1;
+          }
+        );
 
         guiDocument.findElementById("volume" + currentVolume, ButtonGuiElement.class)
           .styles()
