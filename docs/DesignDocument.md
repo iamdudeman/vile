@@ -147,11 +147,8 @@ played or the full world map post game of Vials.
 
 ### Music
 
-todo
-
-### Sound effects
-
-todo
+* Retro lofi inspired
+* Menu and battle music based on the same note template, but manipulate to fit the scene
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -192,18 +189,18 @@ than time allows.
 
 | Task              | Type    | Status | Details                                         |
 |-------------------|---------|--------|-------------------------------------------------|
-| Design Document   | `Misc`  | `WIP`  | This document!                                  |
+| Design Document   | `Misc`  | `DONE` | This document!                                  |
 | Vials Gameplay    | `Code`  | `DONE` | Basic gameplay loop                             |
 | AI                | `Code`  | `DONE` | Create some AI to play against                  |
 | Events            | `Code`  | `DONE` | Implement events where upgrades can be received |
 | Player portraits  | `Code`  | `DONE` | Implement portraits in UI                       |
 | Main menu         | `Code`  | `DONE` | Implement the games main menu                   |
-| Battle music      | `Audio` | `WIP`  | Music that plays during a battle                |
-| Event board music | `Audio` | `WIP`  | Menu that plays on the world map after a battle |
+| Battle music      | `Audio` | `DONE` | Music that plays during a battle                |
+| Event board music | `Audio` | `DONE` | Menu that plays on the world map after a battle |
 | Player portrait   | `Art`   | `DONE` | The player portrait                             |
 | AI portraits      | `Art`   | `DONE` | The opponent portraits                          |
 | Vile main title   | `Art`   | `DONE` | The word "Vile" in main title                   |
-| Balance           | `Code`  | `WIP`  | Balance the systems implemented above           |
+| Balance           | `Code`  | `DONE` | Balance the systems implemented above           |
 | Story progression | `Code`  | `TODO` | Implement story progress between rounds         |
 | Sound effects     | `Audio` | `TODO` | Add in sound effects where they make sense!     |
 | Voice acting      | `Audio` | `TODO` | Voice act opponent lines                        |

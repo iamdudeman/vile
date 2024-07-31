@@ -11,7 +11,7 @@ Play it on [itch.io](https://iamdudeman.itch.io/vile)
 
 * [@niiniichan](https://x.com/niiniichan)
     * All artwork
-* [Kini Music](https://www.youtube.com/channel/UCfGXl8_But5NZFiInDloeGw)
+* [@Eliteomnomnivor](https://x.com/Eliteomnomnivor?t=LH0EJ1ICSFqUGCeNurjOdQ&s=33)
     * All music
 
 ## Project structure
