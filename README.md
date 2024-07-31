@@ -1,4 +1,4 @@
-# [<img src="/assets/images/purplevial.png" width="32"/>](/assets/images/purplevial.png) Vile
+# [<img src="/assets/icon.png" width="32"/>](/assets/icon.png) Vile
 
 This is a game made for the Pirate Software Game Jam 15. The theme for the codejam was "Alchemy and Shadows." It was
 built on sola-game-engine using repo template sola-game-template to start the project.
@@ -9,10 +9,10 @@ Play it on [itch.io](https://iamdudeman.itch.io/vile)
 
 ## Credits
 
-* @Eliteomnomnivore
-    * All music
-* @Denise
+* [@niiniichan](https://x.com/niiniichan)
     * All artwork
+* [Kini Music](https://www.youtube.com/channel/UCfGXl8_But5NZFiInDloeGw)
+    * All music
 
 ## Project structure
 
